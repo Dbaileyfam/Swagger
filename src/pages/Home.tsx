@@ -31,17 +31,14 @@ export function Home() {
             <CelticKnot className="celtic-knot" />
           </div>
           <div className="home-about__copy">
-            <p className="section-label">The Band</p>
-            <h2 className="section-title">Celtic fire from the Mountain West</h2>
+            <p className="section-label">Biography</p>
+            <h2 className="section-title">{band.tagline}</h2>
             <hr className="gold-rule" />
-            <p>
-              Formed in {band.formed} at Salt Lake City&apos;s Piper Down, Swagger has spent nearly
-              two decades bringing original Celtic rock to festivals and halls across the United
-              States.
-            </p>
-            <p>
-              Drink, mischief, and music — with an emigrant&apos;s eye on Irish-American life.
-            </p>
+            {band.bio.split('\n\n').map((para) => (
+              <p className="bio-text" key={para.slice(0, 40)}>
+                {para}
+              </p>
+            ))}
             <div className="btn-row">
               <Link to="/shows" className="btn">
                 See Shows

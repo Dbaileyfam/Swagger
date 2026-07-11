@@ -508,9 +508,9 @@ select {
 
 .home-about {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
+  grid-template-columns: minmax(12rem, 0.7fr) 1.4fr;
   gap: clamp(2rem, 5vw, 4rem);
-  align-items: center;
+  align-items: start;
 }
 
 .home-about__visual {
@@ -541,12 +541,12 @@ select {
   animation: knot-turn 28s linear infinite;
 }
 
-.home-about__copy p {
+.home-about__copy .bio-text {
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
   color: var(--cream-muted);
-  margin-bottom: 1rem;
-  line-height: 1.55;
+  margin-bottom: 1.1rem;
+  line-height: 1.6;
 }
 
 .home-shows-preview {
