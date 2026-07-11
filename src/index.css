@@ -525,7 +525,6 @@ select {
   width: 100%;
   height: auto;
   display: block;
-  vertical-align: top;
 }
 
 .home-about__visual::after {
