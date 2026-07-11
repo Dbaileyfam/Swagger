@@ -518,15 +518,14 @@ select {
   border: 1px solid var(--gold-line);
   overflow: hidden;
   background: var(--velvet-deep);
-  aspect-ratio: 4 / 3;
+  aspect-ratio: auto;
 }
 
 .home-about__photo {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  height: auto;
   display: block;
+  vertical-align: top;
 }
 
 .home-about__visual::after {
