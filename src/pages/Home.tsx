@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { CelticKnot } from '../components/CelticKnot'
 import { band } from '../data/band'
 
 export function Home() {
@@ -28,7 +27,11 @@ export function Home() {
       <section className="section">
         <div className="section-inner home-about">
           <div className="home-about__visual">
-            <CelticKnot className="celtic-knot" />
+            <img
+              src={`${import.meta.env.BASE_URL}band-photo.png`}
+              alt="Swagger the Band"
+              className="home-about__photo"
+            />
           </div>
           <div className="home-about__copy">
             <p className="section-label">Biography</p>
