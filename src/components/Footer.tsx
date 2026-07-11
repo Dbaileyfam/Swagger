@@ -17,11 +17,11 @@ export function Footer() {
           <a href={band.social.facebook} target="_blank" rel="noreferrer">
             Facebook
           </a>
+          <a href={band.social.instagram} target="_blank" rel="noreferrer">
+            Instagram
+          </a>
           <a href={band.social.youtube} target="_blank" rel="noreferrer">
             YouTube
-          </a>
-          <a href={band.social.twitter} target="_blank" rel="noreferrer">
-            Twitter
           </a>
         </div>
       </div>

@@ -7,7 +7,7 @@ export const band = {
   phone: '(801) 550-1140',
   social: {
     facebook: 'https://www.facebook.com/swaggertheband',
-    twitter: 'https://twitter.com/swaggertheband',
+    instagram: 'https://www.instagram.com/rockwithswagger/',
     youtube: 'https://www.youtube.com/@SwaggerTheBand',
   },
   albums: [
