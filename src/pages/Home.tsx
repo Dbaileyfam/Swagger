@@ -8,7 +8,15 @@ export function Home() {
         <div className="home-hero__glow" aria-hidden="true" />
         <div className="home-hero__ornament" aria-hidden="true" />
         <div className="home-hero__content">
-          <h1 className="home-hero__brand">{band.name}</h1>
+          <h1 className="home-hero__brand">
+            <img
+              src={`${import.meta.env.BASE_URL}swagger-logo.png`}
+              alt="Swagger"
+              className="home-hero__logo"
+              width={880}
+              height={348}
+            />
+          </h1>
           <hr className="gold-rule gold-rule--center" />
           <p className="home-hero__tag">{band.tagline}</p>
           <p className="home-hero__lede">{band.shortBio}</p>
