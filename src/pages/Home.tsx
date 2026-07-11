@@ -6,6 +6,20 @@ export function Home() {
     <>
       <section className="home-hero">
         <div className="home-hero__glow" aria-hidden="true" />
+        <div className="home-hero__sparkles" aria-hidden="true">
+          <span className="spark spark--a" />
+          <span className="spark spark--b" />
+          <span className="spark spark--c" />
+          <span className="spark spark--d" />
+          <span className="spark spark--e" />
+          <span className="spark spark--f" />
+          <span className="spark spark--g" />
+          <span className="spark spark--h" />
+          <span className="spark spark--i" />
+          <span className="spark spark--j" />
+          <span className="spark spark--k" />
+          <span className="spark spark--l" />
+        </div>
         <div className="home-hero__ornament" aria-hidden="true" />
         <div className="home-hero__content">
           <h1 className="home-hero__brand">

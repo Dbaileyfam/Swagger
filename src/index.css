@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap');
 
 :root {
-  --velvet-deep: #06140e;
-  --velvet: #0a1f14;
-  --velvet-mid: #0f2e1c;
-  --velvet-lift: #163d28;
-  --velvet-mist: #1a4a32;
+  --velvet-deep: #020805;
+  --velvet: #040c08;
+  --velvet-mid: #07140d;
+  --velvet-lift: #0c2216;
+  --velvet-mist: #123222;
   --gold: #c9a84a;
   --gold-bright: #e4c76b;
   --gold-dim: #8a7340;
@@ -14,7 +14,7 @@
   --cream: #f3ead6;
   --cream-muted: rgba(243, 234, 214, 0.72);
   --cream-faint: rgba(243, 234, 214, 0.45);
-  --ink: #040c08;
+  --ink: #010403;
 
   --font-display: 'Cinzel', serif;
   --font-serif: 'Cormorant Garamond', serif;
@@ -51,10 +51,10 @@ body::before {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(26, 74, 50, 0.55), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 100% 50%, rgba(14, 46, 28, 0.4), transparent 50%),
-    radial-gradient(ellipse 40% 50% at 0% 80%, rgba(10, 35, 22, 0.6), transparent 45%),
-    linear-gradient(165deg, var(--velvet-mid) 0%, var(--velvet) 40%, var(--velvet-deep) 100%);
+    radial-gradient(ellipse 80% 50% at 50% -15%, rgba(18, 50, 34, 0.35), transparent 55%),
+    radial-gradient(ellipse 45% 35% at 100% 55%, rgba(8, 28, 18, 0.35), transparent 50%),
+    radial-gradient(ellipse 40% 45% at 0% 85%, rgba(6, 22, 14, 0.4), transparent 45%),
+    linear-gradient(165deg, #050e09 0%, var(--velvet) 45%, var(--velvet-deep) 100%);
 }
 
 body::after {
@@ -62,7 +62,7 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: -1;
-  opacity: 0.35;
+  opacity: 0.28;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
@@ -384,11 +384,66 @@ select {
   inset: -20%;
   z-index: 0;
   background:
-    radial-gradient(circle at 50% 38%, rgba(201, 168, 74, 0.22), transparent 36%),
-    radial-gradient(circle at 50% 42%, rgba(243, 234, 214, 0.08), transparent 28%),
-    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(22, 61, 40, 0.7), transparent 55%);
+    radial-gradient(circle at 50% 38%, rgba(201, 168, 74, 0.16), transparent 34%),
+    radial-gradient(circle at 50% 42%, rgba(243, 234, 214, 0.05), transparent 26%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(8, 28, 18, 0.85), transparent 55%);
   animation: glow-breathe 8s ease-in-out infinite alternate;
 }
+
+.home-hero__sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--gold-bright);
+  box-shadow:
+    0 0 4px 1px rgba(228, 199, 107, 0.85),
+    0 0 12px 2px rgba(201, 168, 74, 0.45);
+  opacity: 0;
+  animation: sparkle-twinkle var(--spark-dur, 3.2s) ease-in-out var(--spark-delay, 0s)
+    infinite;
+}
+
+.spark::before,
+.spark::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: rgba(243, 234, 214, 0.95);
+  transform: translate(-50%, -50%);
+}
+
+.spark::before {
+  width: 10px;
+  height: 1px;
+}
+
+.spark::after {
+  width: 1px;
+  height: 10px;
+}
+
+.spark--a { left: 12%; top: 18%; --spark-dur: 3.4s; --spark-delay: 0.2s; }
+.spark--b { left: 22%; top: 62%; --spark-dur: 4.1s; --spark-delay: 1.1s; width: 2px; height: 2px; }
+.spark--c { left: 31%; top: 28%; --spark-dur: 2.8s; --spark-delay: 0.6s; }
+.spark--d { left: 48%; top: 14%; --spark-dur: 3.8s; --spark-delay: 1.8s; width: 2px; height: 2px; }
+.spark--e { left: 58%; top: 72%; --spark-dur: 3.2s; --spark-delay: 0.4s; }
+.spark--f { left: 68%; top: 24%; --spark-dur: 4.4s; --spark-delay: 2.2s; }
+.spark--g { left: 78%; top: 48%; --spark-dur: 3s; --spark-delay: 0.9s; width: 2px; height: 2px; }
+.spark--h { left: 86%; top: 20%; --spark-dur: 3.6s; --spark-delay: 1.5s; }
+.spark--i { left: 8%; top: 78%; --spark-dur: 4s; --spark-delay: 2.6s; width: 2px; height: 2px; }
+.spark--j { left: 92%; top: 68%; --spark-dur: 2.9s; --spark-delay: 0.1s; }
+.spark--k { left: 40%; top: 82%; --spark-dur: 3.5s; --spark-delay: 1.3s; }
+.spark--l { left: 74%; top: 12%; --spark-dur: 4.2s; --spark-delay: 2s; width: 2px; height: 2px; }
 
 .home-hero__ornament {
   position: absolute;
@@ -1152,6 +1207,22 @@ select {
   }
 }
 
+@keyframes sparkle-twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  60% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+}
+
 @keyframes scroll-pulse {
   0%,
   100% {
@@ -1187,5 +1258,10 @@ select {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .spark {
+    opacity: 0.4 !important;
+    transform: none !important;
   }
 }
