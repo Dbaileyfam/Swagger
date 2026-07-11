@@ -595,10 +595,17 @@ select {
 
 .home-about__visual {
   position: relative;
+  display: grid;
+  gap: 1.75rem;
+  justify-items: center;
+}
+
+.home-about__photo-frame {
+  position: relative;
+  width: 100%;
   border: 1px solid var(--gold-line);
   overflow: hidden;
   background: var(--velvet-deep);
-  aspect-ratio: auto;
 }
 
 .home-about__photo {
@@ -607,7 +614,7 @@ select {
   display: block;
 }
 
-.home-about__visual::after {
+.home-about__photo-frame::after {
   content: 'EST. 2007';
   position: absolute;
   bottom: 1rem;
@@ -618,6 +625,13 @@ select {
   color: var(--gold-bright);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.75);
   z-index: 1;
+}
+
+.home-about__crest {
+  width: min(68%, 14rem);
+  height: auto;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 14px rgba(201, 168, 74, 0.28));
 }
 
 .home-about__copy .bio-text {

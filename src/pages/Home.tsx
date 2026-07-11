@@ -49,10 +49,19 @@ export function Home() {
       <section className="section">
         <div className="section-inner home-about">
           <div className="home-about__visual">
+            <div className="home-about__photo-frame">
+              <img
+                src={`${import.meta.env.BASE_URL}band-photo.png`}
+                alt="Swagger the Band"
+                className="home-about__photo"
+              />
+            </div>
             <img
-              src={`${import.meta.env.BASE_URL}band-photo.png`}
-              alt="Swagger the Band"
-              className="home-about__photo"
+              src={`${import.meta.env.BASE_URL}swagger-crest.png`}
+              alt=""
+              className="home-about__crest"
+              width={509}
+              height={485}
             />
           </div>
           <div className="home-about__copy">
