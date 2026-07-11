@@ -8,6 +8,7 @@ export const band = {
   social: {
     facebook: 'https://www.facebook.com/swaggertheband',
     twitter: 'https://twitter.com/swaggertheband',
+    youtube: 'https://www.youtube.com/@SwaggerTheBand',
   },
   albums: [
     { title: 'Trouble on the Green', year: 2008 },
@@ -198,42 +199,164 @@ export const shows: Show[] = [
   },
 ]
 
-export const mediaItems = [
+export type MediaItem = {
+  id: string
+  type: 'video' | 'photo' | 'music'
+  title: string
+  description: string
+  youtubeId?: string
+  year?: string
+}
+
+/** Videos from https://www.youtube.com/@SwaggerTheBand */
+export const mediaItems: MediaItem[] = [
   {
-    id: 'live-1',
-    type: 'video' as const,
-    title: 'Live at Piper Down',
-    description: 'High-energy Celtic rock from the stage that started it all.',
+    id: '4Wi3yPjNMbc',
+    type: 'video',
+    title: "Morrison's Jig — Live",
+    description: 'Live in Bozeman, Montana · Summer 2023',
+    youtubeId: '4Wi3yPjNMbc',
+    year: '2023',
   },
   {
-    id: 'live-2',
-    type: 'video' as const,
-    title: 'Festival Set Highlights',
-    description: 'Fiddle, tin whistle, and full-band fire from the festival circuit.',
+    id: 'BBxbUU0Ui88',
+    type: 'video',
+    title: 'Bodhran Reel',
+    description: 'A reel passed down through generations — with a kick for the dancers.',
+    youtubeId: 'BBxbUU0Ui88',
+    year: '2017',
   },
   {
-    id: 'photo-1',
-    type: 'photo' as const,
-    title: 'On Stage',
-    description: 'Swagger live — Park City and beyond.',
+    id: 'K7Xb96TnAz0',
+    type: 'video',
+    title: 'Moonshiner',
+    description: 'Originally a waltz — given a Hazard County backwoods twist.',
+    youtubeId: 'K7Xb96TnAz0',
+    year: '2017',
   },
   {
-    id: 'photo-2',
-    type: 'photo' as const,
-    title: 'Highland Games',
-    description: 'Celtic festivals across the Mountain West.',
+    id: 'Xz3NpGktfc4',
+    type: 'video',
+    title: 'Americaland',
+    description: 'Irish rock from the Western US.',
+    youtubeId: 'Xz3NpGktfc4',
+    year: '2017',
+  },
+  {
+    id: 'KiTtR-ytr04',
+    type: 'video',
+    title: 'Bodie McGee',
+    description: 'Irish rock from the Western US.',
+    youtubeId: 'KiTtR-ytr04',
+    year: '2017',
+  },
+  {
+    id: '5dynW18TBDM',
+    type: 'video',
+    title: 'Galway Girl',
+    description: 'Irish rock from the Western US.',
+    youtubeId: '5dynW18TBDM',
+    year: '2017',
+  },
+  {
+    id: 'U5_uF97dK8s',
+    type: 'video',
+    title: 'Kesh Jig',
+    description: 'Irish rock from the Western US.',
+    youtubeId: 'U5_uF97dK8s',
+    year: '2017',
+  },
+  {
+    id: 'LTZGmeRHnuQ',
+    type: 'video',
+    title: 'Mary Mac',
+    description: 'Irish rock from the Western US.',
+    youtubeId: 'LTZGmeRHnuQ',
+    year: '2017',
+  },
+  {
+    id: 'CuLVKqk1xWQ',
+    type: 'video',
+    title: 'Piper Down',
+    description: 'The song that lit the match at Salt Lake City’s Piper Down.',
+    youtubeId: 'CuLVKqk1xWQ',
+    year: '2017',
+  },
+  {
+    id: '3YN4kfas5ms',
+    type: 'video',
+    title: 'Raggle Taggle',
+    description: 'Irish rock from the Western US.',
+    youtubeId: '3YN4kfas5ms',
+    year: '2017',
+  },
+  {
+    id: 'BeDm98fbst4',
+    type: 'video',
+    title: "Morrison's Jig",
+    description: 'Irish rock from the Western US.',
+    youtubeId: 'BeDm98fbst4',
+    year: '2015',
+  },
+  {
+    id: 'o2Ss1P0o71U',
+    type: 'video',
+    title: "Mrs Myrtle's Daughter",
+    description: 'Music video · Copyright 2010',
+    youtubeId: 'o2Ss1P0o71U',
+    year: '2011',
+  },
+  {
+    id: 'YPAPdKObol0',
+    type: 'video',
+    title: "Paddy's in America",
+    description: 'Live at The Depot, Salt Lake City — opening for The Young Dubliners.',
+    youtubeId: 'YPAPdKObol0',
+    year: '2011',
+  },
+  {
+    id: 'EgmyGZJvVsI',
+    type: 'video',
+    title: 'Tito',
+    description: 'Live at The Depot, Salt Lake City — opening for The Young Dubliners.',
+    youtubeId: 'EgmyGZJvVsI',
+    year: '2011',
+  },
+  {
+    id: 'Q3KP2z3uTd8',
+    type: 'video',
+    title: "Myrtle's Daughter — Live",
+    description: 'Live at The Depot, Salt Lake City.',
+    youtubeId: 'Q3KP2z3uTd8',
+    year: '2011',
   },
   {
     id: 'album-gypsy',
-    type: 'music' as const,
+    type: 'music',
     title: 'Gypsy Road',
     description: 'Studio album · 2017',
+    year: '2017',
   },
   {
     id: 'album-america',
-    type: 'music' as const,
+    type: 'music',
     title: 'America Land',
     description: 'Studio album · 2013',
+    year: '2013',
+  },
+  {
+    id: 'album-grave',
+    type: 'music',
+    title: 'The Grave',
+    description: 'Studio album · 2010',
+    year: '2010',
+  },
+  {
+    id: 'album-trouble',
+    type: 'music',
+    title: 'Trouble on the Green',
+    description: 'Studio album · 2008',
+    year: '2008',
   },
 ]
 
