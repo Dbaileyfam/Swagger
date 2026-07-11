@@ -384,7 +384,8 @@ select {
   inset: -20%;
   z-index: 0;
   background:
-    radial-gradient(circle at 50% 40%, rgba(201, 168, 74, 0.12), transparent 42%),
+    radial-gradient(circle at 50% 38%, rgba(201, 168, 74, 0.22), transparent 36%),
+    radial-gradient(circle at 50% 42%, rgba(243, 234, 214, 0.08), transparent 28%),
     radial-gradient(ellipse 70% 50% at 50% 100%, rgba(22, 61, 40, 0.7), transparent 55%);
   animation: glow-breathe 8s ease-in-out infinite alternate;
 }
@@ -432,17 +433,42 @@ select {
 }
 
 .home-hero__brand {
-  margin: 0 0 0.5rem;
+  position: relative;
+  margin: 0 0 0.65rem;
   line-height: 0;
+}
+
+.home-hero__brand::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  z-index: -1;
+  width: min(90vw, 36rem);
+  height: min(42vw, 14rem);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(201, 168, 74, 0.28) 0%,
+    rgba(201, 168, 74, 0.1) 42%,
+    transparent 72%
+  );
+  filter: blur(8px);
+  pointer-events: none;
+  animation: logo-halo 5.5s ease-in-out infinite alternate;
 }
 
 .home-hero__logo {
   display: block;
+  position: relative;
   width: min(94vw, 44rem);
   height: auto;
   margin: 0 auto;
-  filter: drop-shadow(0 0 32px rgba(201, 168, 74, 0.18))
-    drop-shadow(0 10px 28px rgba(0, 0, 0, 0.55));
+  filter:
+    drop-shadow(0 0 2px rgba(243, 234, 214, 0.35))
+    drop-shadow(0 0 18px rgba(201, 168, 74, 0.45))
+    drop-shadow(0 0 48px rgba(201, 168, 74, 0.28))
+    drop-shadow(0 12px 30px rgba(0, 0, 0, 0.55));
 }
 
 .home-hero__tag {
@@ -1112,6 +1138,17 @@ select {
   to {
     opacity: 1;
     transform: scale(1.05);
+  }
+}
+
+@keyframes logo-halo {
+  from {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.06);
   }
 }
 
