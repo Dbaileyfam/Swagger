@@ -54,18 +54,18 @@ function SpotifyEmbed() {
   return (
     <div className="spotify-embed">
       <p className="section-label">Listen on Spotify</p>
-      <iframe
-        data-testid="embed-iframe"
-        title="Swagger on Spotify"
-        style={{ borderRadius: 12 }}
-        src={band.spotifyEmbed}
-        width="100%"
-        height="352"
-        frameBorder={0}
-        allowFullScreen
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-      />
+      <div className="spotify-embed__frame">
+        <iframe
+          data-testid="embed-iframe"
+          title="Swagger on Spotify"
+          src={band.spotifyEmbed}
+          width="100%"
+          height="352"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          allowFullScreen
+        />
+      </div>
     </div>
   )
 }

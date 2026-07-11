@@ -12,7 +12,7 @@ export const band = {
     spotify: 'https://open.spotify.com/artist/7tPoZvl7OYT2rQDdzCQpfR',
   },
   spotifyEmbed:
-    'https://open.spotify.com/embed/artist/7tPoZvl7OYT2rQDdzCQpfR?utm_source=generator&theme=0',
+    'https://open.spotify.com/embed/artist/7tPoZvl7OYT2rQDdzCQpfR?utm_source=generator&theme=0&si=2bdf0432fd974ba9',
   albums: [
     { title: 'Trouble on the Green', year: 2008 },
     { title: 'The Grave', year: 2010 },
