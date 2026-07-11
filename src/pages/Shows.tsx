@@ -22,7 +22,7 @@ export function Shows() {
     <>
       <header className="page-hero">
         <p className="section-label">Tour</p>
-        <h1 className="section-title">Shows</h1>
+        <h1 className="section-title">Upcoming Shows</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
           Festivals, highland games, and concert series across the Mountain West and beyond.
@@ -31,9 +31,6 @@ export function Shows() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="section-inner">
-          <h2 className="section-title" style={{ fontSize: '1.4rem', marginBottom: '1.5rem' }}>
-            Upcoming
-          </h2>
           <div className="shows-list">
             {upcoming.map((show) => (
               <article className="show-card" key={show.id}>
