@@ -1,7 +1,51 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { band } from '../data/band'
+import { band, mediaItems } from '../data/band'
+import type { MediaItem } from '../data/band'
+
+function EpkVideo({ item }: { item: MediaItem }) {
+  const [playing, setPlaying] = useState(false)
+  const id = item.youtubeId!
+
+  return (
+    <article className="media-tile media-tile--video">
+      <div className="media-embed">
+        {playing ? (
+          <iframe
+            title={item.title}
+            src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+          />
+        ) : (
+          <button
+            type="button"
+            className="media-embed__poster"
+            onClick={() => setPlaying(true)}
+            aria-label={`Play ${item.title}`}
+          >
+            <img
+              src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+              alt=""
+              loading="lazy"
+            />
+            <span className="media-embed__play" aria-hidden="true" />
+          </button>
+        )}
+      </div>
+      <div className="media-tile__body">
+        <span className="media-tile__type">video</span>
+        <h2 className="media-tile__title">{item.title}</h2>
+        <p className="media-tile__desc">{item.description}</p>
+      </div>
+    </article>
+  )
+}
 
 export function Epk() {
+  const topVideos = mediaItems.filter((item) => item.type === 'video').slice(0, 3)
+
   return (
     <>
       <header className="page-hero">
@@ -9,7 +53,7 @@ export function Epk() {
         <h1 className="section-title">Electronic Press Kit</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Bio, lineup, discography, and booking details for festivals, venues, and press.
+          Bio, music, video, and booking details for festivals, venues, and press.
         </p>
       </header>
 
@@ -18,10 +62,34 @@ export function Epk() {
           <div>
             <p className="section-label">Biography</p>
             <div className="epk-bio">
-              {band.bio.split('\n\n').map((para) => (
-                <p key={para.slice(0, 32)}>{para}</p>
+              <p>{band.epkBio}</p>
+            </div>
+          </div>
+
+          <div className="epk-media">
+            <p className="section-label">Listen</p>
+            <div className="spotify-embed spotify-embed--compact">
+              <div className="spotify-embed__frame spotify-embed__frame--compact">
+                <iframe
+                  data-testid="embed-iframe"
+                  title="Swagger on Spotify"
+                  src={band.spotifyEmbedCompact}
+                  width="100%"
+                  height="152"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+
+            <p className="section-label" style={{ marginTop: '2rem' }}>
+              Featured Video
+            </p>
+            <div className="media-grid">
+              {topVideos.map((item) => (
+                <EpkVideo key={item.id} item={item} />
               ))}
-              <p>{band.epkBlurb}</p>
             </div>
           </div>
 
@@ -82,7 +150,7 @@ export function Epk() {
               Contact for Booking
             </Link>
             <Link to="/media" className="btn">
-              Photos & Video
+              More Media
             </Link>
             <a
               className="btn"

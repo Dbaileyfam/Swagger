@@ -857,6 +857,15 @@ select {
   background: transparent;
 }
 
+.spotify-embed__frame--compact {
+  min-height: 152px;
+}
+
+.spotify-embed__frame--compact iframe {
+  height: 152px;
+  min-height: 152px;
+}
+
 .chip {
   background: transparent;
   border: 1px solid var(--gold-line);

@@ -43,7 +43,10 @@ export const band = {
 
 Swagger has released 4 studio albums, Trouble on the Green (2008), The Grave (2010), America Land (2013) & Gypsy Road (2017). The band consists of Rick Butler (Manager, Lead Vocals, Guitar, Mandolin & Banjo), Dennis Harrington (Fiddle & Vocals), Trip Marshall (Lead Guitar & Mandolin), Manny Slack (Bass & Vocals), Mike Bailey (Drums), Eric Slaymaker (Vocals, Tin Whistle & Mandolin). Swagger's lineup of veteran musicians blend in rock, blues, jazz, classical, bluegrass, reggae and country music styles. Their musicianship and live performances give their audiences a truly complete entertainment experience to remember.`,
   shortBio: `High-energy Celtic rock from Park City — drink, mischief, and music with an emigrant's eye on Irish-American life.`,
+  epkBio: `Swagger is a Celtic Americana rock band from Park City, Utah, formed in 2007 by Rick Butler and fiddler Dennis Harrington. Known for high-energy stage shows and original songs that celebrate Irish drink, mischief, and music — while taking an emigrant's view of Irish-American life. They've shared stages with The Young Dubliners, The English Beat, Howard Jones, Brother, and Andy Frasco, and have released four studio albums: Trouble on the Green, The Grave, America Land, and Gypsy Road.`,
   epkBlurb: `Swagger is a premier Irish rock band based out of Park City, Utah. Since 2007 they have brought high-energy Celtic Americana to festivals and concert halls across the United States. Their songs depict the struggles of the Irish, Welsh, Scots, and Italian Gypsies who came to America to start a new life.`,
+  spotifyEmbedCompact:
+    'https://open.spotify.com/embed/artist/7tPoZvl7OYT2rQDdzCQpfR?utm_source=generator&theme=0&si=2bdf0432fd974ba9',
 }
 
 export type Show = {
