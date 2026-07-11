@@ -830,6 +830,21 @@ select {
   margin-bottom: 2rem;
 }
 
+.spotify-embed {
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.spotify-embed .section-label {
+  margin-bottom: 1rem;
+}
+
+.spotify-embed iframe {
+  display: block;
+  border: 1px solid var(--gold-line);
+  background: rgba(4, 12, 8, 0.45);
+}
+
 .chip {
   background: transparent;
   border: 1px solid var(--gold-line);

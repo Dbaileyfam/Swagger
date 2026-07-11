@@ -9,7 +9,10 @@ export const band = {
     facebook: 'https://www.facebook.com/swaggertheband',
     instagram: 'https://www.instagram.com/rockwithswagger/',
     youtube: 'https://www.youtube.com/@SwaggerTheBand',
+    spotify: 'https://open.spotify.com/artist/7tPoZvl7OYT2rQDdzCQpfR',
   },
+  spotifyEmbed:
+    'https://open.spotify.com/embed/artist/7tPoZvl7OYT2rQDdzCQpfR?utm_source=generator',
   albums: [
     { title: 'Trouble on the Green', year: 2008 },
     { title: 'The Grave', year: 2010 },
@@ -329,34 +332,6 @@ export const mediaItems: MediaItem[] = [
     description: 'Live at The Depot, Salt Lake City.',
     youtubeId: 'Q3KP2z3uTd8',
     year: '2011',
-  },
-  {
-    id: 'album-gypsy',
-    type: 'music',
-    title: 'Gypsy Road',
-    description: 'Studio album · 2017',
-    year: '2017',
-  },
-  {
-    id: 'album-america',
-    type: 'music',
-    title: 'America Land',
-    description: 'Studio album · 2013',
-    year: '2013',
-  },
-  {
-    id: 'album-grave',
-    type: 'music',
-    title: 'The Grave',
-    description: 'Studio album · 2010',
-    year: '2010',
-  },
-  {
-    id: 'album-trouble',
-    type: 'music',
-    title: 'Trouble on the Green',
-    description: 'Studio album · 2008',
-    year: '2008',
   },
 ]
 

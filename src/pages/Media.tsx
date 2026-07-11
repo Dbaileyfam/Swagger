@@ -50,22 +50,31 @@ function VideoTile({ item }: { item: MediaItem }) {
   )
 }
 
-function MusicTile({ item }: { item: MediaItem }) {
+function SpotifyEmbed() {
   return (
-    <article className="media-tile media-tile--music">
-      <div className="media-tile__body">
-        <span className="media-tile__type">music</span>
-        <h2 className="media-tile__title">{item.title}</h2>
-        <p className="media-tile__desc">{item.description}</p>
-      </div>
-    </article>
+    <div className="spotify-embed">
+      <p className="section-label">Listen on Spotify</p>
+      <iframe
+        data-testid="embed-iframe"
+        title="Swagger on Spotify"
+        style={{ borderRadius: 12 }}
+        src={band.spotifyEmbed}
+        width="100%"
+        height="352"
+        frameBorder={0}
+        allowFullScreen
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      />
+    </div>
   )
 }
 
 export function Media() {
   const [filter, setFilter] = useState<Filter>('all')
-  const items =
-    filter === 'all' ? mediaItems : mediaItems.filter((item) => item.type === filter)
+  const videos = mediaItems.filter((item) => item.type === 'video')
+  const showVideos = filter === 'all' || filter === 'video'
+  const showMusic = filter === 'all' || filter === 'music'
 
   return (
     <>
@@ -74,7 +83,7 @@ export function Media() {
         <h1 className="section-title">Media</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Live videos and studio albums from nearly two decades on the road.
+          Live videos and streaming music from nearly two decades on the road.
         </p>
       </header>
 
@@ -95,17 +104,25 @@ export function Media() {
             ))}
           </div>
 
-          <div className="media-grid">
-            {items.map((item) =>
-              item.type === 'video' && item.youtubeId ? (
+          {showMusic && <SpotifyEmbed />}
+
+          {showVideos && (
+            <div className="media-grid" style={showMusic ? { marginTop: '2.5rem' } : undefined}>
+              {videos.map((item) => (
                 <VideoTile key={item.id} item={item} />
-              ) : (
-                <MusicTile key={item.id} item={item} />
-              ),
-            )}
-          </div>
+              ))}
+            </div>
+          )}
 
           <div className="btn-row" style={{ marginTop: '2.5rem' }}>
+            <a
+              className="btn"
+              href={band.social.spotify}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Spotify
+            </a>
             <a
               className="btn"
               href={band.social.youtube}
