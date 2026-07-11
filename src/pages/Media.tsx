@@ -2,13 +2,18 @@ import { useState } from 'react'
 import { band, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
 
-type Filter = 'all' | 'video' | 'music'
+type Filter = 'all' | 'video' | 'photo' | 'music'
 
 const filters: { id: Filter; label: string }[] = [
   { id: 'all', label: 'All' },
+  { id: 'photo', label: 'Photos' },
   { id: 'video', label: 'Videos' },
   { id: 'music', label: 'Music' },
 ]
+
+function assetUrl(path: string) {
+  return `${import.meta.env.BASE_URL}${path}`
+}
 
 function VideoTile({ item }: { item: MediaItem }) {
   const [playing, setPlaying] = useState(false)
@@ -50,6 +55,21 @@ function VideoTile({ item }: { item: MediaItem }) {
   )
 }
 
+function PhotoTile({ item }: { item: MediaItem }) {
+  return (
+    <article className="media-tile media-tile--photo">
+      <div className="photo-tile__image">
+        <img src={assetUrl(item.image!)} alt={item.title} loading="lazy" />
+      </div>
+      <div className="media-tile__body">
+        <span className="media-tile__type">photo</span>
+        <h2 className="media-tile__title">{item.title}</h2>
+        <p className="media-tile__desc">{item.description}</p>
+      </div>
+    </article>
+  )
+}
+
 function SpotifyEmbed() {
   return (
     <div className="spotify-embed">
@@ -72,7 +92,9 @@ function SpotifyEmbed() {
 
 export function Media() {
   const [filter, setFilter] = useState<Filter>('all')
+  const photos = mediaItems.filter((item) => item.type === 'photo')
   const videos = mediaItems.filter((item) => item.type === 'video')
+  const showPhotos = filter === 'all' || filter === 'photo'
   const showVideos = filter === 'all' || filter === 'video'
   const showMusic = filter === 'all' || filter === 'music'
 
@@ -83,7 +105,7 @@ export function Media() {
         <h1 className="section-title">Media</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Live videos and streaming music from nearly two decades on the road.
+          Press photos, live videos, and streaming music from nearly two decades on the road.
         </p>
       </header>
 
@@ -106,8 +128,22 @@ export function Media() {
 
           {showMusic && <SpotifyEmbed />}
 
+          {showPhotos && (
+            <div
+              className="media-grid"
+              style={showMusic ? { marginTop: '2.5rem' } : undefined}
+            >
+              {photos.map((item) => (
+                <PhotoTile key={item.id} item={item} />
+              ))}
+            </div>
+          )}
+
           {showVideos && (
-            <div className="media-grid" style={showMusic ? { marginTop: '2.5rem' } : undefined}>
+            <div
+              className="media-grid"
+              style={showPhotos || showMusic ? { marginTop: '2.5rem' } : undefined}
+            >
               {videos.map((item) => (
                 <VideoTile key={item.id} item={item} />
               ))}

@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { band, mediaItems } from '../data/band'
+import { band, epkPhotos, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
+
+function assetUrl(path: string) {
+  return `${import.meta.env.BASE_URL}${path}`
+}
 
 function EpkVideo({ item }: { item: MediaItem }) {
   const [playing, setPlaying] = useState(false)
@@ -53,7 +57,7 @@ export function Epk() {
         <h1 className="section-title">Electronic Press Kit</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Bio, music, video, and booking details for festivals, venues, and press.
+          Bio, music, video, photos, and booking details for festivals, venues, and press.
         </p>
       </header>
 
@@ -81,6 +85,22 @@ export function Epk() {
                   allowFullScreen
                 />
               </div>
+            </div>
+
+            <p className="section-label" style={{ marginTop: '2rem' }}>
+              Press Photos
+            </p>
+            <div className="photo-grid">
+              {epkPhotos.map((photo) => (
+                <figure className="photo-tile" key={photo.id}>
+                  <img
+                    src={assetUrl(photo.image!)}
+                    alt={photo.title}
+                    loading="lazy"
+                  />
+                  <figcaption>{photo.title}</figcaption>
+                </figure>
+              ))}
             </div>
 
             <p className="section-label" style={{ marginTop: '2rem' }}>
@@ -152,14 +172,6 @@ export function Epk() {
             <Link to="/media" className="btn">
               More Media
             </Link>
-            <a
-              className="btn"
-              href="https://swaggertheband.com/epk-files/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Legacy EPK Photos
-            </a>
           </div>
         </div>
       </section>

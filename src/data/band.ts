@@ -209,11 +209,38 @@ export type MediaItem = {
   title: string
   description: string
   youtubeId?: string
+  image?: string
   year?: string
 }
 
+/** Press photos from https://swaggertheband.com/epk-files/ */
+export const epkPhotos: MediaItem[] = [
+  {
+    id: 'epk-1',
+    type: 'photo',
+    title: 'Band Portrait',
+    description: 'Official press photo',
+    image: 'epk/epk-1.jpg',
+  },
+  {
+    id: 'epk-2',
+    type: 'photo',
+    title: 'Stage Ready',
+    description: 'Official press photo',
+    image: 'epk/epk-2.jpg',
+  },
+  {
+    id: 'epk-3',
+    type: 'photo',
+    title: 'Live Energy',
+    description: 'Official press photo',
+    image: 'epk/epk-3.jpg',
+  },
+]
+
 /** Videos from https://www.youtube.com/@SwaggerTheBand */
 export const mediaItems: MediaItem[] = [
+  ...epkPhotos,
   {
     id: '4Wi3yPjNMbc',
     type: 'video',
