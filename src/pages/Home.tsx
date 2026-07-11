@@ -13,8 +13,8 @@ export function Home() {
               src={`${import.meta.env.BASE_URL}swagger-logo.png`}
               alt="Swagger"
               className="home-hero__logo"
-              width={880}
-              height={348}
+              width={1948}
+              height={764}
             />
           </h1>
           <hr className="gold-rule gold-rule--center" />
