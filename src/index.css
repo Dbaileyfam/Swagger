@@ -590,19 +590,21 @@ select {
   display: grid;
   grid-template-columns: minmax(14rem, 1fr) 1.15fr;
   gap: clamp(2rem, 5vw, 4rem);
-  align-items: start;
+  align-items: stretch;
 }
 
 .home-about__visual {
   position: relative;
-  display: grid;
-  gap: 1.75rem;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
 }
 
 .home-about__photo-frame {
   position: relative;
   width: 100%;
+  flex-shrink: 0;
   border: 1px solid var(--gold-line);
   overflow: hidden;
   background: var(--velvet-deep);
@@ -628,10 +630,12 @@ select {
 }
 
 .home-about__crest {
-  width: min(68%, 14rem);
+  width: min(92%, 20rem);
   height: auto;
-  opacity: 0.92;
-  filter: drop-shadow(0 0 14px rgba(201, 168, 74, 0.28));
+  margin-top: auto;
+  margin-bottom: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 18px rgba(201, 168, 74, 0.32));
 }
 
 .home-about__copy .bio-text {
@@ -697,6 +701,12 @@ select {
 @media (max-width: 700px) {
   .home-about {
     grid-template-columns: 1fr;
+  }
+
+  .home-about__crest {
+    width: min(70%, 16rem);
+    margin-top: 1.75rem;
+    margin-bottom: 0;
   }
 
   .show-row {
