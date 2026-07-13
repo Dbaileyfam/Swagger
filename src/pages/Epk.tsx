@@ -95,10 +95,9 @@ export function Epk() {
                 <figure className="photo-tile" key={photo.id}>
                   <img
                     src={assetUrl(photo.image!)}
-                    alt={photo.title}
+                    alt="Swagger press photo"
                     loading="lazy"
                   />
-                  <figcaption>{photo.title}</figcaption>
                 </figure>
               ))}
             </div>

@@ -59,12 +59,7 @@ function PhotoTile({ item }: { item: MediaItem }) {
   return (
     <article className="media-tile media-tile--photo">
       <div className="photo-tile__image">
-        <img src={assetUrl(item.image!)} alt={item.title} loading="lazy" />
-      </div>
-      <div className="media-tile__body">
-        <span className="media-tile__type">photo</span>
-        <h2 className="media-tile__title">{item.title}</h2>
-        <p className="media-tile__desc">{item.description}</p>
+        <img src={assetUrl(item.image!)} alt="Swagger press photo" loading="lazy" />
       </div>
     </article>
   )
