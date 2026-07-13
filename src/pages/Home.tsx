@@ -34,13 +34,29 @@ export function Home() {
           <hr className="gold-rule gold-rule--center" />
           <p className="home-hero__tag">{band.tagline}</p>
           <p className="home-hero__lede">{band.shortBio}</p>
-          <div className="btn-row" style={{ justifyContent: 'center' }}>
-            <Link to="/shows" className="btn btn-solid">
-              Tour Dates
-            </Link>
-            <Link to="/epk" className="btn">
-              Press Kit
-            </Link>
+          <div className="home-hero__actions">
+            <div className="btn-row home-hero__btns">
+              <Link to="/shows" className="btn btn-solid">
+                Tour Dates
+              </Link>
+              <Link to="/epk" className="btn">
+                Press Kit
+              </Link>
+            </div>
+            <div className="home-hero__social" aria-label="Social media">
+              <a href={band.social.facebook} target="_blank" rel="noreferrer">
+                Facebook
+              </a>
+              <a href={band.social.instagram} target="_blank" rel="noreferrer">
+                Instagram
+              </a>
+              <a href={band.social.youtube} target="_blank" rel="noreferrer">
+                YouTube
+              </a>
+              <a href={band.social.spotify} target="_blank" rel="noreferrer">
+                Spotify
+              </a>
+            </div>
           </div>
         </div>
         <div className="home-hero__scroll">Scroll</div>
