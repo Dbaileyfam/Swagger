@@ -32,6 +32,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
@@ -43,6 +44,7 @@ body {
   background: var(--velvet-deep);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 body::before {
@@ -387,14 +389,14 @@ select {
   min-height: calc(100vh - var(--nav-h));
   display: grid;
   place-items: center;
-  overflow-x: hidden;
+  overflow: hidden;
   isolation: isolate;
   padding-bottom: 3.5rem;
 }
 
 .home-hero__glow {
   position: absolute;
-  inset: -20%;
+  inset: 0;
   z-index: 0;
   background:
     radial-gradient(circle at 50% 38%, rgba(201, 168, 74, 0.16), transparent 34%),
