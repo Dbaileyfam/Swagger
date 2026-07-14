@@ -30,11 +30,11 @@ export function Home() {
         <div className="home-hero__content">
           <h1 className="home-hero__brand">
             <img
-              src={`${import.meta.env.BASE_URL}swagger-mark-gold.png`}
+              src={`${import.meta.env.BASE_URL}swagger-mark-crest.png`}
               alt="Swagger"
               className="home-hero__logo"
-              width={1948}
-              height={764}
+              width={1952}
+              height={768}
             />
           </h1>
           <hr className="gold-rule gold-rule--center" />
