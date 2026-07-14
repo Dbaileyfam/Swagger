@@ -19,7 +19,24 @@ export function Shows() {
   const past = pastShows()
 
   return (
-    <>
+    <div className="shows-page">
+      <div className="shows-cheers" aria-hidden="true">
+        <img
+          src={`${import.meta.env.BASE_URL}beer-mug-left.png`}
+          alt=""
+          className="shows-cheers__mug shows-cheers__mug--left"
+          width={180}
+          height={220}
+        />
+        <img
+          src={`${import.meta.env.BASE_URL}beer-mug-right.png`}
+          alt=""
+          className="shows-cheers__mug shows-cheers__mug--right"
+          width={183}
+          height={220}
+        />
+      </div>
+
       <header className="page-hero">
         <p className="section-label">Tour</p>
         <h1 className="section-title">Upcoming Shows</h1>
@@ -80,6 +97,6 @@ export function Shows() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

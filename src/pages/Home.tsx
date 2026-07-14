@@ -44,7 +44,7 @@ export function Home() {
           <div className="celtic-links" aria-label="Quick links">
             <Link to="/shows" className="celtic-link">
               <img
-                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                src={`${import.meta.env.BASE_URL}celtic-ring-gold.png`}
                 alt=""
                 className="celtic-link__ring"
                 width={320}
@@ -58,7 +58,7 @@ export function Home() {
             </Link>
             <Link to="/epk" className="celtic-link">
               <img
-                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                src={`${import.meta.env.BASE_URL}celtic-ring-gold.png`}
                 alt=""
                 className="celtic-link__ring"
                 width={320}
@@ -78,7 +78,7 @@ export function Home() {
               aria-label="Facebook"
             >
               <img
-                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                src={`${import.meta.env.BASE_URL}celtic-ring-gold.png`}
                 alt=""
                 className="celtic-link__ring"
                 width={320}
@@ -94,7 +94,7 @@ export function Home() {
               aria-label="Instagram"
             >
               <img
-                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                src={`${import.meta.env.BASE_URL}celtic-ring-gold.png`}
                 alt=""
                 className="celtic-link__ring"
                 width={320}
@@ -110,7 +110,7 @@ export function Home() {
               aria-label="YouTube"
             >
               <img
-                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                src={`${import.meta.env.BASE_URL}celtic-ring-gold.png`}
                 alt=""
                 className="celtic-link__ring"
                 width={320}
@@ -126,7 +126,7 @@ export function Home() {
               aria-label="Spotify"
             >
               <img
-                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                src={`${import.meta.env.BASE_URL}celtic-ring-gold.png`}
                 alt=""
                 className="celtic-link__ring"
                 width={320}
