@@ -40,20 +40,30 @@ export function Home() {
           <hr className="gold-rule gold-rule--center" />
           <p className="home-hero__tag">{band.tagline}</p>
           <p className="home-hero__lede">{band.shortBio}</p>
-          <div className="gold-coins" aria-label="Quick links">
-            <Link to="/shows" className="gold-coin gold-coin--tour">
-              <span className="gold-coin__rim" aria-hidden="true" />
-              <span className="gold-coin__shine" aria-hidden="true" />
-              <span className="gold-coin__label">
+          <div className="celtic-links" aria-label="Quick links">
+            <Link to="/shows" className="celtic-link">
+              <img
+                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                alt=""
+                className="celtic-link__ring"
+                width={320}
+                height={320}
+              />
+              <span className="celtic-link__label">
                 Tour
                 <br />
                 Dates
               </span>
             </Link>
-            <Link to="/epk" className="gold-coin gold-coin--press">
-              <span className="gold-coin__rim" aria-hidden="true" />
-              <span className="gold-coin__shine" aria-hidden="true" />
-              <span className="gold-coin__label">
+            <Link to="/epk" className="celtic-link">
+              <img
+                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                alt=""
+                className="celtic-link__ring"
+                width={320}
+                height={320}
+              />
+              <span className="celtic-link__label">
                 Press
                 <br />
                 Kit
@@ -61,47 +71,67 @@ export function Home() {
             </Link>
             <a
               href={band.social.facebook}
-              className="gold-coin gold-coin--icon"
+              className="celtic-link"
               target="_blank"
               rel="noreferrer"
               aria-label="Facebook"
             >
-              <span className="gold-coin__rim" aria-hidden="true" />
-              <span className="gold-coin__shine" aria-hidden="true" />
-              <FacebookIcon className="gold-coin__icon" />
+              <img
+                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                alt=""
+                className="celtic-link__ring"
+                width={320}
+                height={320}
+              />
+              <FacebookIcon className="celtic-link__icon" />
             </a>
             <a
               href={band.social.instagram}
-              className="gold-coin gold-coin--icon"
+              className="celtic-link"
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
             >
-              <span className="gold-coin__rim" aria-hidden="true" />
-              <span className="gold-coin__shine" aria-hidden="true" />
-              <InstagramIcon className="gold-coin__icon" />
+              <img
+                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                alt=""
+                className="celtic-link__ring"
+                width={320}
+                height={320}
+              />
+              <InstagramIcon className="celtic-link__icon" />
             </a>
             <a
               href={band.social.youtube}
-              className="gold-coin gold-coin--icon"
+              className="celtic-link"
               target="_blank"
               rel="noreferrer"
               aria-label="YouTube"
             >
-              <span className="gold-coin__rim" aria-hidden="true" />
-              <span className="gold-coin__shine" aria-hidden="true" />
-              <YoutubeIcon className="gold-coin__icon" />
+              <img
+                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                alt=""
+                className="celtic-link__ring"
+                width={320}
+                height={320}
+              />
+              <YoutubeIcon className="celtic-link__icon" />
             </a>
             <a
               href={band.social.spotify}
-              className="gold-coin gold-coin--icon"
+              className="celtic-link"
               target="_blank"
               rel="noreferrer"
               aria-label="Spotify"
             >
-              <span className="gold-coin__rim" aria-hidden="true" />
-              <span className="gold-coin__shine" aria-hidden="true" />
-              <SpotifyIcon className="gold-coin__icon" />
+              <img
+                src={`${import.meta.env.BASE_URL}celtic-ring.png`}
+                alt=""
+                className="celtic-link__ring"
+                width={320}
+                height={320}
+              />
+              <SpotifyIcon className="celtic-link__icon" />
             </a>
           </div>
         </div>

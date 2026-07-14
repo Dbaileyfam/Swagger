@@ -556,149 +556,84 @@ select {
   line-height: 1.65;
 }
 
-.gold-coins {
+.celtic-links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem 1.15rem;
+  gap: 0.85rem 1.1rem;
   margin-top: 1.75rem;
 }
 
-.gold-coin {
-  --coin-size: clamp(4.8rem, 14vw, 5.8rem);
+.celtic-link {
+  --ring-size: clamp(4.6rem, 13vw, 5.5rem);
   position: relative;
   display: inline-grid;
   place-items: center;
-  width: var(--coin-size);
-  height: var(--coin-size);
-  border-radius: 50%;
+  width: var(--ring-size);
+  height: var(--ring-size);
   text-decoration: none;
-  color: #3a2808;
-  isolation: isolate;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 50%, transparent 62%, rgba(90, 60, 15, 0.35) 63%, transparent 70%),
-    radial-gradient(circle at 34% 30%, rgba(255, 248, 210, 0.95) 0%, transparent 32%),
-    radial-gradient(circle at 68% 72%, rgba(110, 75, 18, 0.4) 0%, transparent 42%),
-    repeating-conic-gradient(
-      from 0deg,
-      #d4b45a 0deg 4deg,
-      #b8923a 4deg 8deg
-    );
-  border: 3px solid #7a5c22;
-  box-shadow:
-    inset 0 0 0 0.35rem #c9a84a,
-    inset 0 0 0 0.48rem #8a6a28,
-    inset 0 3px 6px rgba(255, 255, 255, 0.55),
-    inset 0 -4px 8px rgba(70, 45, 8, 0.45),
-    0 1px 0 #e8d48a,
-    0 4px 0 #6a5018,
-    0 8px 0 #4a3810,
-    0 12px 20px rgba(0, 0, 0, 0.45),
-    0 0 18px rgba(201, 168, 74, 0.28);
-  transform: rotate(0deg);
-  transition: box-shadow 0.35s var(--ease), filter 0.35s var(--ease);
+  color: var(--cream);
   cursor: pointer;
+  transition: transform 0.3s var(--ease), filter 0.3s var(--ease);
 }
 
-.gold-coin::before {
-  content: '';
-  position: absolute;
-  inset: 0.72rem;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 32% 28%, #fff8d4 0%, transparent 40%),
-    linear-gradient(160deg, #f0dfa0 0%, #e4c76b 35%, #c9a84a 60%, #a07a2e 85%, #dcc57a 100%);
-  box-shadow:
-    inset 0 2px 3px rgba(255, 255, 255, 0.5),
-    inset 0 -2px 4px rgba(90, 60, 10, 0.35);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.gold-coin__rim {
-  position: absolute;
-  inset: 0.95rem;
-  border-radius: 50%;
-  border: 1px solid rgba(90, 60, 15, 0.4);
-  box-shadow: inset 0 0 0 1px rgba(255, 236, 170, 0.25);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.gold-coin__shine {
+.celtic-link__ring {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  background: linear-gradient(
-    115deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.55) 49%,
-    transparent 63%
-  );
-  transform: translateX(-130%) rotate(20deg);
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   pointer-events: none;
-  opacity: 0.65;
-  z-index: 2;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+  transition: transform 0.55s var(--ease), filter 0.3s var(--ease);
 }
 
-.gold-coin__label {
+.celtic-link__label {
   position: relative;
-  z-index: 3;
+  z-index: 1;
+  max-width: 58%;
   font-family: var(--font-display);
-  font-size: clamp(0.56rem, 1.7vw, 0.66rem);
+  font-size: clamp(0.55rem, 1.6vw, 0.64rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-align: center;
-  line-height: 1.12;
-  color: #3a2808;
-  text-shadow:
-    0 1px 0 rgba(255, 245, 200, 0.7),
-    0 -1px 0 rgba(90, 60, 10, 0.25);
-  padding: 0 0.4rem;
+  line-height: 1.15;
+  color: var(--cream);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
 }
 
-.gold-coin__icon {
+.celtic-link__icon {
   position: relative;
-  z-index: 3;
-  width: 42%;
-  height: 42%;
-  color: #14532d;
-  filter: drop-shadow(0 1px 0 rgba(255, 245, 200, 0.45));
-  transition: color 0.25s var(--ease), transform 0.25s var(--ease);
+  z-index: 1;
+  width: 34%;
+  height: 34%;
+  color: var(--cream);
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.55));
+  transition: color 0.25s var(--ease);
 }
 
-.gold-coin--icon:hover .gold-coin__icon,
-.gold-coin--icon:focus-visible .gold-coin__icon {
-  color: #0f3d22;
+.celtic-link:hover,
+.celtic-link:focus-visible {
+  color: var(--cream);
+  transform: translateY(-3px);
+  filter: brightness(1.08);
 }
 
-.gold-coin:hover,
-.gold-coin:focus-visible {
-  color: #3a2808;
-  filter: brightness(1.06);
-  box-shadow:
-    inset 0 0 0 0.35rem #d4b45a,
-    inset 0 0 0 0.48rem #8a6a28,
-    inset 0 3px 6px rgba(255, 255, 255, 0.6),
-    inset 0 -4px 8px rgba(70, 45, 8, 0.4),
-    0 1px 0 #e8d48a,
-    0 6px 0 #6a5018,
-    0 10px 0 #4a3810,
-    0 16px 26px rgba(0, 0, 0, 0.5),
-    0 0 28px rgba(228, 199, 107, 0.5);
-  animation: coin-spin 0.75s cubic-bezier(0.4, 0.05, 0.2, 1) both;
+.celtic-link:hover .celtic-link__ring,
+.celtic-link:focus-visible .celtic-link__ring {
+  transform: rotate(180deg);
+  filter: drop-shadow(0 6px 16px rgba(243, 234, 214, 0.22));
 }
 
-.gold-coin:hover .gold-coin__shine,
-.gold-coin:focus-visible .gold-coin__shine {
-  animation: coin-shine 0.85s var(--ease) both;
+.celtic-link:hover .celtic-link__icon,
+.celtic-link:focus-visible .celtic-link__icon {
+  color: #fff8e8;
 }
 
-.gold-coin:active {
-  filter: brightness(0.96);
+.celtic-link:active {
+  transform: translateY(-1px) scale(0.97);
 }
 
 .home-hero__scroll {
@@ -1405,31 +1340,15 @@ select {
   }
 }
 
-@keyframes coin-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes coin-shine {
-  from {
-    transform: translateX(-130%) rotate(20deg);
-  }
-  to {
-    transform: translateX(130%) rotate(20deg);
-  }
-}
-
 @keyframes scroll-pulse {
   0%,
   100% {
-    opacity: 0.4;
+    opacity: 0.45;
+    transform: translateX(-50%) translateY(0);
   }
   50% {
-    opacity: 1;
+    opacity: 0.9;
+    transform: translateX(-50%) translateY(4px);
   }
 }
 
@@ -1465,7 +1384,8 @@ select {
     transform: none !important;
   }
 
-  .gold-coin {
-    animation: none !important;
+  .celtic-link:hover .celtic-link__ring,
+  .celtic-link:focus-visible .celtic-link__ring {
+    transform: none !important;
   }
 }
