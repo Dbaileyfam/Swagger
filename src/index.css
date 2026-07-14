@@ -653,6 +653,21 @@ select {
   padding: 0 0.4rem;
 }
 
+.gold-coin__icon {
+  position: relative;
+  z-index: 3;
+  width: 42%;
+  height: 42%;
+  color: #14532d;
+  filter: drop-shadow(0 1px 0 rgba(255, 245, 200, 0.45));
+  transition: color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.gold-coin--icon:hover .gold-coin__icon,
+.gold-coin--icon:focus-visible .gold-coin__icon {
+  color: #0f3d22;
+}
+
 .gold-coin:hover,
 .gold-coin:focus-visible {
   color: #3a2808;

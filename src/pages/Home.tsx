@@ -1,4 +1,10 @@
 import { Link } from 'react-router-dom'
+import {
+  FacebookIcon,
+  InstagramIcon,
+  SpotifyIcon,
+  YoutubeIcon,
+} from '../components/SocialIcons'
 import { band } from '../data/band'
 
 export function Home() {
@@ -55,43 +61,47 @@ export function Home() {
             </Link>
             <a
               href={band.social.facebook}
-              className="gold-coin gold-coin--fb"
+              className="gold-coin gold-coin--icon"
               target="_blank"
               rel="noreferrer"
+              aria-label="Facebook"
             >
               <span className="gold-coin__rim" aria-hidden="true" />
               <span className="gold-coin__shine" aria-hidden="true" />
-              <span className="gold-coin__label">Facebook</span>
+              <FacebookIcon className="gold-coin__icon" />
             </a>
             <a
               href={band.social.instagram}
-              className="gold-coin gold-coin--ig"
+              className="gold-coin gold-coin--icon"
               target="_blank"
               rel="noreferrer"
+              aria-label="Instagram"
             >
               <span className="gold-coin__rim" aria-hidden="true" />
               <span className="gold-coin__shine" aria-hidden="true" />
-              <span className="gold-coin__label">Instagram</span>
+              <InstagramIcon className="gold-coin__icon" />
             </a>
             <a
               href={band.social.youtube}
-              className="gold-coin gold-coin--yt"
+              className="gold-coin gold-coin--icon"
               target="_blank"
               rel="noreferrer"
+              aria-label="YouTube"
             >
               <span className="gold-coin__rim" aria-hidden="true" />
               <span className="gold-coin__shine" aria-hidden="true" />
-              <span className="gold-coin__label">YouTube</span>
+              <YoutubeIcon className="gold-coin__icon" />
             </a>
             <a
               href={band.social.spotify}
-              className="gold-coin gold-coin--sp"
+              className="gold-coin gold-coin--icon"
               target="_blank"
               rel="noreferrer"
+              aria-label="Spotify"
             >
               <span className="gold-coin__rim" aria-hidden="true" />
               <span className="gold-coin__shine" aria-hidden="true" />
-              <span className="gold-coin__label">Spotify</span>
+              <SpotifyIcon className="gold-coin__icon" />
             </a>
           </div>
         </div>
