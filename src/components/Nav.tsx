@@ -15,7 +15,13 @@ export function Nav() {
   return (
     <header className="nav">
       <NavLink to="/" className="nav-brand" onClick={() => setOpen(false)}>
-        Swagger
+        <img
+          src={`${import.meta.env.BASE_URL}swagger-cross.png`}
+          alt="Swagger"
+          className="nav-brand__logo"
+          width={880}
+          height={880}
+        />
       </NavLink>
       <button
         type="button"
