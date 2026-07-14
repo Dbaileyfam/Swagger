@@ -34,29 +34,65 @@ export function Home() {
           <hr className="gold-rule gold-rule--center" />
           <p className="home-hero__tag">{band.tagline}</p>
           <p className="home-hero__lede">{band.shortBio}</p>
-          <div className="home-hero__actions">
-            <div className="btn-row home-hero__btns">
-              <Link to="/shows" className="btn btn-solid">
-                Tour Dates
-              </Link>
-              <Link to="/epk" className="btn">
-                Press Kit
-              </Link>
-            </div>
-            <div className="home-hero__social" aria-label="Social media">
-              <a href={band.social.facebook} target="_blank" rel="noreferrer">
-                Facebook
-              </a>
-              <a href={band.social.instagram} target="_blank" rel="noreferrer">
-                Instagram
-              </a>
-              <a href={band.social.youtube} target="_blank" rel="noreferrer">
-                YouTube
-              </a>
-              <a href={band.social.spotify} target="_blank" rel="noreferrer">
-                Spotify
-              </a>
-            </div>
+          <div className="gold-coins" aria-label="Quick links">
+            <Link to="/shows" className="gold-coin gold-coin--tour">
+              <span className="gold-coin__rim" aria-hidden="true" />
+              <span className="gold-coin__shine" aria-hidden="true" />
+              <span className="gold-coin__label">
+                Tour
+                <br />
+                Dates
+              </span>
+            </Link>
+            <Link to="/epk" className="gold-coin gold-coin--press">
+              <span className="gold-coin__rim" aria-hidden="true" />
+              <span className="gold-coin__shine" aria-hidden="true" />
+              <span className="gold-coin__label">
+                Press
+                <br />
+                Kit
+              </span>
+            </Link>
+            <a
+              href={band.social.facebook}
+              className="gold-coin gold-coin--fb"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="gold-coin__rim" aria-hidden="true" />
+              <span className="gold-coin__shine" aria-hidden="true" />
+              <span className="gold-coin__label">Facebook</span>
+            </a>
+            <a
+              href={band.social.instagram}
+              className="gold-coin gold-coin--ig"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="gold-coin__rim" aria-hidden="true" />
+              <span className="gold-coin__shine" aria-hidden="true" />
+              <span className="gold-coin__label">Instagram</span>
+            </a>
+            <a
+              href={band.social.youtube}
+              className="gold-coin gold-coin--yt"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="gold-coin__rim" aria-hidden="true" />
+              <span className="gold-coin__shine" aria-hidden="true" />
+              <span className="gold-coin__label">YouTube</span>
+            </a>
+            <a
+              href={band.social.spotify}
+              className="gold-coin gold-coin--sp"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="gold-coin__rim" aria-hidden="true" />
+              <span className="gold-coin__shine" aria-hidden="true" />
+              <span className="gold-coin__label">Spotify</span>
+            </a>
           </div>
         </div>
         <div className="home-hero__scroll">Scroll</div>
