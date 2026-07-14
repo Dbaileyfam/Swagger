@@ -49,7 +49,6 @@ function VideoTile({ item }: { item: MediaItem }) {
       <div className="media-tile__body">
         <span className="media-tile__type">video</span>
         <h2 className="media-tile__title">{item.title}</h2>
-        <p className="media-tile__desc">{item.description}</p>
       </div>
     </article>
   )
