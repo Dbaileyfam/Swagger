@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { CelticButton } from '../components/CelticButton'
 import { formatShowDate, pastShows, upcomingShows } from '../data/band'
 
 function ShowDate({ iso }: { iso: string }) {
@@ -72,9 +72,11 @@ export function Shows() {
           </div>
 
           <div className="btn-row" style={{ marginTop: '2.5rem' }}>
-            <Link to="/contact" className="btn btn-solid">
-              Book a Show
-            </Link>
+            <CelticButton to="/contact">
+              Book a
+              <br />
+              Show
+            </CelticButton>
           </div>
         </div>
       </section>

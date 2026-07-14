@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { CelticButton } from '../components/CelticButton'
 import {
   FacebookIcon,
   InstagramIcon,
@@ -138,6 +139,28 @@ export function Home() {
         <div className="home-hero__scroll">Scroll</div>
       </section>
 
+      <section className="home-listen" aria-label="Featured song">
+        <div className="section-inner home-listen__inner">
+          <p className="home-listen__cue">
+            <span className="home-listen__pulse" aria-hidden="true" />
+            Press play
+          </p>
+          <p className="home-listen__hint">Hit play as you scroll — a taste of Swagger live on the road.</p>
+          <div className="home-listen__player">
+            <iframe
+              data-testid="embed-iframe"
+              title="Swagger featured track on Spotify"
+              src={band.spotifyFeaturedTrack}
+              width="100%"
+              height="152"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </section>
+
       <section className="section">
         <div className="section-inner home-about">
           <div className="home-about__visual">
@@ -166,15 +189,21 @@ export function Home() {
               </p>
             ))}
             <div className="btn-row">
-              <Link to="/shows" className="btn">
-                See Shows
-              </Link>
-              <Link to="/media" className="btn">
-                Watch & Listen
-              </Link>
-              <Link to="/contact" className="btn">
-                Book the Band
-              </Link>
+              <CelticButton to="/shows">
+                See
+                <br />
+                Shows
+              </CelticButton>
+              <CelticButton to="/media">
+                Watch &
+                <br />
+                Listen
+              </CelticButton>
+              <CelticButton to="/contact">
+                Book the
+                <br />
+                Band
+              </CelticButton>
             </div>
           </div>
         </div>

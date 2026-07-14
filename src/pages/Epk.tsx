@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { CelticButton } from '../components/CelticButton'
 import { band, epkPhotos, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
 
@@ -165,12 +165,16 @@ export function Epk() {
           </div>
 
           <div className="epk-actions">
-            <Link to="/contact" className="btn btn-solid">
-              Contact for Booking
-            </Link>
-            <Link to="/media" className="btn">
-              More Media
-            </Link>
+            <CelticButton to="/contact">
+              Contact
+              <br />
+              Booking
+            </CelticButton>
+            <CelticButton to="/media">
+              More
+              <br />
+              Media
+            </CelticButton>
           </div>
         </div>
       </section>

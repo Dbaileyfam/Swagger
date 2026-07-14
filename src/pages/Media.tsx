@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CelticButton } from '../components/CelticButton'
 import { band, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
 
@@ -93,7 +94,17 @@ export function Media() {
   const showMusic = filter === 'all' || filter === 'music'
 
   return (
-    <>
+    <div className="media-page">
+      <div className="media-ship" aria-hidden="true">
+        <img
+          src={`${import.meta.env.BASE_URL}tall-ship.png`}
+          alt=""
+          className="media-ship__img"
+          width={288}
+          height={265}
+        />
+      </div>
+
       <header className="page-hero">
         <p className="section-label">Gallery</p>
         <h1 className="section-title">Media</h1>
@@ -107,16 +118,15 @@ export function Media() {
         <div className="section-inner">
           <div className="media-filters" role="tablist" aria-label="Media filters">
             {filters.map((f) => (
-              <button
+              <CelticButton
                 key={f.id}
                 type="button"
-                role="tab"
-                aria-selected={filter === f.id}
-                className={`chip${filter === f.id ? ' active' : ''}`}
+                className={`celtic-link--sm${filter === f.id ? ' celtic-link--active' : ''}`}
+                aria-label={f.label}
                 onClick={() => setFilter(f.id)}
               >
                 {f.label}
-              </button>
+              </CelticButton>
             ))}
           </div>
 
@@ -145,25 +155,27 @@ export function Media() {
           )}
 
           <div className="btn-row" style={{ marginTop: '2.5rem' }}>
-            <a
-              className="btn"
+            <CelticButton
               href={band.social.spotify}
               target="_blank"
               rel="noreferrer"
             >
-              Open Spotify
-            </a>
-            <a
-              className="btn"
+              Open
+              <br />
+              Spotify
+            </CelticButton>
+            <CelticButton
               href={band.social.youtube}
               target="_blank"
               rel="noreferrer"
             >
-              YouTube Channel
-            </a>
+              YouTube
+              <br />
+              Channel
+            </CelticButton>
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

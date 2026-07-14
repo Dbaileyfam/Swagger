@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import { CelticButton } from '../components/CelticButton'
 import { band } from '../data/band'
 
 export function Contact() {
@@ -77,9 +78,11 @@ export function Contact() {
             {sent ? (
               <p className="form-success">Opening your email client…</p>
             ) : (
-              <button type="submit" className="btn btn-solid">
-                Send Message
-              </button>
+              <CelticButton type="submit">
+                Send
+                <br />
+                Message
+              </CelticButton>
             )}
             <p className="form-note">
               Submits via your email app to {band.email}. A form backend can be wired later.
