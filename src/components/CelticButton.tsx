@@ -17,7 +17,7 @@ function RingLabel({ children }: { children: ReactNode }) {
   return (
     <>
       <img
-        src={`${import.meta.env.BASE_URL}celtic-ring-gold.png`}
+        src={`${import.meta.env.BASE_URL}celtic-ring-weave.png`}
         alt=""
         className="celtic-link__ring"
         width={320}
