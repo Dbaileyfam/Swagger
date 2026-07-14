@@ -1588,4 +1588,9 @@ select {
   .home-listen__pulse {
     animation: none !important;
   }
+
+  .shows-cheers__mug--left,
+  .shows-cheers__mug--right {
+    animation: none !important;
+  }
 }
