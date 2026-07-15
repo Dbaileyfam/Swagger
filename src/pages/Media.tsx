@@ -97,7 +97,7 @@ export function Media() {
     <div className="media-page">
       <div className="media-ship" aria-hidden="true">
         <img
-          src={`${import.meta.env.BASE_URL}tall-ship.png`}
+          src={`${import.meta.env.BASE_URL}tall-ship-fwd.png`}
           alt=""
           className="media-ship__img"
           width={288}

@@ -1,4 +1,4 @@
-/** Clinking beer steins from the Sláinte artwork, labeled with correct fada on á. */
+/** Toasting pilsner glasses with SLÁINTE (fada on á). */
 export function CheersToast() {
   const base = import.meta.env.BASE_URL
 
@@ -27,18 +27,18 @@ export function CheersToast() {
 
       <div className="shows-cheers__stage">
         <img
-          className="shows-cheers__frame shows-cheers__frame--a"
-          src={`${base}slainte-cheers-a.png`}
+          className="shows-cheers__glass shows-cheers__glass--left"
+          src={`${base}beer-pint.png`}
           alt=""
-          width={264}
-          height={273}
+          width={125}
+          height={227}
         />
         <img
-          className="shows-cheers__frame shows-cheers__frame--b"
-          src={`${base}slainte-cheers-b.png`}
+          className="shows-cheers__glass shows-cheers__glass--right"
+          src={`${base}beer-pint-flip.png`}
           alt=""
-          width={268}
-          height={273}
+          width={125}
+          height={227}
         />
       </div>
     </div>
