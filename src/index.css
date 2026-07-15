@@ -924,6 +924,11 @@ select {
 .shows-page > .section {
   position: relative;
   z-index: 1;
+  overflow: visible;
+}
+
+.shows-page > .section .section-inner {
+  overflow: visible;
 }
 
 @media (max-width: 700px) {
@@ -945,6 +950,7 @@ select {
 .shows-list {
   display: grid;
   gap: 0;
+  overflow: visible;
 }
 
 .show-card {
@@ -956,8 +962,10 @@ select {
 }
 
 .show-card--slainte {
-  grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+  position: relative;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
   align-items: center;
+  overflow: visible;
 }
 
 .show-card:first-child {
@@ -965,27 +973,48 @@ select {
 }
 
 .slainte-mark {
-  justify-self: end;
-  align-self: center;
-  margin-left: 1rem;
-  padding-right: 0.15rem;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 3;
+  transform: translate(85%, -50%);
   pointer-events: none;
-  text-align: right;
+}
+
+.slainte-mark__spin {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(6.75rem, 12vw, 9.25rem);
+  height: clamp(6.75rem, 12vw, 9.25rem);
+}
+
+.slainte-mark__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
+  animation: slainte-spin 12s linear infinite;
 }
 
 .slainte-mark__text {
-  display: inline-block;
+  position: relative;
+  z-index: 1;
+  display: block;
+  max-width: 62%;
   font-family: var(--font-display);
-  font-size: clamp(1.55rem, 3.6vw, 2.55rem);
+  font-size: clamp(0.72rem, 1.5vw, 0.95rem);
   font-weight: 700;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  color: #2f9a52;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+  text-align: center;
+  color: #3bb865;
   text-shadow:
-    0 0 18px rgba(47, 154, 82, 0.35),
-    0 2px 0 rgba(1, 4, 3, 0.55);
-  animation: slainte-glow 3.2s ease-in-out infinite;
-  transform-origin: right center;
+    0 0 16px rgba(59, 184, 101, 0.4),
+    0 1px 0 rgba(1, 4, 3, 0.65);
+  animation: slainte-pulse 2.8s ease-in-out infinite;
 }
 
 .show-card__date-block {
@@ -1033,23 +1062,21 @@ select {
   }
 
   .show-card--slainte {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      'date date'
-      'info mark';
+    grid-template-columns: 1fr;
+    padding-right: 4.5rem;
   }
 
-  .show-card--slainte > :first-child {
-    grid-area: date;
+  .slainte-mark {
+    transform: translate(35%, -50%);
   }
 
-  .show-card--slainte > :nth-child(2) {
-    grid-area: info;
+  .slainte-mark__spin {
+    width: 4.75rem;
+    height: 4.75rem;
   }
 
-  .show-card--slainte .slainte-mark {
-    grid-area: mark;
-    margin-left: 0.5rem;
+  .slainte-mark__text {
+    font-size: 0.58rem;
   }
 
   .show-card__date-block {
@@ -1064,10 +1091,6 @@ select {
 
   .show-card__day {
     font-size: 1.6rem;
-  }
-
-  .slainte-mark__text {
-    font-size: clamp(1.2rem, 6vw, 1.6rem);
   }
 }
 
@@ -1625,22 +1648,24 @@ select {
   }
 }
 
-@keyframes slainte-glow {
+@keyframes slainte-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slainte-pulse {
   0%,
   100% {
-    opacity: 0.82;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
     filter: brightness(1);
   }
-  40% {
-    opacity: 1;
-    transform: translateY(-3px) scale(1.04);
-    filter: brightness(1.15);
-  }
-  65% {
-    opacity: 0.95;
-    transform: translateY(-1px) scale(1.02);
-    filter: brightness(1.08);
+  50% {
+    transform: scale(1.06);
+    filter: brightness(1.12);
   }
 }
 
@@ -1697,6 +1722,7 @@ select {
 
   .shows-cheers__glass--left,
   .shows-cheers__glass--right,
+  .slainte-mark__ring,
   .slainte-mark__text {
     animation: none !important;
   }
@@ -1707,11 +1733,5 @@ select {
 
   .shows-cheers__glass--right {
     transform: rotate(6deg);
-  }
-
-  .slainte-mark__text {
-    opacity: 1;
-    transform: none;
-    filter: none;
   }
 }

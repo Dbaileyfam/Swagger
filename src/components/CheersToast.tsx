@@ -24,11 +24,26 @@ export function CheersToast() {
   )
 }
 
-/** Animated SLÁINTE mark — sits on the Blues & Brews row, far right. */
+/** Spinning circular SLÁINTE — far right of Blues & Brews, past the content line. */
 export function SlainteMark() {
+  const base = import.meta.env.BASE_URL
+
   return (
     <div className="slainte-mark" aria-hidden="true">
-      <span className="slainte-mark__text">SLÁINTE</span>
+      <div className="slainte-mark__spin">
+        <img
+          className="slainte-mark__ring"
+          src={`${base}celtic-ring-weave.png`}
+          alt=""
+          width={320}
+          height={320}
+        />
+        <span className="slainte-mark__text">
+          SLÁ
+          <br />
+          INTE
+        </span>
+      </div>
     </div>
   )
 }
