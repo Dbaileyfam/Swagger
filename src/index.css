@@ -971,8 +971,6 @@ select {
 
 .show-card--fiddle {
   position: relative;
-  grid-template-columns: auto 8.5rem minmax(0, 1fr);
-  align-items: center;
   overflow: visible;
 }
 
@@ -981,9 +979,12 @@ select {
 }
 
 .show-fiddle {
-  justify-self: end;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 2;
   width: clamp(2.6rem, 5vw, 3.4rem);
-  margin-right: 0.15rem;
+  transform: translate(-115%, -50%);
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
 }
@@ -1102,29 +1103,9 @@ select {
     transform: translate(35%, -50%);
   }
 
-  .show-card--fiddle {
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      'fiddle date'
-      'fiddle info';
-    column-gap: 0.65rem;
-  }
-
-  .show-card--fiddle .show-fiddle {
-    grid-area: fiddle;
-    align-self: center;
-  }
-
-  .show-card--fiddle > .show-card__date-block {
-    grid-area: date;
-  }
-
-  .show-card--fiddle > :nth-child(3) {
-    grid-area: info;
-  }
-
   .show-fiddle {
     width: 2.4rem;
+    transform: translate(-105%, -50%);
   }
 
   .slainte-mark__spin {
