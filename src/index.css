@@ -1035,27 +1035,19 @@ select {
   top: 50%;
   left: 0;
   z-index: 2;
-  width: clamp(3.6rem, 7vw, 5rem);
+  width: clamp(3.8rem, 7.5vw, 5.4rem);
   transform: translate(-118%, -50%);
   pointer-events: none;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
 }
 
-.celtic-mark__art {
+.celtic-mark__img {
   display: block;
   width: 100%;
   height: auto;
-  overflow: visible;
-}
-
-.celtic-mark__ring {
-  transform-origin: 60px 60px;
-  animation: celtic-ring-spin 16s linear infinite;
-}
-
-.celtic-mark__knot {
-  transform-origin: 60px 60px;
-  animation: celtic-knot-pulse 3.6s ease-in-out infinite;
+  background: transparent;
+  transform-origin: 50% 50%;
+  animation: celtic-knot-spin 12s linear infinite;
 }
 
 .highland-cow {
@@ -1773,24 +1765,15 @@ select {
   }
 }
 
-@keyframes celtic-ring-spin {
+@keyframes celtic-knot-spin {
   from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes celtic-knot-pulse {
-  0%,
-  100% {
     transform: rotate(0deg) scale(1);
-    filter: brightness(1);
   }
   50% {
-    transform: rotate(-8deg) scale(1.06);
-    filter: brightness(1.18);
+    transform: rotate(180deg) scale(1.06);
+  }
+  to {
+    transform: rotate(360deg) scale(1);
   }
 }
 
@@ -1906,9 +1889,9 @@ select {
   .show-fiddle__img,
   .show-fiddle__bow,
   .highland-cow__img,
-  .celtic-mark__ring,
-  .celtic-mark__knot {
+  .celtic-mark__img {
     animation: none !important;
+    transform: none;
   }
 
   .shows-cheers__glass--left {
@@ -1929,10 +1912,5 @@ select {
 
   .highland-cow__img {
     transform: none;
-  }
-
-  .celtic-mark__knot {
-    transform: none;
-    filter: none;
   }
 }
