@@ -1599,6 +1599,22 @@ select {
   color: var(--cream);
 }
 
+.celtic-links--contact,
+.celtic-links--epk {
+  margin-top: 0.35rem;
+  justify-content: flex-start;
+}
+
+.epk-social {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gold-line);
+}
+
+.epk-social .section-label {
+  margin-bottom: 0.85rem;
+}
+
 .contact-form {
   display: grid;
   gap: 1.1rem;

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CelticButton } from '../components/CelticButton'
+import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band, epkLogos, epkPhotos, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
 
@@ -204,6 +205,11 @@ export function Epk() {
               <br />
               Media
             </CelticButton>
+          </div>
+
+          <div className="epk-social">
+            <p className="section-label">Follow Swagger</p>
+            <SocialCelticLinks className="celtic-links--epk" />
           </div>
         </div>
       </section>

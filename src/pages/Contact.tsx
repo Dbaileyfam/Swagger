@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { CelticButton } from '../components/CelticButton'
+import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band } from '../data/band'
 
 export function Contact() {
@@ -50,6 +51,10 @@ export function Contact() {
             <div className="contact-detail">
               <div className="contact-detail__label">Based in</div>
               <span>{band.location}</span>
+            </div>
+            <div className="contact-detail">
+              <div className="contact-detail__label">Follow</div>
+              <SocialCelticLinks className="celtic-links--contact" />
             </div>
           </aside>
 
