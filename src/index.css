@@ -1004,17 +1004,19 @@ select {
   position: relative;
   z-index: 1;
   display: block;
-  max-width: 52%;
+  max-width: 58%;
   font-family: var(--font-display);
-  font-size: clamp(0.55rem, 1.05vw, 0.7rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: clamp(0.78rem, 1.45vw, 1rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
   line-height: 1;
   text-align: center;
-  color: #4fd67a;
+  color: #5ee087;
+  -webkit-text-stroke: 0.045em rgba(8, 40, 18, 0.85);
+  paint-order: stroke fill;
   text-shadow:
-    0 0 14px rgba(79, 214, 122, 0.45),
-    0 1px 0 rgba(1, 4, 3, 0.7);
+    0 0 16px rgba(94, 224, 135, 0.5),
+    0 2px 0 rgba(1, 4, 3, 0.75);
   animation: slainte-pulse 2.8s ease-in-out infinite;
 }
 
@@ -1077,9 +1079,9 @@ select {
   }
 
   .slainte-mark__text {
-    font-size: 0.55rem;
-    max-width: 48%;
-    letter-spacing: 0.04em;
+    font-size: 0.7rem;
+    max-width: 56%;
+    letter-spacing: 0.03em;
   }
 
   .show-card__date-block {
