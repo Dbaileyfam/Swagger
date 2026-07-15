@@ -1004,19 +1004,19 @@ select {
   position: relative;
   z-index: 1;
   display: block;
-  max-width: 58%;
+  max-width: 62%;
   font-family: var(--font-display);
-  font-size: clamp(0.78rem, 1.45vw, 1rem);
+  font-size: clamp(0.92rem, 1.7vw, 1.2rem);
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   line-height: 1;
   text-align: center;
   color: #5ee087;
-  -webkit-text-stroke: 0.045em rgba(8, 40, 18, 0.85);
+  -webkit-text-stroke: 0.07em rgba(8, 40, 18, 0.9);
   paint-order: stroke fill;
   text-shadow:
-    0 0 16px rgba(94, 224, 135, 0.5),
-    0 2px 0 rgba(1, 4, 3, 0.75);
+    0 0 18px rgba(94, 224, 135, 0.55),
+    0 2px 0 rgba(1, 4, 3, 0.8);
   animation: slainte-pulse 2.8s ease-in-out infinite;
 }
 
@@ -1079,9 +1079,10 @@ select {
   }
 
   .slainte-mark__text {
-    font-size: 0.7rem;
-    max-width: 56%;
-    letter-spacing: 0.03em;
+    font-size: 0.82rem;
+    max-width: 60%;
+    letter-spacing: 0.02em;
+    -webkit-text-stroke: 0.06em rgba(8, 40, 18, 0.9);
   }
 
   .show-card__date-block {
