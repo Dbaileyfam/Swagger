@@ -884,13 +884,13 @@ select {
 
 .shows-cheers {
   position: absolute;
-  top: clamp(5.5rem, 12vh, 8.5rem);
+  top: clamp(4.75rem, 11vh, 7.75rem);
   left: clamp(0.35rem, 1.5vw, 1.25rem);
   z-index: 2;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: end;
-  width: clamp(10.5rem, 22vw, 14.5rem);
+  width: clamp(9.5rem, 20vw, 13rem);
   pointer-events: none;
   filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
 }
@@ -905,7 +905,7 @@ select {
 }
 
 .shows-cheers__pint {
-  width: 108%;
+  width: 105%;
   height: auto;
   display: block;
   overflow: visible;
@@ -914,20 +914,20 @@ select {
 
 .shows-cheers__pint--left {
   justify-self: end;
-  margin-right: -12%;
-  transform-origin: 75% 90%;
+  margin-right: -18%;
+  transform-origin: 70% 92%;
   animation: cheers-toast-left 4.8s cubic-bezier(0.4, 0.05, 0.2, 1) infinite;
 }
 
 .shows-cheers__pint--right {
   justify-self: start;
-  margin-left: -12%;
-  transform-origin: 25% 90%;
+  margin-left: -18%;
+  transform-origin: 30% 92%;
   animation: cheers-toast-right 4.8s cubic-bezier(0.4, 0.05, 0.2, 1) infinite;
 }
 
 .shows-cheers__sparks {
-  transform-origin: 110px 50px;
+  transform-origin: 100px 34px;
   opacity: 0;
   animation: cheers-spark 4.8s ease-out infinite;
 }
