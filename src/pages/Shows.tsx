@@ -1,3 +1,4 @@
+import { AnimatedFiddle } from '../components/AnimatedFiddle'
 import { CelticButton } from '../components/CelticButton'
 import { CheersToast, SlainteMark } from '../components/CheersToast'
 import { formatShowDate, pastShows, upcomingShows } from '../data/band'
@@ -36,9 +37,16 @@ export function Shows() {
           <div className="shows-list">
             {upcoming.map((show) => (
               <article
-                className={`show-card${show.id === 'snowbasin-2026' ? ' show-card--slainte' : ''}`}
+                className={[
+                  'show-card',
+                  show.id === 'snowbasin-2026' ? 'show-card--slainte' : '',
+                  show.id === 'bitterroot-16-2026' ? 'show-card--fiddle' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
                 key={show.id}
               >
+                {show.id === 'bitterroot-16-2026' ? <AnimatedFiddle /> : null}
                 <ShowDate iso={show.date} />
                 <div>
                   <h3 className="show-card__event">{show.event}</h3>

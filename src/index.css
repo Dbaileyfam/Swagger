@@ -969,8 +969,37 @@ select {
   overflow: visible;
 }
 
+.show-card--fiddle {
+  position: relative;
+  grid-template-columns: auto 8.5rem minmax(0, 1fr);
+  align-items: center;
+  overflow: visible;
+}
+
 .show-card:first-child {
   border-top: 1px solid var(--gold-line);
+}
+
+.show-fiddle {
+  justify-self: end;
+  width: clamp(2.6rem, 5vw, 3.4rem);
+  margin-right: 0.15rem;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+
+.show-fiddle__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform-origin: 50% 70%;
+  animation: fiddle-sway 3.4s ease-in-out infinite;
+}
+
+.show-fiddle__bow {
+  transform-origin: 32px 70px;
+  animation: fiddle-bow 3.4s ease-in-out infinite;
 }
 
 .slainte-mark {
@@ -1071,6 +1100,31 @@ select {
 
   .slainte-mark {
     transform: translate(35%, -50%);
+  }
+
+  .show-card--fiddle {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'fiddle date'
+      'fiddle info';
+    column-gap: 0.65rem;
+  }
+
+  .show-card--fiddle .show-fiddle {
+    grid-area: fiddle;
+    align-self: center;
+  }
+
+  .show-card--fiddle > .show-card__date-block {
+    grid-area: date;
+  }
+
+  .show-card--fiddle > :nth-child(3) {
+    grid-area: info;
+  }
+
+  .show-fiddle {
+    width: 2.4rem;
   }
 
   .slainte-mark__spin {
@@ -1654,6 +1708,26 @@ select {
   }
 }
 
+@keyframes fiddle-sway {
+  0%,
+  100% {
+    transform: rotate(-6deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(5deg) translate3d(0, -2px, 0);
+  }
+}
+
+@keyframes fiddle-bow {
+  0%,
+  100% {
+    transform: rotate(-8deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(10deg) translate3d(2px, -4px, 0);
+  }
+}
+
 @keyframes slainte-spin {
   from {
     transform: rotate(0deg);
@@ -1729,7 +1803,9 @@ select {
   .shows-cheers__glass--left,
   .shows-cheers__glass--right,
   .slainte-mark__ring,
-  .slainte-mark__text {
+  .slainte-mark__text,
+  .show-fiddle__art,
+  .show-fiddle__bow {
     animation: none !important;
   }
 
@@ -1739,5 +1815,9 @@ select {
 
   .shows-cheers__glass--right {
     transform: rotate(6deg);
+  }
+
+  .show-fiddle__art {
+    transform: rotate(-4deg);
   }
 }
