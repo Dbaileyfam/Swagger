@@ -1,6 +1,7 @@
 import { AnimatedFiddle } from '../components/AnimatedFiddle'
 import { CelticButton } from '../components/CelticButton'
 import { CheersToast, SlainteMark } from '../components/CheersToast'
+import { HighlandCow } from '../components/HighlandCow'
 import { formatShowDate, pastShows, upcomingShows } from '../data/band'
 
 function ShowDate({ iso }: { iso: string }) {
@@ -41,6 +42,7 @@ export function Shows() {
                   'show-card',
                   show.id === 'snowbasin-2026' ? 'show-card--slainte' : '',
                   show.id === 'bitterroot-16-2026' ? 'show-card--fiddle' : '',
+                  show.id === 'longs-peak-11-2026' ? 'show-card--cow' : '',
                 ]
                   .filter(Boolean)
                   .join(' ')}
@@ -61,6 +63,7 @@ export function Shows() {
                   </p>
                 </div>
                 {show.id === 'snowbasin-2026' ? <SlainteMark /> : null}
+                {show.id === 'longs-peak-11-2026' ? <HighlandCow /> : null}
               </article>
             ))}
           </div>
