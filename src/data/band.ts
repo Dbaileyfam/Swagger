@@ -242,6 +242,34 @@ export const epkPhotos: MediaItem[] = [
   },
 ]
 
+/** Brand / logo assets that say Swagger — for EPK downloads & press use */
+export const epkLogos = [
+  {
+    id: 'mark-v3',
+    title: 'Swagger Wordmark',
+    description: 'Primary logo with Celtic knotwork',
+    image: 'swagger-mark-crest-v3.png',
+  },
+  {
+    id: 'mark-v2',
+    title: 'Swagger Wordmark (Alt)',
+    description: 'Alternate crest wordmark',
+    image: 'swagger-mark-crest-v2.png',
+  },
+  {
+    id: 'crest',
+    title: 'Swagger Crest',
+    description: 'Standalone crest mark',
+    image: 'swagger-crest.png',
+  },
+  {
+    id: 'cross',
+    title: 'Swagger Celtic Cross',
+    description: 'Cross mark used in navigation',
+    image: 'swagger-cross.png',
+  },
+] as const
+
 /** Videos from https://www.youtube.com/@SwaggerTheBand */
 export const mediaItems: MediaItem[] = [
   ...epkPhotos,

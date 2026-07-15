@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CelticButton } from '../components/CelticButton'
-import { band, epkPhotos, mediaItems } from '../data/band'
+import { band, epkLogos, epkPhotos, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
 
 function assetUrl(path: string) {
@@ -98,6 +98,35 @@ export function Epk() {
                     alt="Swagger press photo"
                     loading="lazy"
                   />
+                </figure>
+              ))}
+            </div>
+
+            <p className="section-label" style={{ marginTop: '2rem' }}>
+              Logos &amp; Brand
+            </p>
+            <div className="photo-grid epk-logo-grid">
+              {epkLogos.map((logo) => (
+                <figure className="photo-tile epk-logo-tile" key={logo.id}>
+                  <a
+                    className="epk-logo-tile__link"
+                    href={assetUrl(logo.image)}
+                    target="_blank"
+                    rel="noreferrer"
+                    download
+                  >
+                    <span className="epk-logo-tile__frame">
+                      <img
+                        src={assetUrl(logo.image)}
+                        alt={logo.title}
+                        loading="lazy"
+                      />
+                    </span>
+                    <figcaption>
+                      <strong>{logo.title}</strong>
+                      {logo.description}
+                    </figcaption>
+                  </a>
                 </figure>
               ))}
             </div>
