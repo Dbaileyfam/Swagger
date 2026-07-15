@@ -251,12 +251,6 @@ export const epkLogos = [
     image: 'swagger-mark-crest-v3.png',
   },
   {
-    id: 'mark-v2',
-    title: 'Swagger Wordmark (Alt)',
-    description: 'Alternate crest wordmark',
-    image: 'swagger-mark-crest-v2.png',
-  },
-  {
     id: 'crest',
     title: 'Swagger Crest',
     description: 'Standalone crest mark',
