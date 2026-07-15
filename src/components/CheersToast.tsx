@@ -38,11 +38,7 @@ export function SlainteMark() {
           width={320}
           height={320}
         />
-        <span className="slainte-mark__text">
-          SLÁ
-          <br />
-          INTE
-        </span>
+        <span className="slainte-mark__text">SLÁINTE</span>
       </div>
     </div>
   )

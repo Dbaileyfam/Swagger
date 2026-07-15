@@ -882,12 +882,18 @@ select {
   isolation: isolate;
 }
 
+.shows-section {
+  position: relative;
+  overflow: visible;
+}
+
 .shows-cheers {
   position: absolute;
-  top: clamp(4.25rem, 10vh, 7.25rem);
-  left: clamp(0.25rem, 1.25vw, 1rem);
+  top: 0;
+  left: 0;
   z-index: 2;
-  width: clamp(8.5rem, 18vw, 12rem);
+  width: clamp(7.5rem, 15vw, 10.5rem);
+  transform: translate(-8%, -92%);
   pointer-events: none;
   filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
 }
@@ -898,7 +904,7 @@ select {
   align-items: flex-end;
   justify-content: center;
   width: 100%;
-  height: clamp(7.5rem, 16vw, 10.5rem);
+  height: clamp(6.5rem, 14vw, 9rem);
 }
 
 .shows-cheers__glass {
@@ -933,17 +939,12 @@ select {
 
 @media (max-width: 700px) {
   .shows-cheers {
-    top: clamp(5.5rem, 12vh, 7.5rem);
-    width: clamp(9.5rem, 42vw, 12.5rem);
+    width: clamp(6.5rem, 32vw, 8.5rem);
+    transform: translate(0%, -90%);
   }
 
   .shows-page > .page-hero {
-    padding-left: clamp(10rem, 48vw, 13rem);
-    text-align: left;
-  }
-
-  .shows-page > .page-hero .gold-rule--center {
-    margin-left: 0;
+    text-align: center;
   }
 }
 
@@ -985,8 +986,8 @@ select {
   position: relative;
   display: grid;
   place-items: center;
-  width: clamp(6.75rem, 12vw, 9.25rem);
-  height: clamp(6.75rem, 12vw, 9.25rem);
+  width: clamp(9.5rem, 16vw, 12.5rem);
+  height: clamp(9.5rem, 16vw, 12.5rem);
 }
 
 .slainte-mark__ring {
@@ -1003,17 +1004,17 @@ select {
   position: relative;
   z-index: 1;
   display: block;
-  max-width: 62%;
+  max-width: 52%;
   font-family: var(--font-display);
-  font-size: clamp(0.72rem, 1.5vw, 0.95rem);
+  font-size: clamp(0.55rem, 1.05vw, 0.7rem);
   font-weight: 700;
-  letter-spacing: 0.12em;
-  line-height: 1.1;
+  letter-spacing: 0.08em;
+  line-height: 1;
   text-align: center;
-  color: #3bb865;
+  color: #4fd67a;
   text-shadow:
-    0 0 16px rgba(59, 184, 101, 0.4),
-    0 1px 0 rgba(1, 4, 3, 0.65);
+    0 0 14px rgba(79, 214, 122, 0.45),
+    0 1px 0 rgba(1, 4, 3, 0.7);
   animation: slainte-pulse 2.8s ease-in-out infinite;
 }
 
@@ -1071,12 +1072,14 @@ select {
   }
 
   .slainte-mark__spin {
-    width: 4.75rem;
-    height: 4.75rem;
+    width: 7rem;
+    height: 7rem;
   }
 
   .slainte-mark__text {
-    font-size: 0.58rem;
+    font-size: 0.55rem;
+    max-width: 48%;
+    letter-spacing: 0.04em;
   }
 
   .show-card__date-block {

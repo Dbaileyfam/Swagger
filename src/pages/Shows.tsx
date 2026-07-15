@@ -21,8 +21,6 @@ export function Shows() {
 
   return (
     <div className="shows-page">
-      <CheersToast />
-
       <header className="page-hero">
         <p className="section-label">Tour</p>
         <h1 className="section-title">Upcoming Shows</h1>
@@ -33,7 +31,8 @@ export function Shows() {
       </header>
 
       <section className="section" style={{ paddingTop: 0 }}>
-        <div className="section-inner">
+        <div className="section-inner shows-section">
+          <CheersToast />
           <div className="shows-list">
             {upcoming.map((show) => (
               <article
