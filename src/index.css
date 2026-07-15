@@ -1035,7 +1035,7 @@ select {
   top: 50%;
   left: 0;
   z-index: 2;
-  width: clamp(3.8rem, 7.5vw, 5.4rem);
+  width: clamp(5.25rem, 10vw, 7.25rem);
   transform: translate(-118%, -50%);
   pointer-events: none;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
@@ -1055,7 +1055,7 @@ select {
   top: 50%;
   right: 0;
   z-index: 3;
-  width: clamp(7.5rem, 14vw, 10.5rem);
+  width: clamp(10rem, 18vw, 14rem);
   transform: translate(88%, -50%);
   pointer-events: none;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
@@ -1170,12 +1170,12 @@ select {
   }
 
   .celtic-mark {
-    width: 3.1rem;
+    width: 4.4rem;
     transform: translate(-108%, -50%);
   }
 
   .highland-cow {
-    width: 5.5rem;
+    width: 7.5rem;
     transform: translate(42%, -50%);
   }
 
