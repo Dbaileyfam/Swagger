@@ -1,5 +1,5 @@
 import { CelticButton } from '../components/CelticButton'
-import { CheersToast } from '../components/CheersToast'
+import { CheersToast, SlainteMark } from '../components/CheersToast'
 import { formatShowDate, pastShows, upcomingShows } from '../data/band'
 
 function ShowDate({ iso }: { iso: string }) {
@@ -36,7 +36,10 @@ export function Shows() {
         <div className="section-inner">
           <div className="shows-list">
             {upcoming.map((show) => (
-              <article className="show-card" key={show.id}>
+              <article
+                className={`show-card${show.id === 'snowbasin-2026' ? ' show-card--slainte' : ''}`}
+                key={show.id}
+              >
                 <ShowDate iso={show.date} />
                 <div>
                   <h3 className="show-card__event">{show.event}</h3>
@@ -50,6 +53,7 @@ export function Shows() {
                     {formatShowDate(show.date)}
                   </p>
                 </div>
+                {show.id === 'snowbasin-2026' ? <SlainteMark /> : null}
               </article>
             ))}
           </div>
