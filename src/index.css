@@ -983,24 +983,32 @@ select {
   top: 50%;
   left: 0;
   z-index: 2;
-  width: clamp(2.6rem, 5vw, 3.4rem);
+  width: clamp(3.1rem, 6vw, 4.2rem);
+  height: clamp(4.4rem, 8.5vw, 5.8rem);
   transform: translate(-115%, -50%);
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
 }
 
-.show-fiddle__art {
+.show-fiddle__img {
   display: block;
   width: 100%;
-  height: auto;
-  overflow: visible;
+  height: 100%;
+  object-fit: contain;
   transform-origin: 50% 70%;
-  animation: fiddle-sway 3.4s ease-in-out infinite;
+  animation: fiddle-play 2.8s ease-in-out infinite;
 }
 
 .show-fiddle__bow {
-  transform-origin: 32px 70px;
-  animation: fiddle-bow 3.4s ease-in-out infinite;
+  position: absolute;
+  top: 18%;
+  left: 8%;
+  width: 55%;
+  height: 70%;
+  overflow: visible;
+  transform-origin: 50% 50%;
+  animation: fiddle-bow-stroke 2.8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 }
 
 .slainte-mark {
@@ -1104,7 +1112,8 @@ select {
   }
 
   .show-fiddle {
-    width: 2.4rem;
+    width: 2.8rem;
+    height: 3.9rem;
     transform: translate(-105%, -50%);
   }
 
@@ -1689,23 +1698,29 @@ select {
   }
 }
 
-@keyframes fiddle-sway {
-  0%,
-  100% {
-    transform: rotate(-6deg) translate3d(0, 0, 0);
-  }
-  50% {
-    transform: rotate(5deg) translate3d(0, -2px, 0);
-  }
-}
-
-@keyframes fiddle-bow {
+@keyframes fiddle-play {
   0%,
   100% {
     transform: rotate(-8deg) translate3d(0, 0, 0);
   }
+  25% {
+    transform: rotate(-2deg) translate3d(1px, -1px, 0);
+  }
   50% {
-    transform: rotate(10deg) translate3d(2px, -4px, 0);
+    transform: rotate(7deg) translate3d(0, -2px, 0);
+  }
+  75% {
+    transform: rotate(1deg) translate3d(-1px, -1px, 0);
+  }
+}
+
+@keyframes fiddle-bow-stroke {
+  0%,
+  100% {
+    transform: translate3d(-4px, 6px, 0) rotate(-18deg);
+  }
+  50% {
+    transform: translate3d(10px, -10px, 0) rotate(12deg);
   }
 }
 
@@ -1785,7 +1800,7 @@ select {
   .shows-cheers__glass--right,
   .slainte-mark__ring,
   .slainte-mark__text,
-  .show-fiddle__art,
+  .show-fiddle__img,
   .show-fiddle__bow {
     animation: none !important;
   }
@@ -1798,7 +1813,11 @@ select {
     transform: rotate(6deg);
   }
 
-  .show-fiddle__art {
+  .show-fiddle__img {
     transform: rotate(-4deg);
+  }
+
+  .show-fiddle__bow {
+    transform: translate3d(2px, 0, 0) rotate(-8deg);
   }
 }
