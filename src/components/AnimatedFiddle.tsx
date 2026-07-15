@@ -7,10 +7,10 @@ export function AnimatedFiddle() {
       <div className="show-fiddle__stage">
         <img
           className="show-fiddle__img"
-          src={`${base}fiddle-play.png`}
+          src={`${base}fiddle-clear.png`}
           alt=""
-          width={280}
-          height={388}
+          width={178}
+          height={252}
         />
         {/* Bow: hair rides across the strings near the bridge */}
         <svg

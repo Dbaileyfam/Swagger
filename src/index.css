@@ -988,8 +988,8 @@ select {
   top: 50%;
   left: 0;
   z-index: 2;
-  width: clamp(3.4rem, 6.5vw, 4.6rem);
-  transform: translate(-115%, -50%);
+  width: clamp(5rem, 9vw, 7rem);
+  transform: translate(-118%, -50%);
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
 }
@@ -997,7 +997,8 @@ select {
 .show-fiddle__stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 280 / 393;
+  aspect-ratio: 178 / 252;
+  background: transparent;
 }
 
 .show-fiddle__img {
@@ -1006,6 +1007,7 @@ select {
   height: 100%;
   object-fit: contain;
   background: transparent;
+  mix-blend-mode: normal;
   transform-origin: 50% 70%;
   animation: fiddle-play 3.2s ease-in-out infinite;
 }
@@ -1148,8 +1150,8 @@ select {
   }
 
   .show-fiddle {
-    width: 3rem;
-    transform: translate(-105%, -50%);
+    width: 4.25rem;
+    transform: translate(-108%, -50%);
   }
 
   .slainte-mark__spin {

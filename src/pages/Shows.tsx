@@ -42,7 +42,7 @@ export function Shows() {
                   'show-card',
                   show.id === 'snowbasin-2026' ? 'show-card--slainte' : '',
                   show.id === 'bitterroot-16-2026' ? 'show-card--fiddle' : '',
-                  show.id === 'longs-peak-11-2026' ? 'show-card--cow' : '',
+                  show.id === 'longs-peak-13-2026' ? 'show-card--cow' : '',
                 ]
                   .filter(Boolean)
                   .join(' ')}
@@ -63,7 +63,7 @@ export function Shows() {
                   </p>
                 </div>
                 {show.id === 'snowbasin-2026' ? <SlainteMark /> : null}
-                {show.id === 'longs-peak-11-2026' ? <HighlandCow /> : null}
+                {show.id === 'longs-peak-13-2026' ? <HighlandCow /> : null}
               </article>
             ))}
           </div>
