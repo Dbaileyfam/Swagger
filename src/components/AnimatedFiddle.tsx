@@ -25,45 +25,45 @@ export function AnimatedFiddle() {
           <path
             d="M18 11 C48 7, 92 7, 122 11"
             stroke="#b8893a"
-            strokeWidth="2.6"
+            strokeWidth="3.4"
             strokeLinecap="round"
           />
           <path
             d="M18 10.2 C48 6.4, 92 6.4, 122 10.2"
             stroke="#e8c76a"
-            strokeWidth="1.1"
+            strokeWidth="1.4"
             strokeLinecap="round"
             opacity="0.85"
           />
           {/* Horsehair */}
           <path
-            d="M22 18 C50 15.5, 90 15.5, 118 18"
+            d="M22 19 C50 16.2, 90 16.2, 118 19"
             stroke="#f3ead6"
-            strokeWidth="1.5"
+            strokeWidth="2"
             strokeLinecap="round"
-            opacity="0.9"
+            opacity="0.92"
           />
           {/* Hair ribbon fill between stick and hair */}
           <path
-            d="M22 12 C50 8.5, 90 8.5, 118 12 L118 18 C90 15.5, 50 15.5, 22 18 Z"
-            fill="rgba(243, 234, 214, 0.28)"
+            d="M22 12.5 C50 8.8, 90 8.8, 118 12.5 L118 19 C90 16.2, 50 16.2, 22 19 Z"
+            fill="rgba(243, 234, 214, 0.32)"
           />
           {/* Frog (handle) */}
-          <rect x="4" y="8" width="16" height="12" rx="2.2" fill="#f3ead6" />
-          <rect x="6" y="10" width="12" height="8" rx="1.4" fill="#c9a84a" />
-          <circle cx="8" cy="14" r="1.3" fill="#f3ead6" />
+          <rect x="2" y="7" width="18" height="14" rx="2.4" fill="#f3ead6" />
+          <rect x="5" y="9.5" width="13" height="9" rx="1.5" fill="#c9a84a" />
+          <circle cx="8" cy="14" r="1.5" fill="#f3ead6" />
           {/* Tip — classic head, not an arrow */}
           <path
-            d="M118 9.5
-               L126 8.5
-               L130 11.5
-               L126 16.5
-               L118 17.5
+            d="M118 9
+               L128 7.5
+               L133 12
+               L128 18
+               L118 18.5
                Z"
             fill="#d4a84a"
           />
           <path
-            d="M120 10.5 L125 10 L128 12 L125 15.5 L120 16"
+            d="M120 10.5 L126 9.5 L130 12.5 L126 16.5 L120 17"
             fill="#f0d078"
             opacity="0.7"
           />

@@ -1019,9 +1019,9 @@ select {
 
 .show-fiddle__bow {
   position: absolute;
-  top: 52%;
-  left: 8%;
-  width: 92%;
+  top: 48%;
+  left: -6%;
+  width: 130%;
   height: auto;
   overflow: visible;
   transform-origin: 50% 50%;
