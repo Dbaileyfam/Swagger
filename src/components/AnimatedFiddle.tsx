@@ -9,8 +9,8 @@ export function AnimatedFiddle() {
           className="show-fiddle__img"
           src={`${base}fiddle-clear.png`}
           alt=""
-          width={178}
-          height={252}
+          width={115}
+          height={239}
         />
         {/* Bow: hair rides across the strings near the bridge */}
         <svg
