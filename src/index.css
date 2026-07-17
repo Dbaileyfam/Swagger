@@ -939,12 +939,21 @@ select {
 
 @media (max-width: 700px) {
   .shows-cheers {
-    width: clamp(6.5rem, 32vw, 8.5rem);
-    transform: translate(0%, -90%);
+    width: 5.25rem;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    transform: translate(0, -42%);
+    opacity: 0.88;
+  }
+
+  .shows-cheers__stage {
+    height: 4.5rem;
   }
 
   .shows-page > .page-hero {
     text-align: center;
+    z-index: 2;
   }
 }
 
@@ -1155,42 +1164,62 @@ select {
   font-size: 0.95rem;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 700px) {
   .show-card {
     grid-template-columns: 1fr;
   }
 
-  .show-card--slainte {
+  /* Keep show copy above decorations; reserve space so art stays visible */
+  .show-card > .show-card__date-block,
+  .show-card > div:not([aria-hidden]) {
+    position: relative;
+    z-index: 4;
+  }
+
+  .show-card--slainte,
+  .show-card--fiddle,
+  .show-card--cow,
+  .show-card--celtic {
     grid-template-columns: 1fr;
-    padding-right: 4.5rem;
+    padding-bottom: 5.75rem;
   }
 
-  .slainte-mark {
-    transform: translate(35%, -50%);
-  }
-
+  .show-fiddle,
   .celtic-mark {
-    width: 4.4rem;
-    transform: translate(-108%, -50%);
+    top: auto;
+    left: 0;
+    bottom: 0.55rem;
+    width: 3.85rem;
+    transform: none;
+    z-index: 2;
   }
 
   .highland-cow {
-    width: 7.5rem;
-    transform: translate(42%, -50%);
+    top: auto;
+    right: 0;
+    left: auto;
+    bottom: 0.2rem;
+    width: 6.75rem;
+    transform: none;
+    z-index: 2;
   }
 
-  .show-fiddle {
-    width: 4.25rem;
-    transform: translate(-108%, -50%);
+  .slainte-mark {
+    top: auto;
+    right: 0;
+    left: auto;
+    bottom: 0.15rem;
+    transform: none;
+    z-index: 2;
   }
 
   .slainte-mark__spin {
-    width: 7rem;
-    height: 7rem;
+    width: 5.5rem;
+    height: 5.5rem;
   }
 
   .slainte-mark__text {
-    font-size: 0.82rem;
+    font-size: 0.72rem;
     max-width: 60%;
     letter-spacing: 0.02em;
     -webkit-text-stroke: 0.06em rgba(8, 40, 18, 0.9);
@@ -1208,6 +1237,29 @@ select {
 
   .show-card__day {
     font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .show-card--slainte,
+  .show-card--fiddle,
+  .show-card--cow,
+  .show-card--celtic {
+    padding-bottom: 5.25rem;
+  }
+
+  .show-fiddle,
+  .celtic-mark {
+    width: 3.5rem;
+  }
+
+  .highland-cow {
+    width: 6rem;
+  }
+
+  .slainte-mark__spin {
+    width: 5rem;
+    height: 5rem;
   }
 }
 
@@ -1240,6 +1292,56 @@ select {
 .media-page > .section {
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 700px) {
+  .media-ship__img {
+    width: clamp(6.5rem, 28vw, 9rem);
+    opacity: 0;
+    animation-duration: 64s;
+  }
+
+  @keyframes ship-sail-mobile {
+    0% {
+      transform: translate(-20vw, 6%) rotate(3deg);
+      opacity: 0;
+    }
+    8% {
+      opacity: 0.28;
+    }
+    50% {
+      transform: translate(40vw, 48%) rotate(1deg);
+      opacity: 0.28;
+    }
+    92% {
+      opacity: 0.22;
+    }
+    100% {
+      transform: translate(95vw, 110%) rotate(3deg);
+      opacity: 0;
+    }
+  }
+
+  .media-ship__img {
+    animation-name: ship-sail-mobile;
+  }
+
+  .home-hero__ornament {
+    inset: 4% 3%;
+    opacity: 0.28;
+  }
+
+  .home-hero__scroll {
+    bottom: 0.85rem;
+  }
+
+  .home-hero__content {
+    padding: 1.5rem 1.15rem 3.25rem;
+  }
+
+  .home-hero__lede {
+    font-size: 0.95rem;
+  }
 }
 
 .media-grid {
