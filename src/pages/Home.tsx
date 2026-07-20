@@ -207,6 +207,50 @@ export function Home() {
           </div>
         </div>
       </section>
+
+      <section className="section home-lineup" aria-labelledby="home-lineup-heading">
+        <div className="section-inner">
+          <h2 id="home-lineup-heading" className="section-title">
+            Lineup
+          </h2>
+          <hr className="gold-rule" />
+          <p className="section-lede">
+            The faces behind Swagger — click through for more photos of each member.
+          </p>
+          <div className="lineup-grid">
+            {band.members.map((member) => (
+              <article className="lineup-card" key={member.slug}>
+                <div className="lineup-card__photo">
+                  <img
+                    src={`${import.meta.env.BASE_URL}${member.photo}`}
+                    alt={member.name}
+                    loading="lazy"
+                  />
+                </div>
+                <div className="lineup-card__body">
+                  <h3 className="lineup-card__name">{member.name}</h3>
+                  <p className="lineup-card__role">{member.role}</p>
+                  {member.gallery.length > 0 ? (
+                    <details className="lineup-card__more">
+                      <summary>See more pictures of {member.name.split(' ')[0]}</summary>
+                      <div className="lineup-card__gallery">
+                        {member.gallery.map((src) => (
+                          <img
+                            key={src}
+                            src={`${import.meta.env.BASE_URL}${src}`}
+                            alt={`${member.name} additional photo`}
+                            loading="lazy"
+                          />
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   )
 }
