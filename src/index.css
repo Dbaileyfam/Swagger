@@ -268,18 +268,6 @@ select {
   color: var(--cream-faint);
 }
 
-.footer-social {
-  display: flex;
-  gap: 1.25rem;
-}
-
-.footer-social a {
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cream-muted);
-}
-
 /* ——— Shared ——— */
 .gold-rule {
   width: 4.5rem;
@@ -1898,9 +1886,16 @@ select {
 }
 
 .celtic-links--contact,
-.celtic-links--epk {
+.celtic-links--epk,
+.celtic-links--media,
+.celtic-links--shows {
   margin-top: 0.35rem;
   justify-content: flex-start;
+}
+
+.celtic-links--media,
+.celtic-links--shows {
+  margin-top: 2.5rem;
 }
 
 .epk-social {

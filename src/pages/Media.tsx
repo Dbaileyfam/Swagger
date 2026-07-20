@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CelticButton } from '../components/CelticButton'
-import { SpotifyIcon, YoutubeIcon } from '../components/SocialIcons'
+import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
 
@@ -154,40 +154,7 @@ export function Media() {
             </div>
           )}
 
-          <div className="btn-row" style={{ marginTop: '2.5rem' }} aria-label="Listen and watch">
-            <a
-              href={band.social.spotify}
-              className="celtic-link"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Open Spotify"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}celtic-ring-weave.png`}
-                alt=""
-                className="celtic-link__ring"
-                width={320}
-                height={320}
-              />
-              <SpotifyIcon className="celtic-link__icon" />
-            </a>
-            <a
-              href={band.social.youtube}
-              className="celtic-link"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="YouTube Channel"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}celtic-ring-weave.png`}
-                alt=""
-                className="celtic-link__ring"
-                width={320}
-                height={320}
-              />
-              <YoutubeIcon className="celtic-link__icon" />
-            </a>
-          </div>
+          <SocialCelticLinks className="celtic-links--media" />
         </div>
       </section>
     </div>

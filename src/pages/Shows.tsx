@@ -3,6 +3,7 @@ import { CelticButton } from '../components/CelticButton'
 import { CelticMark } from '../components/CelticMark'
 import { CheersToast, SlainteMark } from '../components/CheersToast'
 import { HighlandCow } from '../components/HighlandCow'
+import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { formatShowDate, pastShows, upcomingShows } from '../data/band'
 
 function ShowDate({ iso }: { iso: string }) {
@@ -97,6 +98,8 @@ export function Shows() {
               Show
             </CelticButton>
           </div>
+
+          <SocialCelticLinks className="celtic-links--shows" />
         </div>
       </section>
     </div>
