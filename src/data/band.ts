@@ -92,6 +92,7 @@ export const band = {
         'members/eric/02.jpg',
         'members/eric/03.jpg',
         'members/eric/04.jpg',
+        'members/eric/05.jpg',
       ],
     },
   ],
