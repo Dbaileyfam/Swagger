@@ -180,7 +180,6 @@ export function Home() {
             />
           </div>
           <div className="home-about__copy">
-            <p className="section-label">Biography</p>
             <h2 className="section-title">{band.tagline}</h2>
             <hr className="gold-rule" />
             {band.bio.split('\n\n').map((para) => (

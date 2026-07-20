@@ -54,7 +54,6 @@ export function Epk() {
   return (
     <>
       <header className="page-hero">
-        <p className="section-label">For Promoters</p>
         <h1 className="section-title">Electronic Press Kit</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>

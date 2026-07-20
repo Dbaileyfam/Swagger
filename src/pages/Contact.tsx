@@ -25,7 +25,6 @@ export function Contact() {
   return (
     <>
       <header className="page-hero">
-        <p className="section-label">Get in Touch</p>
         <h1 className="section-title">Contact</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>

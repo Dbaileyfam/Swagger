@@ -25,7 +25,6 @@ export function Shows() {
   return (
     <div className="shows-page">
       <header className="page-hero">
-        <p className="section-label">Tour</p>
         <h1 className="section-title">Upcoming Shows</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
