@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
-import { band, epkLogos, epkPhotos, mediaItems } from '../data/band'
+import { band, epkLogos, epkPhotos, mediaItems, stagePlots } from '../data/band'
 import type { MediaItem } from '../data/band'
 
 function assetUrl(path: string) {
@@ -50,6 +50,8 @@ function EpkVideo({ item }: { item: MediaItem }) {
 
 export function Epk() {
   const topVideos = mediaItems.filter((item) => item.type === 'video').slice(0, 3)
+  const [activePlotId, setActivePlotId] = useState(stagePlots[0]?.id ?? 'plot-5')
+  const activePlot = stagePlots.find((plot) => plot.id === activePlotId) ?? stagePlots[0]
 
   return (
     <>
@@ -139,6 +141,89 @@ export function Epk() {
                 <EpkVideo key={item.id} item={item} />
               ))}
             </div>
+          </div>
+
+          <div className="epk-tech">
+            <p className="section-label">Stage Plots &amp; Input Lists</p>
+            <p className="epk-tech__lede">
+              Download the PDF stage plot that matches the booked lineup, then use the matching
+              input list below for FOH.
+            </p>
+
+            <div className="stage-plot-grid">
+              {stagePlots.map((plot) => (
+                <a
+                  key={plot.id}
+                  className={`stage-plot-card${activePlotId === plot.id ? ' stage-plot-card--active' : ''}`}
+                  href={assetUrl(plot.file)}
+                  target="_blank"
+                  rel="noreferrer"
+                  download
+                  onClick={() => setActivePlotId(plot.id)}
+                >
+                  <span className="stage-plot-card__pieces">{plot.pieces}</span>
+                  <strong className="stage-plot-card__title">{plot.title}</strong>
+                  <span className="stage-plot-card__desc">{plot.description}</span>
+                  <span className="stage-plot-card__action">Download PDF</span>
+                </a>
+              ))}
+            </div>
+
+            {activePlot && (
+              <div className="input-list">
+                <div className="input-list__header">
+                  <h3>
+                    Input List — {activePlot.title}
+                    <span>{activePlot.pieces}</span>
+                  </h3>
+                  <div className="input-list__tabs" role="tablist" aria-label="Choose stage plot">
+                    {stagePlots.map((plot) => (
+                      <button
+                        key={plot.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={activePlotId === plot.id}
+                        className={`input-list__tab${activePlotId === plot.id ? ' input-list__tab--active' : ''}`}
+                        onClick={() => setActivePlotId(plot.id)}
+                      >
+                        {plot.title.replace('Stage Plot ', 'Plot ')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="input-list__table-wrap">
+                  <table className="input-list__table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Ch</th>
+                        <th scope="col">Source</th>
+                        <th scope="col">Mic / DI</th>
+                        <th scope="col">Stand</th>
+                        <th scope="col">Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activePlot.inputs.map((row) => (
+                        <tr key={`${activePlot.id}-${row.ch}`}>
+                          <td>{row.ch}</td>
+                          <td>{row.source}</td>
+                          <td>{row.micDi}</td>
+                          <td>{row.stand}</td>
+                          <td>{row.notes}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <ul className="input-list__notes">
+                  {activePlot.notes.map((note) => (
+                    <li key={note}>{note}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className="epk-grid">

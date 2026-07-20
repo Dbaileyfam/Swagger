@@ -271,6 +271,129 @@ export const epkLogos = [
   },
 ] as const
 
+export type StageInput = {
+  ch: number
+  source: string
+  micDi: string
+  stand: string
+  notes: string
+}
+
+export type StagePlot = {
+  id: string
+  title: string
+  pieces: string
+  description: string
+  file: string
+  notes: string[]
+  inputs: StageInput[]
+}
+
+/** Stage plots + input lists derived from Swagger Stage Plot PDFs */
+export const stagePlots: StagePlot[] = [
+  {
+    id: 'plot-5',
+    title: 'Stage Plot 5',
+    pieces: '5-piece',
+    description: 'Rick, Dennis, Trip, Manny & Mike',
+    file: 'epk/swagger-stage-plot-5.pdf',
+    notes: [
+      'Drums: Kick, Snare, 2 rack toms, 1 floor tom, hi-hats, ride & 5 cymbals',
+      'Mike IEM via Mackie 5 — needs one male XLR input',
+      'Contact: Rick Butler · (801) 550-1140 · texasrick63@msn.com',
+    ],
+    inputs: [
+      { ch: 1, source: 'Kick', micDi: 'Mic', stand: 'Short', notes: 'Mike — drums' },
+      { ch: 2, source: 'Snare', micDi: 'Mic', stand: 'Short', notes: '' },
+      { ch: 3, source: 'Rack Tom 1', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+      { ch: 4, source: 'Rack Tom 2', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+      { ch: 5, source: 'Floor Tom', micDi: 'Mic', stand: 'Short', notes: '' },
+      { ch: 6, source: 'Hi-Hat', micDi: 'Mic', stand: 'Short boom', notes: '' },
+      { ch: 7, source: 'Ride / OH', micDi: 'Mic', stand: 'Boom', notes: 'Covers ride & cymbals' },
+      { ch: 8, source: 'Overhead', micDi: 'Mic', stand: 'Boom', notes: '5 cymbals' },
+      { ch: 9, source: 'Bass Amp', micDi: 'Mic / DI', stand: 'Short', notes: 'Manny' },
+      { ch: 10, source: 'Bass Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Manny — 2 XLR total' },
+      { ch: 11, source: 'Lead Guitar Amp', micDi: 'Mic', stand: 'Short', notes: 'Trip' },
+      { ch: 12, source: 'Banjo', micDi: 'DI / Mic', stand: '—', notes: 'Trip — 2 XLR total' },
+      { ch: 13, source: 'Acoustic Guitar', micDi: 'DI', stand: '—', notes: 'Rick' },
+      { ch: 14, source: 'Mandolin', micDi: 'DI', stand: '—', notes: 'Rick' },
+      { ch: 15, source: 'Lead Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Rick — 3 XLR total' },
+      { ch: 16, source: 'Fiddle', micDi: 'DI / Mic', stand: '—', notes: 'Dennis' },
+      { ch: 17, source: 'Fiddle Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Dennis — 2 XLR total' },
+      { ch: 18, source: 'Drum IEM Return', micDi: 'Male XLR', stand: '—', notes: 'To Mike Mackie 5' },
+    ],
+  },
+  {
+    id: 'plot-6',
+    title: 'Stage Plot 6',
+    pieces: '6-piece',
+    description: 'Adds Eric — Mandolin 2 & vocals',
+    file: 'epk/swagger-stage-plot-6.pdf',
+    notes: [
+      'Drums: Kick, Snare, 2 rack toms, 1 floor tom, hi-hats, ride & 5 cymbals',
+      'Mike IEM via Mackie 5 — needs one male XLR input',
+      'Contact: Rick Butler · (801) 550-1140 · texasrick63@msn.com',
+    ],
+    inputs: [
+      { ch: 1, source: 'Kick', micDi: 'Mic', stand: 'Short', notes: 'Mike — drums' },
+      { ch: 2, source: 'Snare', micDi: 'Mic', stand: 'Short', notes: '' },
+      { ch: 3, source: 'Rack Tom 1', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+      { ch: 4, source: 'Rack Tom 2', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+      { ch: 5, source: 'Floor Tom', micDi: 'Mic', stand: 'Short', notes: '' },
+      { ch: 6, source: 'Hi-Hat', micDi: 'Mic', stand: 'Short boom', notes: '' },
+      { ch: 7, source: 'Ride / OH', micDi: 'Mic', stand: 'Boom', notes: 'Covers ride & cymbals' },
+      { ch: 8, source: 'Overhead', micDi: 'Mic', stand: 'Boom', notes: '5 cymbals' },
+      { ch: 9, source: 'Bass Amp', micDi: 'Mic / DI', stand: 'Short', notes: 'Manny' },
+      { ch: 10, source: 'Bass Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Manny — 2 XLR total' },
+      { ch: 11, source: 'Lead Guitar Amp', micDi: 'Mic', stand: 'Short', notes: 'Trip' },
+      { ch: 12, source: 'Banjo', micDi: 'DI / Mic', stand: '—', notes: 'Trip — 2 XLR total' },
+      { ch: 13, source: 'Guitar / Mandolin 1', micDi: 'DI / Mic', stand: '—', notes: 'Rick' },
+      { ch: 14, source: 'Mandolin 1', micDi: 'DI', stand: '—', notes: 'Rick' },
+      { ch: 15, source: 'Lead Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Rick — 3 XLR total' },
+      { ch: 16, source: 'Fiddle', micDi: 'DI / Mic', stand: '—', notes: 'Dennis' },
+      { ch: 17, source: 'Fiddle Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Dennis — 2 XLR total' },
+      { ch: 18, source: 'Mandolin 2', micDi: 'DI', stand: '—', notes: 'Eric' },
+      { ch: 19, source: 'Mandolin Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Eric — 2 XLR total' },
+      { ch: 20, source: 'Drum IEM Return', micDi: 'Male XLR', stand: '—', notes: 'To Mike Mackie 5' },
+    ],
+  },
+  {
+    id: 'plot-7',
+    title: 'Stage Plot 7',
+    pieces: '7-piece',
+    description: 'Adds Brian — Mandolin 3',
+    file: 'epk/swagger-stage-plot-7.pdf',
+    notes: [
+      'Drums: Kick, Snare, 2 rack toms, 1 floor tom, hi-hats, ride & 5 cymbals',
+      'Mike IEM via Mackie 5 — needs one male XLR input',
+      'Contact: Rick Butler · (801) 550-1140 · texasrick63@msn.com',
+    ],
+    inputs: [
+      { ch: 1, source: 'Kick', micDi: 'Mic', stand: 'Short', notes: 'Mike — drums' },
+      { ch: 2, source: 'Snare', micDi: 'Mic', stand: 'Short', notes: '' },
+      { ch: 3, source: 'Rack Tom 1', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+      { ch: 4, source: 'Rack Tom 2', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+      { ch: 5, source: 'Floor Tom', micDi: 'Mic', stand: 'Short', notes: '' },
+      { ch: 6, source: 'Hi-Hat', micDi: 'Mic', stand: 'Short boom', notes: '' },
+      { ch: 7, source: 'Ride / OH', micDi: 'Mic', stand: 'Boom', notes: 'Covers ride & cymbals' },
+      { ch: 8, source: 'Overhead', micDi: 'Mic', stand: 'Boom', notes: '5 cymbals' },
+      { ch: 9, source: 'Bass Amp', micDi: 'Mic / DI', stand: 'Short', notes: 'Manny' },
+      { ch: 10, source: 'Bass Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Manny — 2 XLR total' },
+      { ch: 11, source: 'Lead Guitar Amp', micDi: 'Mic', stand: 'Short', notes: 'Trip' },
+      { ch: 12, source: 'Banjo', micDi: 'DI / Mic', stand: '—', notes: 'Trip — 2 XLR total' },
+      { ch: 13, source: 'Guitar / Mandolin 1', micDi: 'DI / Mic', stand: '—', notes: 'Rick' },
+      { ch: 14, source: 'Mandolin 1', micDi: 'DI', stand: '—', notes: 'Rick' },
+      { ch: 15, source: 'Lead Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Rick — 3 XLR total' },
+      { ch: 16, source: 'Fiddle', micDi: 'DI / Mic', stand: '—', notes: 'Dennis' },
+      { ch: 17, source: 'Fiddle Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Dennis — 2 XLR total' },
+      { ch: 18, source: 'Mandolin 2', micDi: 'DI', stand: '—', notes: 'Eric' },
+      { ch: 19, source: 'Mandolin Vocal', micDi: 'Mic', stand: 'Straight', notes: 'Eric — 2 XLR total' },
+      { ch: 20, source: 'Mandolin 3', micDi: 'DI', stand: '—', notes: 'Brian — 1 XLR' },
+      { ch: 21, source: 'Drum IEM Return', micDi: 'Male XLR', stand: '—', notes: 'To Mike Mackie 5' },
+    ],
+  },
+]
+
 /** Live performance photos for the Media gallery */
 export const livePhotos: MediaItem[] = [
   {
