@@ -68,7 +68,10 @@ function PhotoTile({ item }: { item: MediaItem }) {
 
 function SpotifyEmbed() {
   return (
-    <div className="spotify-embed">
+    <section className="media-section spotify-embed" aria-labelledby="media-music-heading">
+      <h2 id="media-music-heading" className="media-section__title">
+        Music
+      </h2>
       <p className="section-label">Listen on Spotify</p>
       <div className="spotify-embed__frame">
         <iframe
@@ -82,7 +85,7 @@ function SpotifyEmbed() {
           allowFullScreen
         />
       </div>
-    </div>
+    </section>
   )
 }
 
@@ -133,25 +136,29 @@ export function Media() {
           {showMusic && <SpotifyEmbed />}
 
           {showPhotos && (
-            <div
-              className="media-grid"
-              style={showMusic ? { marginTop: '2.5rem' } : undefined}
-            >
-              {photos.map((item) => (
-                <PhotoTile key={item.id} item={item} />
-              ))}
-            </div>
+            <section className="media-section" aria-labelledby="media-photos-heading">
+              <h2 id="media-photos-heading" className="media-section__title">
+                Photos
+              </h2>
+              <div className="media-grid">
+                {photos.map((item) => (
+                  <PhotoTile key={item.id} item={item} />
+                ))}
+              </div>
+            </section>
           )}
 
           {showVideos && (
-            <div
-              className="media-grid"
-              style={showPhotos || showMusic ? { marginTop: '2.5rem' } : undefined}
-            >
-              {videos.map((item) => (
-                <VideoTile key={item.id} item={item} />
-              ))}
-            </div>
+            <section className="media-section" aria-labelledby="media-videos-heading">
+              <h2 id="media-videos-heading" className="media-section__title">
+                Videos
+              </h2>
+              <div className="media-grid">
+                {videos.map((item) => (
+                  <VideoTile key={item.id} item={item} />
+                ))}
+              </div>
+            </section>
           )}
 
           <SocialCelticLinks className="celtic-links--media" />
