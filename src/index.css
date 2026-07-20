@@ -6,14 +6,14 @@
   --velvet-mid: #07140d;
   --velvet-lift: #0c2216;
   --velvet-mist: #123222;
-  --gold: #c9a84a;
-  --gold-bright: #e4c76b;
-  --gold-dim: #8a7340;
-  --gold-soft: rgba(201, 168, 74, 0.18);
-  --gold-line: rgba(201, 168, 74, 0.35);
-  --cream: #f3ead6;
-  --cream-muted: rgba(243, 234, 214, 0.72);
-  --cream-faint: rgba(243, 234, 214, 0.45);
+  --gold: #e0c05a;
+  --gold-bright: #f2db8a;
+  --gold-dim: #a68b4a;
+  --gold-soft: rgba(224, 192, 90, 0.22);
+  --gold-line: rgba(224, 192, 90, 0.42);
+  --cream: #fff8e8;
+  --cream-muted: rgba(255, 248, 232, 0.88);
+  --cream-faint: rgba(255, 248, 232, 0.62);
   --ink: #010403;
 
   --font-display: 'Cinzel', serif;
@@ -308,7 +308,7 @@ select {
   font-size: 0.72rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-bright);
   margin-bottom: 0.75rem;
 }
 
@@ -369,7 +369,13 @@ select {
 }
 
 .celtic-link--sm {
-  --ring-size: clamp(3.6rem, 11vw, 4.4rem);
+  --ring-size: clamp(4.4rem, 13vw, 5.35rem);
+}
+
+.celtic-link--sm .celtic-link__label {
+  max-width: 72%;
+  font-size: clamp(0.58rem, 1.6vw, 0.72rem);
+  letter-spacing: 0.04em;
 }
 
 .celtic-link__ring {
