@@ -220,6 +220,13 @@ export type MediaItem = {
 /** Press photos from https://swaggertheband.com/epk-files/ */
 export const epkPhotos: MediaItem[] = [
   {
+    id: 'epk-4',
+    type: 'photo',
+    title: 'Band Portrait — Fireplace',
+    description: 'Official press photo',
+    image: 'epk/epk-4.png',
+  },
+  {
     id: 'epk-1',
     type: 'photo',
     title: 'Band Portrait',
