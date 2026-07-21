@@ -38,26 +38,15 @@ export function Home() {
                 width={1952}
                 height={768}
               />
-              <span className="home-hero__glitter" aria-hidden="true">
-                <span className="logo-glint logo-glint--1" />
-                <span className="logo-glint logo-glint--2" />
-                <span className="logo-glint logo-glint--3" />
-                <span className="logo-glint logo-glint--4" />
-                <span className="logo-glint logo-glint--5" />
-                <span className="logo-glint logo-glint--6" />
-                <span className="logo-glint logo-glint--7" />
-                <span className="logo-glint logo-glint--8" />
-                <span className="logo-glint logo-glint--9" />
-                <span className="logo-glint logo-glint--10" />
-                <span className="logo-glint logo-glint--11" />
-                <span className="logo-glint logo-glint--12" />
-                <span className="logo-glint logo-glint--13" />
-                <span className="logo-glint logo-glint--14" />
-                <span className="logo-glint logo-glint--15" />
-                <span className="logo-glint logo-glint--16" />
-                <span className="logo-glint logo-glint--17" />
-                <span className="logo-glint logo-glint--18" />
-              </span>
+              <span
+                className="home-hero__logo-lava"
+                aria-hidden="true"
+                style={{
+                  backgroundImage: `url(${import.meta.env.BASE_URL}gold-glitter.jpg)`,
+                  WebkitMaskImage: `url(${import.meta.env.BASE_URL}swagger-mark-crest-v3.png)`,
+                  maskImage: `url(${import.meta.env.BASE_URL}swagger-mark-crest-v3.png)`,
+                }}
+              />
             </span>
           </h1>
           <hr className="gold-rule gold-rule--center" />
