@@ -30,13 +30,35 @@ export function Home() {
         <div className="home-hero__ornament" aria-hidden="true" />
         <div className="home-hero__content">
           <h1 className="home-hero__brand">
-            <img
-              src={`${import.meta.env.BASE_URL}swagger-mark-crest-v3.png`}
-              alt="Swagger"
-              className="home-hero__logo"
-              width={1952}
-              height={768}
-            />
+            <span className="home-hero__logo-wrap">
+              <img
+                src={`${import.meta.env.BASE_URL}swagger-mark-crest-v3.png`}
+                alt="Swagger"
+                className="home-hero__logo"
+                width={1952}
+                height={768}
+              />
+              <span className="home-hero__glitter" aria-hidden="true">
+                <span className="logo-glint logo-glint--1" />
+                <span className="logo-glint logo-glint--2" />
+                <span className="logo-glint logo-glint--3" />
+                <span className="logo-glint logo-glint--4" />
+                <span className="logo-glint logo-glint--5" />
+                <span className="logo-glint logo-glint--6" />
+                <span className="logo-glint logo-glint--7" />
+                <span className="logo-glint logo-glint--8" />
+                <span className="logo-glint logo-glint--9" />
+                <span className="logo-glint logo-glint--10" />
+                <span className="logo-glint logo-glint--11" />
+                <span className="logo-glint logo-glint--12" />
+                <span className="logo-glint logo-glint--13" />
+                <span className="logo-glint logo-glint--14" />
+                <span className="logo-glint logo-glint--15" />
+                <span className="logo-glint logo-glint--16" />
+                <span className="logo-glint logo-glint--17" />
+                <span className="logo-glint logo-glint--18" />
+              </span>
+            </span>
           </h1>
           <hr className="gold-rule gold-rule--center" />
           <p className="home-hero__tag">{band.tagline}</p>
