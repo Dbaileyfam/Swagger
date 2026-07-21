@@ -30,13 +30,34 @@ export function Home() {
         <div className="home-hero__ornament" aria-hidden="true" />
         <div className="home-hero__content">
           <h1 className="home-hero__brand">
-            <img
-              src={`${import.meta.env.BASE_URL}swagger-mark-crest-v3.png`}
-              alt="Swagger"
-              className="home-hero__logo"
-              width={1952}
-              height={768}
-            />
+            <span className="home-hero__logo-wrap">
+              <img
+                src={`${import.meta.env.BASE_URL}swagger-mark-crest-v3.png`}
+                alt="Swagger"
+                className="home-hero__logo"
+                width={1952}
+                height={768}
+              />
+              <span
+                className="home-hero__logo-shine"
+                aria-hidden="true"
+                style={{
+                  WebkitMaskImage: `url(${import.meta.env.BASE_URL}swagger-mark-crest-v3.png)`,
+                  maskImage: `url(${import.meta.env.BASE_URL}swagger-mark-crest-v3.png)`,
+                }}
+              />
+              <svg
+                className="home-hero__strings"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <line className="home-hero__string home-hero__string--1" x1="48.2" y1="18" x2="48.2" y2="58" />
+                <line className="home-hero__string home-hero__string--2" x1="49.4" y1="18" x2="49.4" y2="58" />
+                <line className="home-hero__string home-hero__string--3" x1="50.6" y1="18" x2="50.6" y2="58" />
+                <line className="home-hero__string home-hero__string--4" x1="51.8" y1="18" x2="51.8" y2="58" />
+              </svg>
+            </span>
           </h1>
           <hr className="gold-rule gold-rule--center" />
           <p className="home-hero__tag">{band.tagline}</p>
