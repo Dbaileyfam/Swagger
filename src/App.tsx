@@ -5,6 +5,7 @@ import { Epk } from './pages/Epk'
 import { Home } from './pages/Home'
 import { Media } from './pages/Media'
 import { Shows } from './pages/Shows'
+import { Store } from './pages/Store'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="shows" element={<Shows />} />
           <Route path="media" element={<Media />} />
+          <Route path="store" element={<Store />} />
           <Route path="epk" element={<Epk />} />
           <Route path="contact" element={<Contact />} />
         </Route>
