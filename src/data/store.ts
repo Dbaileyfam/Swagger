@@ -1,7 +1,9 @@
 import { band } from './band'
 
-export const CD_PRICE = 15
+export const CD_PRICE = 18
 export const MP3_PRICE = 1.99
+/** Discounted full-album digital download (vs buying every track). */
+export const ALBUM_MP3_PRICE = 12.99
 
 export type AlbumId =
   | 'trouble-on-the-green'
@@ -19,6 +21,7 @@ export type StoreAlbum = {
 
 export type CartLine =
   | { key: string; kind: 'cd'; albumId: AlbumId; qty: number }
+  | { key: string; kind: 'mp3-album'; albumId: AlbumId; qty: number }
   | { key: string; kind: 'mp3'; albumId: AlbumId; trackIndex: number; qty: number }
 
 export const storeAlbums: StoreAlbum[] = [
@@ -109,18 +112,21 @@ export function formatMoney(amount: number): string {
   return `$${amount.toFixed(2)}`
 }
 
-export function albumDigitalTotal(album: StoreAlbum): number {
-  return Number((album.tracks.length * MP3_PRICE).toFixed(2))
+export function albumDigitalTotal(_album: StoreAlbum): number {
+  return ALBUM_MP3_PRICE
 }
 
 export function lineUnitPrice(line: CartLine): number {
-  return line.kind === 'cd' ? CD_PRICE : MP3_PRICE
+  if (line.kind === 'cd') return CD_PRICE
+  if (line.kind === 'mp3-album') return ALBUM_MP3_PRICE
+  return MP3_PRICE
 }
 
 export function lineLabel(line: CartLine): string {
   const album = getAlbum(line.albumId)
   if (!album) return 'Unknown item'
-  if (line.kind === 'cd') return `${album.title} — CD`
+  if (line.kind === 'cd') return `${album.title} — CD (free shipping)`
+  if (line.kind === 'mp3-album') return `${album.title} — Full album MP3`
   const track = album.tracks[line.trackIndex] ?? `Track ${line.trackIndex + 1}`
   return `${album.title} — ${track} (MP3)`
 }
@@ -139,6 +145,10 @@ export function cartHasCd(lines: CartLine[]): boolean {
 
 export function cdLineKey(albumId: AlbumId): string {
   return `cd:${albumId}`
+}
+
+export function mp3AlbumLineKey(albumId: AlbumId): string {
+  return `mp3-album:${albumId}`
 }
 
 export function mp3LineKey(albumId: AlbumId, trackIndex: number): string {
@@ -166,7 +176,7 @@ export function buildOrderMailto(lines: CartLine[], details: CheckoutDetails): s
 
   const needsShipping = cartHasCd(lines)
   const shipping = needsShipping
-    ? `\nShip CD(s) to:\n${details.address}\n${details.city}, ${details.state} ${details.zip}\n`
+    ? `\nShip CD(s) to (free shipping):\n${details.address}\n${details.city}, ${details.state} ${details.zip}\n`
     : '\n(Digital only — no shipping needed)\n'
 
   const body = [
@@ -177,6 +187,7 @@ export function buildOrderMailto(lines: CartLine[], details: CheckoutDetails): s
     items,
     '',
     `Total: ${formatMoney(cartSubtotal(lines))}`,
+    needsShipping ? 'Shipping: FREE\n' : '',
     shipping,
     details.notes ? `Notes:\n${details.notes}\n` : '',
     'Payment details to follow — this order was submitted from the Swagger website store.',

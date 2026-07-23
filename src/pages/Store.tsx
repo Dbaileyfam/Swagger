@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { CelticButton } from '../components/CelticButton'
 import {
+  ALBUM_MP3_PRICE,
   albumDigitalTotal,
   buildOrderMailto,
   cartHasCd,
@@ -12,6 +13,7 @@ import {
   lineLabel,
   lineUnitPrice,
   MP3_PRICE,
+  mp3AlbumLineKey,
   mp3LineKey,
   storeAlbums,
   type AlbumId,
@@ -54,14 +56,16 @@ function AlbumCard({
         <p className="store-card__year">{album.year}</p>
         <h2 className="store-card__title">{album.title}</h2>
         <p className="store-card__price">
-          CD {formatMoney(CD_PRICE)} · MP3 {formatMoney(MP3_PRICE)}/track
+          CD {formatMoney(CD_PRICE)} (free shipping)
+          <br />
+          Full album MP3 {formatMoney(ALBUM_MP3_PRICE)} · Single MP3 {formatMoney(MP3_PRICE)}
         </p>
         <div className="store-card__actions">
           <button type="button" className="store-btn" onClick={onAddCd}>
             Add CD
           </button>
           <button type="button" className="store-btn store-btn--ghost" onClick={onAddAllTracks}>
-            Add all tracks ({formatMoney(digitalTotal)})
+            Add all MP3 tracks ({formatMoney(digitalTotal)})
           </button>
         </div>
         <button
@@ -70,7 +74,7 @@ function AlbumCard({
           aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
         >
-          {open ? 'Hide tracklist' : `Show tracklist (${album.tracks.length})`}
+          {open ? 'Hide all MP3 tracklist' : `All MP3 tracklist (${album.tracks.length})`}
         </button>
         {open ? (
           <ol className="store-tracklist">
@@ -123,17 +127,17 @@ export function Store() {
 
   function addAllTracks(album: StoreAlbum) {
     setCart((lines) => {
-      let next = lines
-      album.tracks.forEach((_, trackIndex) => {
-        next = addOrBump(next, {
-          key: mp3LineKey(album.id, trackIndex),
-          kind: 'mp3',
-          albumId: album.id,
-          trackIndex,
-          qty: 1,
-        })
+      const withoutAlbumTracks = lines.filter(
+        (line) =>
+          !(line.kind === 'mp3' && line.albumId === album.id) &&
+          !(line.kind === 'mp3-album' && line.albumId === album.id),
+      )
+      return addOrBump(withoutAlbumTracks, {
+        key: mp3AlbumLineKey(album.id),
+        kind: 'mp3-album',
+        albumId: album.id,
+        qty: 1,
       })
-      return next
     })
     setSent(false)
   }
@@ -174,8 +178,9 @@ export function Store() {
         <h1 className="section-title">Store</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Order physical CDs or individual MP3s from the Swagger catalog. Payment setup is coming
-          soon — checkout sends your order by email.
+          Order physical CDs ({formatMoney(CD_PRICE)}, free shipping) or digital downloads — full
+          album MP3s {formatMoney(ALBUM_MP3_PRICE)}, or single tracks {formatMoney(MP3_PRICE)}.
+          Payment setup is coming soon — checkout sends your order by email.
         </p>
       </header>
 
