@@ -446,6 +446,18 @@ select {
   font-size: clamp(2.2rem, 6vw, 3.5rem);
 }
 
+.epk-hero__logo {
+  display: block;
+  width: min(42vw, 11rem);
+  height: auto;
+  margin: 0 auto 1rem;
+  filter:
+    saturate(1.1)
+    brightness(1.04)
+    drop-shadow(0 0 10px rgba(255, 210, 110, 0.35))
+    drop-shadow(0 8px 20px rgba(0, 0, 0, 0.45));
+}
+
 /* ——— Home hero ——— */
 .home-hero {
   position: relative;

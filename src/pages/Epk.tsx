@@ -55,7 +55,12 @@ export function Epk() {
 
   return (
     <>
-      <header className="page-hero">
+      <header className="page-hero epk-hero">
+        <img
+          src={`${import.meta.env.BASE_URL}swagger-mark-crest-v3.png`}
+          alt="Swagger"
+          className="epk-hero__logo"
+        />
         <h1 className="section-title">Electronic Press Kit</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
