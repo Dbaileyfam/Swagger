@@ -10,16 +10,21 @@ import {
   CD_PRICE,
   cdLineKey,
   formatMoney,
+  isStripeTroubleCdCart,
   lineLabel,
   lineUnitPrice,
   MP3_PRICE,
   mp3AlbumLineKey,
   mp3LineKey,
   storeAlbums,
+  troubleCdQuantity,
   type AlbumId,
   type CartLine,
   type StoreAlbum,
 } from '../data/store'
+
+const STRIPE_CHECKOUT_URL =
+  'https://swagger-stripe-checkout.dbailey-dfe.workers.dev/create-checkout-session'
 
 function assetUrl(path: string) {
   return `${import.meta.env.BASE_URL}${path}`
@@ -102,7 +107,10 @@ function AlbumCard({
 export function Store() {
   const [cart, setCart] = useState<CartLine[]>([])
   const [sent, setSent] = useState(false)
+  const [stripeLoading, setStripeLoading] = useState(false)
+  const [stripeError, setStripeError] = useState<string | null>(null)
   const needsShipping = cartHasCd(cart)
+  const stripeEligible = useMemo(() => isStripeTroubleCdCart(cart), [cart])
   const total = useMemo(() => cartSubtotal(cart), [cart])
 
   function addCd(albumId: AlbumId) {
@@ -110,6 +118,7 @@ export function Store() {
       addOrBump(lines, { key: cdLineKey(albumId), kind: 'cd', albumId, qty: 1 }),
     )
     setSent(false)
+    setStripeError(null)
   }
 
   function addTrack(albumId: AlbumId, trackIndex: number) {
@@ -123,6 +132,7 @@ export function Store() {
       }),
     )
     setSent(false)
+    setStripeError(null)
   }
 
   function addAllTracks(album: StoreAlbum) {
@@ -140,6 +150,7 @@ export function Store() {
       })
     })
     setSent(false)
+    setStripeError(null)
   }
 
   function setQty(key: string, qty: number) {
@@ -148,15 +159,17 @@ export function Store() {
         .map((line) => (line.key === key ? { ...line, qty } : line))
         .filter((line) => line.qty > 0),
     )
+    setStripeError(null)
   }
 
   function removeLine(key: string) {
     setCart((lines) => lines.filter((line) => line.key !== key))
+    setStripeError(null)
   }
 
   function handleCheckout(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (cart.length === 0) return
+    if (cart.length === 0 || stripeEligible) return
     const form = e.currentTarget
     const data = new FormData(form)
     const details = {
@@ -170,6 +183,43 @@ export function Store() {
     }
     window.location.href = buildOrderMailto(cart, details)
     setSent(true)
+  }
+
+  async function handleStripeCheckout() {
+    if (!stripeEligible || stripeLoading) return
+    const quantity = troubleCdQuantity(cart)
+    if (quantity < 1) return
+
+    setStripeError(null)
+    setStripeLoading(true)
+    try {
+      const response = await fetch(STRIPE_CHECKOUT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity }),
+      })
+      let data: { url?: string; error?: string; message?: string } = {}
+      try {
+        data = (await response.json()) as typeof data
+      } catch {
+        throw new Error('Checkout response was not valid JSON.')
+      }
+      if (!response.ok || !data.url) {
+        throw new Error(
+          data.error ||
+            data.message ||
+            `Could not create checkout (status ${response.status}).`,
+        )
+      }
+      window.location.href = data.url
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Could not open Stripe checkout. Please try again.'
+      setStripeError(message)
+      setStripeLoading(false)
+    }
   }
 
   return (
@@ -247,85 +297,106 @@ export function Store() {
               <strong>{formatMoney(total)}</strong>
             </div>
 
-            <form className="store-checkout contact-form" onSubmit={handleCheckout}>
-              <div className="field">
-                <label htmlFor="store-name">Name</label>
-                <input id="store-name" name="name" type="text" required autoComplete="name" />
-              </div>
-              <div className="field">
-                <label htmlFor="store-email">Email</label>
-                <input
-                  id="store-email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                />
-              </div>
-              {needsShipping ? (
-                <>
-                  <div className="field">
-                    <label htmlFor="store-address">Shipping address</label>
-                    <input
-                      id="store-address"
-                      name="address"
-                      type="text"
-                      required
-                      autoComplete="street-address"
-                    />
-                  </div>
-                  <div className="store-checkout__row">
-                    <div className="field">
-                      <label htmlFor="store-city">City</label>
-                      <input
-                        id="store-city"
-                        name="city"
-                        type="text"
-                        required
-                        autoComplete="address-level2"
-                      />
-                    </div>
-                    <div className="field">
-                      <label htmlFor="store-state">State</label>
-                      <input
-                        id="store-state"
-                        name="state"
-                        type="text"
-                        required
-                        autoComplete="address-level1"
-                      />
-                    </div>
-                    <div className="field">
-                      <label htmlFor="store-zip">ZIP</label>
-                      <input
-                        id="store-zip"
-                        name="zip"
-                        type="text"
-                        required
-                        autoComplete="postal-code"
-                      />
-                    </div>
-                  </div>
-                </>
-              ) : null}
-              <div className="field">
-                <label htmlFor="store-notes">Notes (optional)</label>
-                <textarea id="store-notes" name="notes" rows={3} />
-              </div>
-              <CelticButton type="submit" className="celtic-link--wide">
-                Email order
-              </CelticButton>
-              {sent ? (
+            {stripeEligible ? (
+              <div className="store-checkout">
                 <p className="store-checkout__note">
-                  Your email app should open with the order details. If nothing opens, email us
-                  directly from Contact.
+                  Stripe test mode — no real charges. Card payments are for sandbox testing only.
                 </p>
-              ) : (
-                <p className="store-checkout__note">
-                  Online payment coming soon. For now, checkout opens a prefilled email order.
-                </p>
-              )}
-            </form>
+                <CelticButton
+                  type="button"
+                  className="celtic-link--wide"
+                  onClick={() => void handleStripeCheckout()}
+                  disabled={stripeLoading || cart.length === 0}
+                >
+                  {stripeLoading ? 'Opening secure checkout…' : 'Secure Stripe Checkout'}
+                </CelticButton>
+                {stripeError ? (
+                  <p className="store-checkout__note" role="alert">
+                    Could not start Stripe checkout: {stripeError}
+                  </p>
+                ) : null}
+              </div>
+            ) : (
+              <form className="store-checkout contact-form" onSubmit={handleCheckout}>
+                <div className="field">
+                  <label htmlFor="store-name">Name</label>
+                  <input id="store-name" name="name" type="text" required autoComplete="name" />
+                </div>
+                <div className="field">
+                  <label htmlFor="store-email">Email</label>
+                  <input
+                    id="store-email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                  />
+                </div>
+                {needsShipping ? (
+                  <>
+                    <div className="field">
+                      <label htmlFor="store-address">Shipping address</label>
+                      <input
+                        id="store-address"
+                        name="address"
+                        type="text"
+                        required
+                        autoComplete="street-address"
+                      />
+                    </div>
+                    <div className="store-checkout__row">
+                      <div className="field">
+                        <label htmlFor="store-city">City</label>
+                        <input
+                          id="store-city"
+                          name="city"
+                          type="text"
+                          required
+                          autoComplete="address-level2"
+                        />
+                      </div>
+                      <div className="field">
+                        <label htmlFor="store-state">State</label>
+                        <input
+                          id="store-state"
+                          name="state"
+                          type="text"
+                          required
+                          autoComplete="address-level1"
+                        />
+                      </div>
+                      <div className="field">
+                        <label htmlFor="store-zip">ZIP</label>
+                        <input
+                          id="store-zip"
+                          name="zip"
+                          type="text"
+                          required
+                          autoComplete="postal-code"
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+                <div className="field">
+                  <label htmlFor="store-notes">Notes (optional)</label>
+                  <textarea id="store-notes" name="notes" rows={3} />
+                </div>
+                <CelticButton type="submit" className="celtic-link--wide">
+                  Email order
+                </CelticButton>
+                {sent ? (
+                  <p className="store-checkout__note">
+                    Your email app should open with the order details. If nothing opens, email us
+                    directly from Contact.
+                  </p>
+                ) : (
+                  <p className="store-checkout__note">
+                    Online payment coming soon. For now, checkout opens a prefilled email order.
+                  </p>
+                )}
+              </form>
+            )}
           </aside>
         </div>
       </section>

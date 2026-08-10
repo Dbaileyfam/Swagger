@@ -9,6 +9,7 @@ type CelticButtonProps = {
   href?: string
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
   onClick?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
+  disabled?: boolean
   target?: string
   rel?: string
 }
@@ -35,6 +36,7 @@ export function CelticButton({
   href,
   type = 'button',
   onClick,
+  disabled,
   target,
   rel,
   'aria-label': ariaLabel,
@@ -65,7 +67,13 @@ export function CelticButton({
   }
 
   return (
-    <button type={type} className={cls} aria-label={ariaLabel} onClick={onClick}>
+    <button
+      type={type}
+      className={cls}
+      aria-label={ariaLabel}
+      onClick={onClick}
+      disabled={disabled}
+    >
       <RingLabel>{children}</RingLabel>
     </button>
   )
