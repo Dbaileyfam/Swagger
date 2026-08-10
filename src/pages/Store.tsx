@@ -230,7 +230,7 @@ export function Store() {
         <p className="section-lede" style={{ margin: '0 auto' }}>
           Order physical CDs ({formatMoney(CD_PRICE)}, free shipping) or digital downloads — full
           album MP3s {formatMoney(ALBUM_MP3_PRICE)}, or single tracks {formatMoney(MP3_PRICE)}.
-          Payment setup is coming soon — checkout sends your order by email.
+          Trouble on the Green CDs use Stripe test checkout; other items still check out by email.
         </p>
       </header>
 
@@ -297,7 +297,14 @@ export function Store() {
               <strong>{formatMoney(total)}</strong>
             </div>
 
-            {stripeEligible ? (
+            {cart.length === 0 ? (
+              <div className="store-checkout">
+                <p className="store-checkout__note">
+                  Add a Trouble on the Green CD for Stripe test checkout, or other items to email
+                  your order.
+                </p>
+              </div>
+            ) : stripeEligible ? (
               <div className="store-checkout">
                 <p className="store-checkout__note">
                   Stripe test mode — no real charges. Card payments are for sandbox testing only.
@@ -306,7 +313,7 @@ export function Store() {
                   type="button"
                   className="celtic-link--wide"
                   onClick={() => void handleStripeCheckout()}
-                  disabled={stripeLoading || cart.length === 0}
+                  disabled={stripeLoading}
                 >
                   {stripeLoading ? 'Opening secure checkout…' : 'Secure Stripe Checkout'}
                 </CelticButton>
@@ -392,7 +399,8 @@ export function Store() {
                   </p>
                 ) : (
                   <p className="store-checkout__note">
-                    Online payment coming soon. For now, checkout opens a prefilled email order.
+                    This cart uses email checkout. Add only a Trouble on the Green CD for Stripe
+                    test mode.
                   </p>
                 )}
               </form>
