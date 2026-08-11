@@ -10,14 +10,13 @@ import {
   CD_PRICE,
   cdLineKey,
   formatMoney,
-  isStripeTroubleCdCart,
+  getStripeCheckoutPayload,
   lineLabel,
   lineUnitPrice,
   MP3_PRICE,
   mp3AlbumLineKey,
   mp3LineKey,
   storeAlbums,
-  troubleCdQuantity,
   type AlbumId,
   type CartLine,
   type StoreAlbum,
@@ -110,7 +109,8 @@ export function Store() {
   const [stripeLoading, setStripeLoading] = useState(false)
   const [stripeError, setStripeError] = useState<string | null>(null)
   const needsShipping = cartHasCd(cart)
-  const stripeEligible = useMemo(() => isStripeTroubleCdCart(cart), [cart])
+  const stripePayload = useMemo(() => getStripeCheckoutPayload(cart), [cart])
+  const stripeEligible = stripePayload !== null
   const total = useMemo(() => cartSubtotal(cart), [cart])
 
   function addCd(albumId: AlbumId) {
@@ -186,9 +186,7 @@ export function Store() {
   }
 
   async function handleStripeCheckout() {
-    if (!stripeEligible || stripeLoading) return
-    const quantity = troubleCdQuantity(cart)
-    if (quantity < 1) return
+    if (!stripePayload || stripeLoading) return
 
     setStripeError(null)
     setStripeLoading(true)
@@ -196,7 +194,10 @@ export function Store() {
       const response = await fetch(STRIPE_CHECKOUT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quantity }),
+        body: JSON.stringify({
+          sku: stripePayload.sku,
+          quantity: stripePayload.quantity,
+        }),
       })
       let data: { url?: string; error?: string; message?: string } = {}
       try {
@@ -230,7 +231,8 @@ export function Store() {
         <p className="section-lede" style={{ margin: '0 auto' }}>
           Order physical CDs ({formatMoney(CD_PRICE)}, free shipping) or digital downloads — full
           album MP3s {formatMoney(ALBUM_MP3_PRICE)}, or single tracks {formatMoney(MP3_PRICE)}.
-          Trouble on the Green CDs use Stripe test checkout; other items still check out by email.
+          Trouble on the Green CD and full album MP3 use Stripe test checkout; other items still
+          check out by email.
         </p>
       </header>
 
@@ -300,8 +302,8 @@ export function Store() {
             {cart.length === 0 ? (
               <div className="store-checkout">
                 <p className="store-checkout__note">
-                  Add a Trouble on the Green CD for Stripe test checkout, or other items to email
-                  your order.
+                  Add a Trouble on the Green CD or full album MP3 for Stripe test checkout, or
+                  other items to email your order.
                 </p>
               </div>
             ) : stripeEligible ? (
@@ -399,8 +401,8 @@ export function Store() {
                   </p>
                 ) : (
                   <p className="store-checkout__note">
-                    This cart uses email checkout. Add only a Trouble on the Green CD for Stripe
-                    test mode.
+                    This cart uses email checkout. Add only a Trouble on the Green CD or full
+                    album MP3 for Stripe test mode.
                   </p>
                 )}
               </form>

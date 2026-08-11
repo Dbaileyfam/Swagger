@@ -143,21 +143,25 @@ export function cartHasCd(lines: CartLine[]): boolean {
   return lines.some((line) => line.kind === 'cd')
 }
 
-/** Stripe sandbox checkout is only enabled for Trouble on the Green CDs alone. */
-export function isStripeTroubleCdCart(lines: CartLine[]): boolean {
-  return (
-    lines.length === 1 &&
-    lines[0]!.kind === 'cd' &&
-    lines[0]!.albumId === 'trouble-on-the-green' &&
-    lines[0]!.qty > 0
-  )
+export type StripeSku = 'trouble-cd' | 'trouble-album'
+
+export type StripeCheckoutPayload = {
+  sku: StripeSku
+  quantity: number
 }
 
-export function troubleCdQuantity(lines: CartLine[]): number {
-  const line = lines.find(
-    (item) => item.kind === 'cd' && item.albumId === 'trouble-on-the-green',
-  )
-  return line?.qty ?? 0
+/** Stripe sandbox checkout for a single supported Trouble on the Green product. */
+export function getStripeCheckoutPayload(lines: CartLine[]): StripeCheckoutPayload | null {
+  if (lines.length !== 1) return null
+  const line = lines[0]!
+  if (line.albumId !== 'trouble-on-the-green' || line.qty < 1) return null
+  if (line.kind === 'cd') return { sku: 'trouble-cd', quantity: line.qty }
+  if (line.kind === 'mp3-album') return { sku: 'trouble-album', quantity: line.qty }
+  return null
+}
+
+export function isStripeEligibleCart(lines: CartLine[]): boolean {
+  return getStripeCheckoutPayload(lines) !== null
 }
 
 export function cdLineKey(albumId: AlbumId): string {
