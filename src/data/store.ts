@@ -29,7 +29,7 @@ export const storeAlbums: StoreAlbum[] = [
     id: 'trouble-on-the-green',
     title: 'Trouble on the Green',
     year: 2008,
-    cover: 'store/covers/trouble-on-the-green.jpg',
+    cover: 'store/covers/trouble-on-the-green-v2.jpg',
     tracks: [
       'Piper Down',
       'Black Velvet Band',
@@ -48,7 +48,7 @@ export const storeAlbums: StoreAlbum[] = [
     id: 'the-grave',
     title: 'The Grave',
     year: 2010,
-    cover: 'store/covers/the-grave.jpg',
+    cover: 'store/covers/the-grave-v2.jpg',
     tracks: [
       "Mrs. Myrtle's Daughter",
       'Drowsy Maggie / Drunken Sailor',
@@ -66,7 +66,7 @@ export const storeAlbums: StoreAlbum[] = [
     id: 'america-land',
     title: 'America Land',
     year: 2013,
-    cover: 'store/covers/america-land.jpg',
+    cover: 'store/covers/america-land-v2.jpg',
     tracks: [
       'Bodie McGee',
       'Track 2',
@@ -84,7 +84,7 @@ export const storeAlbums: StoreAlbum[] = [
     id: 'gypsy-road',
     title: 'Gypsy Road',
     year: 2017,
-    cover: 'store/covers/gypsy-road.jpg',
+    cover: 'store/covers/gypsy-road-v2.jpg',
     tracks: [
       'Goodbye Mick',
       'Spanish Lady',
