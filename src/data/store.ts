@@ -126,9 +126,9 @@ export function lineLabel(line: CartLine): string {
   const album = getAlbum(line.albumId)
   if (!album) return 'Unknown item'
   if (line.kind === 'cd') return `${album.title} — CD (free shipping)`
-  if (line.kind === 'mp3-album') return `${album.title} — Full album MP3`
+  if (line.kind === 'mp3-album') return `${album.title} — Digital download`
   const track = album.tracks[line.trackIndex] ?? `Track ${line.trackIndex + 1}`
-  return `${album.title} — ${track} (MP3)`
+  return `${album.title} — ${track} (digital download)`
 }
 
 export function cartSubtotal(lines: CartLine[]): number {

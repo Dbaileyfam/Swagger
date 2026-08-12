@@ -255,7 +255,7 @@ export function Store() {
               Your cart
             </h2>
             {cart.length === 0 ? (
-              <p className="store-cart__empty">Add a CD or MP3 to get started.</p>
+              <p className="store-cart__empty">Add a CD or digital download to get started.</p>
             ) : (
               <ul className="store-cart__list">
                 {cart.map((line) => (
