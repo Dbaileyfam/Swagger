@@ -229,10 +229,8 @@ export function Store() {
         <h1 className="section-title">Store</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Order physical CDs ({formatMoney(CD_PRICE)}, free shipping) or digital downloads — full
-          album MP3s {formatMoney(ALBUM_MP3_PRICE)}, or single tracks {formatMoney(MP3_PRICE)}.
-          Trouble on the Green CD and full album MP3 use Stripe test checkout; other items still
-          check out by email.
+          CDs ({formatMoney(CD_PRICE)}, free shipping) or full album Digital Download{' '}
+          {formatMoney(ALBUM_MP3_PRICE)}.
         </p>
       </header>
 
