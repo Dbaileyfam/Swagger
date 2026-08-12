@@ -69,7 +69,7 @@ function AlbumCard({
             Add CD
           </button>
           <button type="button" className="store-btn store-btn--ghost" onClick={onAddAllTracks}>
-            Add all MP3 tracks ({formatMoney(digitalTotal)})
+            Digital download ({formatMoney(digitalTotal)})
           </button>
         </div>
         <button
