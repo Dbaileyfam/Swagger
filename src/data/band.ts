@@ -137,7 +137,7 @@ export const shows: Show[] = [
     state: 'Utah',
     date: '2026-08-08',
     time: '1:00pm',
-    upcoming: true,
+    upcoming: false,
   },
   {
     id: 'heber-2026',
