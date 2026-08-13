@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
@@ -23,8 +23,14 @@ import {
 
 const STRIPE_CHECKOUT_URL =
   'https://swagger-stripe-checkout.dbailey-dfe.workers.dev/create-checkout-session'
-const STRIPE_DOWNLOAD_URL =
-  'https://swagger-stripe-checkout.dbailey-dfe.workers.dev/download'
+const STRIPE_SESSION_DOWNLOADS_URL =
+  'https://swagger-stripe-checkout.dbailey-dfe.workers.dev/session-downloads'
+
+type SessionDownload = {
+  sku: string
+  name: string
+  url: string
+}
 
 function assetUrl(path: string) {
   return `${import.meta.env.BASE_URL}${path}`
@@ -107,10 +113,29 @@ export function Store() {
   const total = useMemo(() => cartSubtotal(cart), [cart])
   const checkoutState = searchParams.get('checkout')
   const checkoutSessionId = searchParams.get('session_id')
-  const downloadUrl =
-    checkoutState === 'success' && checkoutSessionId
-      ? `${STRIPE_DOWNLOAD_URL}?session_id=${encodeURIComponent(checkoutSessionId)}`
-      : null
+  const [sessionDownloads, setSessionDownloads] = useState<SessionDownload[]>([])
+
+  useEffect(() => {
+    if (checkoutState !== 'success' || !checkoutSessionId) {
+      setSessionDownloads([])
+      return
+    }
+    let cancelled = false
+    void (async () => {
+      try {
+        const response = await fetch(
+          `${STRIPE_SESSION_DOWNLOADS_URL}?session_id=${encodeURIComponent(checkoutSessionId)}`,
+        )
+        const data = (await response.json()) as { downloads?: SessionDownload[] }
+        if (!cancelled) setSessionDownloads(data.downloads ?? [])
+      } catch {
+        if (!cancelled) setSessionDownloads([])
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [checkoutState, checkoutSessionId])
 
   function addCd(albumId: AlbumId) {
     setCart((lines) =>
@@ -177,10 +202,7 @@ export function Store() {
       const response = await fetch(STRIPE_CHECKOUT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sku: stripePayload.sku,
-          quantity: stripePayload.quantity,
-        }),
+        body: JSON.stringify({ items: stripePayload.items }),
       })
       let data: { url?: string; error?: string; message?: string } = {}
       try {
@@ -216,16 +238,18 @@ export function Store() {
           {formatMoney(ALBUM_MP3_PRICE)}.
         </p>
         {checkoutState === 'success' ? (
-          <p className="section-lede" style={{ margin: '1rem auto 0' }}>
-            Payment received
-            {downloadUrl ? (
-              <>
-                . <a href={downloadUrl}>Download your digital album</a>
-              </>
-            ) : (
-              '.'
-            )}
-          </p>
+          <div className="section-lede" style={{ margin: '1rem auto 0' }}>
+            <p style={{ margin: 0 }}>Payment received.</p>
+            {sessionDownloads.length > 0 ? (
+              <ul style={{ margin: '0.75rem 0 0', paddingLeft: '1.2rem' }}>
+                {sessionDownloads.map((download) => (
+                  <li key={download.sku}>
+                    <a href={download.url}>Download {download.name}</a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
         ) : null}
         {checkoutState === 'cancel' ? (
           <p className="section-lede" style={{ margin: '1rem auto 0' }}>
@@ -299,8 +323,7 @@ export function Store() {
             {cart.length === 0 ? (
               <div className="store-checkout">
                 <p className="store-checkout__note">
-                  Add a CD or digital download for Stripe test checkout. Mixed carts still use email
-                  order.
+                  Add one or more CDs and digital downloads for Stripe test checkout.
                 </p>
               </div>
             ) : stripeEligible ? (
@@ -398,8 +421,8 @@ export function Store() {
                   </p>
                 ) : (
                   <p className="store-checkout__note">
-                    This cart uses email checkout. Add only one CD or one digital download for Stripe
-                    test mode.
+                    This cart uses email checkout. Add CDs and/or digital downloads for Stripe test
+                    mode.
                   </p>
                 )}
               </form>

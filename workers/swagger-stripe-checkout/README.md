@@ -2,8 +2,9 @@
 
 Cloudflare Worker used by the store:
 
-- Checkout: `POST /create-checkout-session` `{ "sku", "quantity" }`
-- Download: `GET /download?session_id=cs_test_...` (paid digital albums from R2)
+- Checkout: `POST /create-checkout-session` `{ "items": [{ "sku", "quantity" }] }`
+- Session downloads: `GET /session-downloads?session_id=cs_test_...`
+- Download: `GET /download?session_id=cs_test_...&sku=grave-album`
 
 ## SKUs
 

@@ -153,9 +153,13 @@ export type StripeSku =
   | 'gypsy-road-cd'
   | 'gypsy-road-album'
 
-export type StripeCheckoutPayload = {
+export type StripeCheckoutItem = {
   sku: StripeSku
   quantity: number
+}
+
+export type StripeCheckoutPayload = {
+  items: StripeCheckoutItem[]
 }
 
 const STRIPE_SKU_BY_ALBUM: Record<
@@ -168,16 +172,24 @@ const STRIPE_SKU_BY_ALBUM: Record<
   'gypsy-road': { cd: 'gypsy-road-cd', album: 'gypsy-road-album' },
 }
 
-/** Stripe sandbox checkout for a single CD or full-album digital download. */
-export function getStripeCheckoutPayload(lines: CartLine[]): StripeCheckoutPayload | null {
-  if (lines.length !== 1) return null
-  const line = lines[0]!
-  if (line.qty < 1) return null
+function stripeSkuForLine(line: CartLine): StripeSku | null {
   const skus = STRIPE_SKU_BY_ALBUM[line.albumId]
-  if (!skus) return null
-  if (line.kind === 'cd') return { sku: skus.cd, quantity: line.qty }
-  if (line.kind === 'mp3-album') return { sku: skus.album, quantity: line.qty }
+  if (!skus || line.qty < 1) return null
+  if (line.kind === 'cd') return skus.cd
+  if (line.kind === 'mp3-album') return skus.album
   return null
+}
+
+/** Stripe sandbox checkout for one or more CDs / full-album digital downloads. */
+export function getStripeCheckoutPayload(lines: CartLine[]): StripeCheckoutPayload | null {
+  if (lines.length < 1) return null
+  const items: StripeCheckoutItem[] = []
+  for (const line of lines) {
+    const sku = stripeSkuForLine(line)
+    if (!sku) return null
+    items.push({ sku, quantity: line.qty })
+  }
+  return { items }
 }
 
 export function isStripeEligibleCart(lines: CartLine[]): boolean {
