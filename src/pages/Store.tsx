@@ -14,9 +14,7 @@ import {
   getStripeCheckoutPayload,
   lineLabel,
   lineUnitPrice,
-  MP3_PRICE,
   mp3AlbumLineKey,
-  mp3LineKey,
   storeAlbums,
   type AlbumId,
   type CartLine,
@@ -43,12 +41,10 @@ function addOrBump(lines: CartLine[], next: CartLine): CartLine[] {
 function AlbumCard({
   album,
   onAddCd,
-  onAddTrack,
   onAddAllTracks,
 }: {
   album: StoreAlbum
   onAddCd: () => void
-  onAddTrack: (trackIndex: number) => void
   onAddAllTracks: () => void
 }) {
   const [open, setOpen] = useState(false)
@@ -65,8 +61,7 @@ function AlbumCard({
         <p className="store-card__price">
           CD {formatMoney(CD_PRICE)} (free shipping)
           <br />
-          Digital download {formatMoney(ALBUM_MP3_PRICE)} · Single track{' '}
-          {formatMoney(MP3_PRICE)}
+          Digital download {formatMoney(ALBUM_MP3_PRICE)}
         </p>
         <div className="store-card__actions">
           <button type="button" className="store-btn" onClick={onAddCd}>
@@ -82,7 +77,7 @@ function AlbumCard({
           aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
         >
-          {open ? 'Hide all MP3 tracklist' : `All MP3 tracklist (${album.tracks.length})`}
+          {open ? 'Hide tracklist' : `Tracklist (${album.tracks.length})`}
         </button>
         {open ? (
           <ol className="store-tracklist">
@@ -91,13 +86,6 @@ function AlbumCard({
                 <span>
                   <span className="store-tracklist__num">{index + 1}.</span> {track}
                 </span>
-                <button
-                  type="button"
-                  className="store-btn store-btn--small"
-                  onClick={() => onAddTrack(index)}
-                >
-                  Add MP3
-                </button>
               </li>
             ))}
           </ol>
@@ -132,26 +120,10 @@ export function Store() {
     setStripeError(null)
   }
 
-  function addTrack(albumId: AlbumId, trackIndex: number) {
-    setCart((lines) =>
-      addOrBump(lines, {
-        key: mp3LineKey(albumId, trackIndex),
-        kind: 'mp3',
-        albumId,
-        trackIndex,
-        qty: 1,
-      }),
-    )
-    setSent(false)
-    setStripeError(null)
-  }
-
   function addAllTracks(album: StoreAlbum) {
     setCart((lines) => {
       const withoutAlbumTracks = lines.filter(
-        (line) =>
-          !(line.kind === 'mp3' && line.albumId === album.id) &&
-          !(line.kind === 'mp3-album' && line.albumId === album.id),
+        (line) => !(line.kind === 'mp3-album' && line.albumId === album.id),
       )
       return addOrBump(withoutAlbumTracks, {
         key: mp3AlbumLineKey(album.id),
@@ -271,7 +243,6 @@ export function Store() {
                   key={album.id}
                   album={album}
                   onAddCd={() => addCd(album.id)}
-                  onAddTrack={(trackIndex) => addTrack(album.id, trackIndex)}
                   onAddAllTracks={() => addAllTracks(album)}
                 />
               ))}
@@ -328,8 +299,8 @@ export function Store() {
             {cart.length === 0 ? (
               <div className="store-checkout">
                 <p className="store-checkout__note">
-                  Add a CD or digital download for Stripe test checkout. Individual tracks or mixed
-                  carts still use email order.
+                  Add a CD or digital download for Stripe test checkout. Mixed carts still use email
+                  order.
                 </p>
               </div>
             ) : stripeEligible ? (
