@@ -1,0 +1,20 @@
+name = "swagger-stripe-checkout"
+main = "src/index.js"
+compatibility_date = "2026-08-10"
+preview_urls = false
+
+[vars]
+TROUBLE_CD_PRICE_ID = "price_1U30u3CcCCf0OHijILiORb1g"
+TROUBLE_ALBUM_PRICE_ID = "price_1U3335CcCCf0OHijaYnWWpVE"
+THE_GRAVE_ALBUM_PRICE_ID = "price_1U3L4ECcCCf0OHijSTKnTHm5"
+America_Land_Album_Price_ID = "price_1U3NhYCcCCf0OHijIsEIvf0d"
+Gypsy_Road_Album_Price_ID = "price_1U3hGlCcCCf0OHijMB0bW2Ll"
+
+[[r2_buckets]]
+binding = "DOWNLOADS_BUCKET"
+bucket_name = "swagger-paid-downloads"
+
+[observability]
+enabled = true
+
+# Set with: npx wrangler secret put STRIPE_SECRET_KEY

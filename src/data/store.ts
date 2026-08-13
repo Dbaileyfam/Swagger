@@ -143,20 +143,40 @@ export function cartHasCd(lines: CartLine[]): boolean {
   return lines.some((line) => line.kind === 'cd')
 }
 
-export type StripeSku = 'trouble-cd' | 'trouble-album'
+export type StripeSku =
+  | 'trouble-cd'
+  | 'trouble-album'
+  | 'grave-cd'
+  | 'grave-album'
+  | 'america-land-cd'
+  | 'america-land-album'
+  | 'gypsy-road-cd'
+  | 'gypsy-road-album'
 
 export type StripeCheckoutPayload = {
   sku: StripeSku
   quantity: number
 }
 
-/** Stripe sandbox checkout for a single supported Trouble on the Green product. */
+const STRIPE_SKU_BY_ALBUM: Record<
+  AlbumId,
+  { cd: StripeSku; album: StripeSku }
+> = {
+  'trouble-on-the-green': { cd: 'trouble-cd', album: 'trouble-album' },
+  'the-grave': { cd: 'grave-cd', album: 'grave-album' },
+  'america-land': { cd: 'america-land-cd', album: 'america-land-album' },
+  'gypsy-road': { cd: 'gypsy-road-cd', album: 'gypsy-road-album' },
+}
+
+/** Stripe sandbox checkout for a single CD or full-album digital download. */
 export function getStripeCheckoutPayload(lines: CartLine[]): StripeCheckoutPayload | null {
   if (lines.length !== 1) return null
   const line = lines[0]!
-  if (line.albumId !== 'trouble-on-the-green' || line.qty < 1) return null
-  if (line.kind === 'cd') return { sku: 'trouble-cd', quantity: line.qty }
-  if (line.kind === 'mp3-album') return { sku: 'trouble-album', quantity: line.qty }
+  if (line.qty < 1) return null
+  const skus = STRIPE_SKU_BY_ALBUM[line.albumId]
+  if (!skus) return null
+  if (line.kind === 'cd') return { sku: skus.cd, quantity: line.qty }
+  if (line.kind === 'mp3-album') return { sku: skus.album, quantity: line.qty }
   return null
 }
 

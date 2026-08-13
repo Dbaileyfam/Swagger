@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
 import {
   ALBUM_MP3_PRICE,
@@ -24,6 +25,8 @@ import {
 
 const STRIPE_CHECKOUT_URL =
   'https://swagger-stripe-checkout.dbailey-dfe.workers.dev/create-checkout-session'
+const STRIPE_DOWNLOAD_URL =
+  'https://swagger-stripe-checkout.dbailey-dfe.workers.dev/download'
 
 function assetUrl(path: string) {
   return `${import.meta.env.BASE_URL}${path}`
@@ -62,7 +65,8 @@ function AlbumCard({
         <p className="store-card__price">
           CD {formatMoney(CD_PRICE)} (free shipping)
           <br />
-          Full album MP3 {formatMoney(ALBUM_MP3_PRICE)} · Single MP3 {formatMoney(MP3_PRICE)}
+          Digital download {formatMoney(ALBUM_MP3_PRICE)} · Single track{' '}
+          {formatMoney(MP3_PRICE)}
         </p>
         <div className="store-card__actions">
           <button type="button" className="store-btn" onClick={onAddCd}>
@@ -104,6 +108,7 @@ function AlbumCard({
 }
 
 export function Store() {
+  const [searchParams] = useSearchParams()
   const [cart, setCart] = useState<CartLine[]>([])
   const [sent, setSent] = useState(false)
   const [stripeLoading, setStripeLoading] = useState(false)
@@ -112,6 +117,12 @@ export function Store() {
   const stripePayload = useMemo(() => getStripeCheckoutPayload(cart), [cart])
   const stripeEligible = stripePayload !== null
   const total = useMemo(() => cartSubtotal(cart), [cart])
+  const checkoutState = searchParams.get('checkout')
+  const checkoutSessionId = searchParams.get('session_id')
+  const downloadUrl =
+    checkoutState === 'success' && checkoutSessionId
+      ? `${STRIPE_DOWNLOAD_URL}?session_id=${encodeURIComponent(checkoutSessionId)}`
+      : null
 
   function addCd(albumId: AlbumId) {
     setCart((lines) =>
@@ -232,6 +243,23 @@ export function Store() {
           CDs ({formatMoney(CD_PRICE)}, free shipping) or full album Digital Download{' '}
           {formatMoney(ALBUM_MP3_PRICE)}.
         </p>
+        {checkoutState === 'success' ? (
+          <p className="section-lede" style={{ margin: '1rem auto 0' }}>
+            Payment received
+            {downloadUrl ? (
+              <>
+                . <a href={downloadUrl}>Download your digital album</a>
+              </>
+            ) : (
+              '.'
+            )}
+          </p>
+        ) : null}
+        {checkoutState === 'cancel' ? (
+          <p className="section-lede" style={{ margin: '1rem auto 0' }}>
+            Checkout canceled — your cart was not charged.
+          </p>
+        ) : null}
       </header>
 
       <section className="section" style={{ paddingTop: 0 }}>
@@ -300,8 +328,8 @@ export function Store() {
             {cart.length === 0 ? (
               <div className="store-checkout">
                 <p className="store-checkout__note">
-                  Add a Trouble on the Green CD or full album MP3 for Stripe test checkout, or
-                  other items to email your order.
+                  Add a CD or digital download for Stripe test checkout. Individual tracks or mixed
+                  carts still use email order.
                 </p>
               </div>
             ) : stripeEligible ? (
@@ -399,8 +427,8 @@ export function Store() {
                   </p>
                 ) : (
                   <p className="store-checkout__note">
-                    This cart uses email checkout. Add only a Trouble on the Green CD or full
-                    album MP3 for Stripe test mode.
+                    This cart uses email checkout. Add only one CD or one digital download for Stripe
+                    test mode.
                   </p>
                 )}
               </form>
