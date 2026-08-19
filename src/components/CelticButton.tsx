@@ -5,10 +5,16 @@ type CelticButtonProps = {
   children: ReactNode
   className?: string
   'aria-label'?: string
+  'aria-selected'?: boolean
+  'aria-controls'?: string
+  id?: string
+  role?: ButtonHTMLAttributes<HTMLButtonElement>['role']
+  tabIndex?: number
   to?: string
   href?: string
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
   onClick?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
+  onKeyDown?: ButtonHTMLAttributes<HTMLButtonElement>['onKeyDown']
   disabled?: boolean
   target?: string
   rel?: string
@@ -36,10 +42,16 @@ export function CelticButton({
   href,
   type = 'button',
   onClick,
+  onKeyDown,
   disabled,
   target,
   rel,
+  id,
+  role,
+  tabIndex,
   'aria-label': ariaLabel,
+  'aria-selected': ariaSelected,
+  'aria-controls': ariaControls,
 }: CelticButtonProps) {
   const cls = ['celtic-link', className].filter(Boolean).join(' ')
 
@@ -70,8 +82,14 @@ export function CelticButton({
     <button
       type={type}
       className={cls}
+      id={id}
+      role={role}
+      tabIndex={tabIndex}
       aria-label={ariaLabel}
+      aria-selected={ariaSelected}
+      aria-controls={ariaControls}
       onClick={onClick}
+      onKeyDown={onKeyDown}
       disabled={disabled}
     >
       <RingLabel>{children}</RingLabel>

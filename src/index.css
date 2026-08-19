@@ -1659,13 +1659,18 @@ select {
   margin-bottom: 1rem;
 }
 
+.media-tabpanel {
+  min-height: 12rem;
+}
+
 .media-section {
   margin-top: 2.75rem;
 }
 
 .media-section:first-of-type,
-.media-filters + .media-section {
-  margin-top: 2rem;
+.media-filters + .media-section,
+.media-tabpanel > .media-section {
+  margin-top: 0;
 }
 
 .media-section__title {
