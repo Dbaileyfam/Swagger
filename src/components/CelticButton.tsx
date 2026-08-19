@@ -7,6 +7,7 @@ type CelticButtonProps = {
   'aria-label'?: string
   'aria-selected'?: boolean
   'aria-controls'?: string
+  'aria-expanded'?: boolean
   id?: string
   role?: ButtonHTMLAttributes<HTMLButtonElement>['role']
   tabIndex?: number
@@ -52,6 +53,7 @@ export function CelticButton({
   'aria-label': ariaLabel,
   'aria-selected': ariaSelected,
   'aria-controls': ariaControls,
+  'aria-expanded': ariaExpanded,
 }: CelticButtonProps) {
   const cls = ['celtic-link', className].filter(Boolean).join(' ')
 
@@ -88,6 +90,7 @@ export function CelticButton({
       aria-label={ariaLabel}
       aria-selected={ariaSelected}
       aria-controls={ariaControls}
+      aria-expanded={ariaExpanded}
       onClick={onClick}
       onKeyDown={onKeyDown}
       disabled={disabled}

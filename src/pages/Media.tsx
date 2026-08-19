@@ -1,16 +1,10 @@
-import { useState, type KeyboardEvent } from 'react'
+import { useState, type ReactNode } from 'react'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band, mediaItems } from '../data/band'
 import type { MediaItem } from '../data/band'
 
-type MediaTab = 'video' | 'photo' | 'music'
-
-const tabs: { id: MediaTab; label: string; panelId: string }[] = [
-  { id: 'video', label: 'Videos', panelId: 'media-panel-videos' },
-  { id: 'photo', label: 'Photos', panelId: 'media-panel-photos' },
-  { id: 'music', label: 'Music', panelId: 'media-panel-music' },
-]
+const PREVIEW_COUNT = 2
 
 function assetUrl(path: string) {
   return `${import.meta.env.BASE_URL}${path}`
@@ -88,31 +82,85 @@ function SpotifyEmbed() {
   )
 }
 
+function MediaGallery({
+  title,
+  headingId,
+  gridId,
+  items,
+  expanded,
+  onToggle,
+  moreLabel,
+  lessLabel,
+  renderItem,
+}: {
+  title: string
+  headingId: string
+  gridId: string
+  items: MediaItem[]
+  expanded: boolean
+  onToggle: () => void
+  moreLabel: string
+  lessLabel: string
+  renderItem: (item: MediaItem) => ReactNode
+}) {
+  const visible = expanded ? items : items.slice(0, PREVIEW_COUNT)
+  const canExpand = items.length > PREVIEW_COUNT
+  const remaining = items.length - PREVIEW_COUNT
+
+  return (
+    <section className="media-section" aria-labelledby={headingId}>
+      <h2 id={headingId} className="media-section__title">
+        {title}
+      </h2>
+      <div id={gridId} className="media-grid">
+        {visible.map((item) => renderItem(item))}
+      </div>
+      {canExpand && (
+        <div className="media-more">
+          <CelticButton
+            type="button"
+            className={`celtic-link--sm${expanded ? ' celtic-link--active' : ''}`}
+            aria-expanded={expanded}
+            aria-controls={gridId}
+            aria-label={expanded ? lessLabel : `${moreLabel}, ${remaining} more`}
+            onClick={onToggle}
+          >
+            {expanded ? 'Less' : 'More'}
+          </CelticButton>
+        </div>
+      )}
+    </section>
+  )
+}
+
 export function Media() {
-  const [tab, setTab] = useState<MediaTab>('video')
+  const [photosExpanded, setPhotosExpanded] = useState(false)
+  const [videosExpanded, setVideosExpanded] = useState(false)
   const photos = mediaItems.filter((item) => item.type === 'photo')
   const videos = mediaItems.filter((item) => item.type === 'video')
-  const activeTab = tabs.find((t) => t.id === tab) ?? tabs[0]
 
-  function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End']
-    if (!keys.includes(event.key)) return
+  function togglePhotos() {
+    setPhotosExpanded((open) => {
+      if (open) {
+        document.getElementById('media-photos-heading')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }
+      return !open
+    })
+  }
 
-    event.preventDefault()
-    const last = tabs.length - 1
-    const nextIndex =
-      event.key === 'Home'
-        ? 0
-        : event.key === 'End'
-          ? last
-          : event.key === 'ArrowRight'
-            ? (index + 1) % tabs.length
-            : (index - 1 + tabs.length) % tabs.length
-    const next = tabs[nextIndex]
-    setTab(next.id)
-    const tablist = event.currentTarget.parentElement
-    const nextButton = tablist?.querySelector<HTMLElement>(`#media-tab-${next.id}`)
-    nextButton?.focus()
+  function toggleVideos() {
+    setVideosExpanded((open) => {
+      if (open) {
+        document.getElementById('media-videos-heading')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }
+      return !open
+    })
   }
 
   return (
@@ -137,60 +185,31 @@ export function Media() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="section-inner">
-          <div className="media-filters" role="tablist" aria-label="Media">
-            {tabs.map((t, index) => (
-              <CelticButton
-                key={t.id}
-                id={`media-tab-${t.id}`}
-                type="button"
-                role="tab"
-                aria-selected={tab === t.id}
-                aria-controls={t.panelId}
-                tabIndex={tab === t.id ? 0 : -1}
-                className={`celtic-link--sm${tab === t.id ? ' celtic-link--active' : ''}`}
-                aria-label={t.label}
-                onClick={() => setTab(t.id)}
-                onKeyDown={(event) => onTabKeyDown(event, index)}
-              >
-                {t.label}
-              </CelticButton>
-            ))}
-          </div>
+          <MediaGallery
+            title="Photos"
+            headingId="media-photos-heading"
+            gridId="media-photos-grid"
+            items={photos}
+            expanded={photosExpanded}
+            onToggle={togglePhotos}
+            moreLabel="More photos"
+            lessLabel="Fewer photos"
+            renderItem={(item) => <PhotoTile key={item.id} item={item} />}
+          />
 
-          <div
-            id={activeTab.panelId}
-            role="tabpanel"
-            aria-labelledby={`media-tab-${activeTab.id}`}
-            className="media-tabpanel"
-          >
-            {tab === 'music' && <SpotifyEmbed />}
+          <MediaGallery
+            title="Videos"
+            headingId="media-videos-heading"
+            gridId="media-videos-grid"
+            items={videos}
+            expanded={videosExpanded}
+            onToggle={toggleVideos}
+            moreLabel="More videos"
+            lessLabel="Fewer videos"
+            renderItem={(item) => <VideoTile key={item.id} item={item} />}
+          />
 
-            {tab === 'photo' && (
-              <section className="media-section" aria-labelledby="media-photos-heading">
-                <h2 id="media-photos-heading" className="media-section__title">
-                  Photos
-                </h2>
-                <div className="media-grid">
-                  {photos.map((item) => (
-                    <PhotoTile key={item.id} item={item} />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {tab === 'video' && (
-              <section className="media-section" aria-labelledby="media-videos-heading">
-                <h2 id="media-videos-heading" className="media-section__title">
-                  Videos
-                </h2>
-                <div className="media-grid">
-                  {videos.map((item) => (
-                    <VideoTile key={item.id} item={item} />
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
+          <SpotifyEmbed />
 
           <SocialCelticLinks className="celtic-links--media" />
         </div>
