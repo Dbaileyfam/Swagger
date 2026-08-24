@@ -4,11 +4,13 @@ compatibility_date = "2026-08-10"
 preview_urls = false
 
 [vars]
-TROUBLE_CD_PRICE_ID = "price_1U30u3CcCCf0OHijILiORb1g"
-TROUBLE_ALBUM_PRICE_ID = "price_1U3335CcCCf0OHijaYnWWpVE"
-THE_GRAVE_ALBUM_PRICE_ID = "price_1U3L4ECcCCf0OHijSTKnTHm5"
-America_Land_Album_Price_ID = "price_1U3NhYCcCCf0OHijIsEIvf0d"
-Gypsy_Road_Album_Price_ID = "price_1U3hGlCcCCf0OHijMB0bW2Ll"
+TROUBLE_ALBUM_PRICE_ID = "price_1U84hcCcCCf0OHijzrIcVUxC"
+THE_GRAVE_CD_PRICE_ID = "price_1U84gjCcCCf0OHij9XMIkBhV"
+THE_GRAVE_ALBUM_PRICE_ID = "price_1U84v0CcCCf0OHijI8N9hc9T"
+America_Land_CD_Price_ID = "price_1U84h4CcCCf0OHijl0AoJSaT"
+America_Land_Album_Price_ID = "price_1U84hYCcCCf0OHijFIDTLytY"
+Gypsy_Road_CD_Price_ID = "price_1U84hECcCCf0OHijyAHXV2FI"
+Gypsy_Road_Album_Price_ID = "price_1U84hTCcCCf0OHij4vBOFxpY"
 
 [[r2_buckets]]
 binding = "DOWNLOADS_BUCKET"

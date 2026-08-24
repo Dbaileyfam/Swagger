@@ -331,13 +331,13 @@ export function Store() {
             {cart.length === 0 ? (
               <div className="store-checkout">
                 <p className="store-checkout__note">
-                  Add one or more CDs and digital downloads for Stripe test checkout.
+                  Add a CD or digital download to check out with Stripe.
                 </p>
               </div>
             ) : stripeEligible ? (
               <div className="store-checkout">
                 <p className="store-checkout__note">
-                  Stripe test mode — no real charges. Card payments are for sandbox testing only.
+                  Secure checkout with Stripe. CDs include free US shipping.
                 </p>
                 <CelticButton
                   type="button"
@@ -429,8 +429,8 @@ export function Store() {
                   </p>
                 ) : (
                   <p className="store-checkout__note">
-                    This cart uses email checkout. Add CDs and/or digital downloads for Stripe test
-                    mode.
+                    This cart uses email checkout. Add a CD or digital download for Stripe
+                    checkout.
                   </p>
                 )}
               </form>

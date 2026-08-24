@@ -180,7 +180,7 @@ function stripeSkuForLine(line: CartLine): StripeSku | null {
   return null
 }
 
-/** Stripe sandbox checkout for one or more CDs / full-album digital downloads. */
+/** Stripe checkout for one or more CDs / full-album digital downloads. */
 export function getStripeCheckoutPayload(lines: CartLine[]): StripeCheckoutPayload | null {
   if (lines.length < 1) return null
   const items: StripeCheckoutItem[] = []

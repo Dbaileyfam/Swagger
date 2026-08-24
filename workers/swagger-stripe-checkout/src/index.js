@@ -1,5 +1,5 @@
 /**
- * Swagger Stripe sandbox checkout + paid R2 download delivery.
+ * Swagger Stripe checkout + paid R2 download delivery.
  * Supports one or more CD / digital-album line items per checkout.
  */
 
@@ -8,7 +8,6 @@ const PRODUCTS = {
     name: 'Trouble on the Green — CD',
     amount: 1800,
     shipping: true,
-    priceEnv: 'TROUBLE_CD_PRICE_ID',
   },
   'trouble-album': {
     name: 'Trouble on the Green — Digital download',
@@ -21,6 +20,7 @@ const PRODUCTS = {
     name: 'The Grave — CD',
     amount: 1800,
     shipping: true,
+    priceEnv: 'THE_GRAVE_CD_PRICE_ID',
   },
   'grave-album': {
     name: 'The Grave — Digital download',
@@ -33,6 +33,7 @@ const PRODUCTS = {
     name: 'America Land — CD',
     amount: 1800,
     shipping: true,
+    priceEnv: 'America_Land_CD_Price_ID',
   },
   'america-land-album': {
     name: 'America Land — Digital download',
@@ -45,6 +46,7 @@ const PRODUCTS = {
     name: 'Gypsy Road — CD',
     amount: 1800,
     shipping: true,
+    priceEnv: 'Gypsy_Road_CD_Price_ID',
   },
   'gypsy-road-album': {
     name: 'Gypsy Road — Digital download',
