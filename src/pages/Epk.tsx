@@ -48,8 +48,17 @@ function EpkVideo({ item }: { item: MediaItem }) {
   )
 }
 
+const EPK_VIDEO_IDS = [
+  '4Wi3yPjNMbc', // Morrison's Jig — Live
+  '5dynW18TBDM', // Galway Girl
+  'KiTtR-ytr04', // Bodie McGee
+  'o2Ss1P0o71U', // Mrs Myrtle's Daughter
+]
+
 export function Epk() {
-  const topVideos = mediaItems.filter((item) => item.type === 'video').slice(0, 3)
+  const topVideos = EPK_VIDEO_IDS.map((id) =>
+    mediaItems.find((item) => item.id === id && item.type === 'video'),
+  ).filter((item): item is MediaItem => item != null)
   const [activePlotId, setActivePlotId] = useState(stagePlots[0]?.id ?? 'plot-5')
   const activePlot = stagePlots.find((plot) => plot.id === activePlotId) ?? stagePlots[0]
 
