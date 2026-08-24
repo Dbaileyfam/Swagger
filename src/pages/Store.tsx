@@ -55,6 +55,7 @@ function AlbumCard({
 }) {
   const [open, setOpen] = useState(false)
   const digitalTotal = albumDigitalTotal(album)
+  const cdAvailable = album.id !== 'trouble-on-the-green'
 
   return (
     <article className="store-card">
@@ -65,15 +66,21 @@ function AlbumCard({
         <p className="store-card__year">{album.year}</p>
         <h2 className="store-card__title">{album.title}</h2>
         <p className="store-card__price">
-          CD {formatMoney(CD_PRICE)} (free shipping)
+          {cdAvailable ? `CD ${formatMoney(CD_PRICE)} (free shipping)` : 'Out of Publication'}
           <br />
           Digital download {formatMoney(ALBUM_MP3_PRICE)}
         </p>
         <div className="store-card__actions">
-          <button type="button" className="store-btn" onClick={onAddCd}>
-            Add CD
-          </button>
-          <button type="button" className="store-btn store-btn--ghost" onClick={onAddAllTracks}>
+          {cdAvailable ? (
+            <button type="button" className="store-btn" onClick={onAddCd}>
+              Add CD
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className={`store-btn${cdAvailable ? ' store-btn--ghost' : ''}`}
+            onClick={onAddAllTracks}
+          >
             Digital download ({formatMoney(digitalTotal)})
           </button>
         </div>
@@ -138,6 +145,7 @@ export function Store() {
   }, [checkoutState, checkoutSessionId])
 
   function addCd(albumId: AlbumId) {
+    if (albumId === 'trouble-on-the-green') return
     setCart((lines) =>
       addOrBump(lines, { key: cdLineKey(albumId), kind: 'cd', albumId, qty: 1 }),
     )
