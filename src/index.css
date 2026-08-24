@@ -1340,6 +1340,28 @@ select {
   font-size: 0.95rem;
 }
 
+.show-year {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 2.5rem 0 0.35rem;
+}
+
+.show-card--past {
+  padding: 1.1rem 0;
+  opacity: 0.75;
+}
+
+.show-card--past .show-card__event {
+  font-size: 1.2rem;
+}
+
+.show-card--past .show-card__day {
+  font-size: 1.9rem;
+}
+
 @media (max-width: 700px) {
   .show-card {
     grid-template-columns: 1fr;

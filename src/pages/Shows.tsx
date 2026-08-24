@@ -4,7 +4,7 @@ import { CelticMark } from '../components/CelticMark'
 import { CheersToast, SlainteMark } from '../components/CheersToast'
 import { HighlandCow } from '../components/HighlandCow'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
-import { formatShowDate, pastShows, upcomingShows } from '../data/band'
+import { formatShowDate, pastShows, upcomingShows, type Show } from '../data/band'
 
 function ShowDate({ iso }: { iso: string }) {
   const d = new Date(`${iso}T12:00:00`)
@@ -19,9 +19,25 @@ function ShowDate({ iso }: { iso: string }) {
   )
 }
 
+function showPlace(show: Show) {
+  const place = [show.city, show.state].filter(Boolean).join(', ')
+  return [show.venue, place].filter(Boolean).join(' · ')
+}
+
+function pastShowsByYear(shows: Show[]) {
+  const groups: { year: string; shows: Show[] }[] = []
+  for (const show of shows) {
+    const year = show.date.slice(0, 4)
+    const last = groups.at(-1)
+    if (last?.year === year) last.shows.push(show)
+    else groups.push({ year, shows: [show] })
+  }
+  return groups
+}
+
 export function Shows() {
   const upcoming = upcomingShows()
-  const past = pastShows()
+  const pastByYear = pastShowsByYear(pastShows())
 
   return (
     <div className="shows-page">
@@ -75,21 +91,24 @@ export function Shows() {
             className="section-title"
             style={{ fontSize: '1.4rem', margin: '3.5rem 0 1.5rem' }}
           >
-            Recently played
+            Past Shows
           </h2>
-          <div className="shows-list">
-            {past.map((show) => (
-              <article className="show-card" key={show.id} style={{ opacity: 0.7 }}>
-                <ShowDate iso={show.date} />
-                <div>
-                  <h3 className="show-card__event">{show.event}</h3>
-                  <p className="show-card__meta">
-                    {show.venue} · {show.city}, {show.state}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
+          {pastByYear.map((group) => (
+            <div key={group.year}>
+              <h3 className="show-year">{group.year}</h3>
+              <div className="shows-list">
+                {group.shows.map((show) => (
+                  <article className="show-card show-card--past" key={show.id}>
+                    <ShowDate iso={show.date} />
+                    <div>
+                      <h3 className="show-card__event">{show.event}</h3>
+                      <p className="show-card__meta">{showPlace(show)}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
 
           <div className="btn-row" style={{ marginTop: '2.5rem' }}>
             <CelticButton to="/contact">

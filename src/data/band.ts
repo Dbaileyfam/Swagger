@@ -1,3 +1,5 @@
+import { pastShowArchive } from './pastShowArchive'
+
 export const band = {
   name: 'Swagger',
   tagline: 'Celtic Americana Rock',
@@ -147,7 +149,7 @@ export const shows: Show[] = [
     state: 'Utah',
     date: '2026-08-13',
     time: '6:00pm',
-    upcoming: true,
+    upcoming: false,
   },
   {
     id: 'bitterroot-15-2026',
@@ -157,7 +159,7 @@ export const shows: Show[] = [
     state: 'Montana',
     date: '2026-08-15',
     time: 'TBD',
-    upcoming: true,
+    upcoming: false,
   },
   {
     id: 'bitterroot-16-2026',
@@ -167,7 +169,7 @@ export const shows: Show[] = [
     state: 'Montana',
     date: '2026-08-16',
     time: 'TBD',
-    upcoming: true,
+    upcoming: false,
   },
   {
     id: 'longs-peak-11-2026',
@@ -299,6 +301,7 @@ export const shows: Show[] = [
     time: '6:00pm',
     upcoming: false,
   },
+  ...pastShowArchive,
 ]
 
 export type MediaItem = {
