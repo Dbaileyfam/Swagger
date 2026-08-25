@@ -64,8 +64,9 @@ const DEFAULT_CANCEL =
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Max-Age': '86400',
 }
 
 function json(data, status = 200) {
@@ -544,9 +545,9 @@ async function createPublicAd(request, env) {
       rawHref = body.href
     } else {
       const form = await request.formData()
-      password = form.get('password')
+      password = String(form.get('password') || '')
       text = String(form.get('text') || '').trim().slice(0, 280)
-      rawHref = form.get('href')
+      rawHref = String(form.get('href') || '')
     }
   } catch {
     return json({ error: 'Could not read that poster' }, 400)

@@ -5,6 +5,7 @@ import {
   clearPosterPassword,
   fetchBoardAds,
   getPosterPassword,
+  publishBoardAd,
   setPosterPassword,
   type BoardAd,
 } from '../data/ads'
@@ -17,13 +18,22 @@ export function Poster() {
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [boardReady, setBoardReady] = useState(false)
+
+  async function loadAds() {
+    const next = await fetchBoardAds()
+    setAds(next)
+    setBoardReady(true)
+    return next
+  }
 
   useEffect(() => {
     const saved = getPosterPassword()
     if (saved) setPassword(saved)
-    fetchBoardAds()
-      .then(setAds)
-      .catch(() => {})
+    loadAds().catch(() => {
+      setBoardReady(false)
+      setError('Could not reach the poster board. Try again in a moment.')
+    })
   }, [])
 
   async function handlePublish(event: FormEvent<HTMLFormElement>) {
@@ -43,26 +53,21 @@ export function Poster() {
     setError('')
     setStatus('')
     try {
-      const response = await fetch(ADS_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          password: nextPassword,
-          href: nextHref,
-          text: text.trim(),
-        }),
+      const ad = await publishBoardAd({
+        password: nextPassword,
+        href: nextHref,
+        text: text.trim(),
       })
-      const payload = (await response.json()) as { ad?: BoardAd; error?: string }
-      if (!response.ok) {
-        if (response.status === 401) clearPosterPassword()
-        throw new Error(payload.error || 'Could not post that link')
-      }
       setPosterPassword(nextPassword)
-      if (payload.ad) setAds((current) => [payload.ad!, ...current])
+      setAds((current) => [ad, ...current.filter((item) => item.id !== ad.id)])
       setHref('')
       setText('')
       setStatus('Posted to the homepage.')
+      await loadAds().catch(() => {})
     } catch (err) {
+      if (err instanceof Error && /wrong poster password/i.test(err.message)) {
+        clearPosterPassword()
+      }
       setError(err instanceof Error ? err.message : 'Could not post that link')
     } finally {
       setBusy(false)
@@ -79,7 +84,7 @@ export function Poster() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: password.trim(), id }),
       })
-      const payload = (await response.json()) as { error?: string }
+      const payload = (await response.json().catch(() => ({}))) as { error?: string }
       if (!response.ok) {
         if (response.status === 401) clearPosterPassword()
         throw new Error(payload.error || 'Could not remove that poster')
@@ -99,8 +104,7 @@ export function Poster() {
         <h1 className="section-title">Band poster</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Paste an Instagram post or any ad URL. The photo is pulled from the link
-          and shown on the homepage.
+          Paste an Instagram or ad URL, then press Post this URL.
         </p>
       </header>
 
@@ -146,7 +150,7 @@ export function Poster() {
             </div>
             {status ? <p className="form-success">{status}</p> : null}
             {error ? (
-              <p className="store-checkout__note" role="alert">
+              <p className="poster-error" role="alert">
                 {error}
               </p>
             ) : null}
@@ -158,7 +162,11 @@ export function Poster() {
           <div className="poster-current">
             <h2 className="section-label">On the homepage now</h2>
             {ads.length === 0 ? (
-              <p className="form-note">Nothing live yet — the homepage will use the fallback photo.</p>
+              <p className="form-note">
+                {boardReady
+                  ? 'No posters yet. Paste a URL above and press Post this URL.'
+                  : 'Loading posters…'}
+              </p>
             ) : (
               <ul className="poster-list">
                 {ads.map((ad) => (

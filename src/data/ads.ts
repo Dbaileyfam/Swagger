@@ -31,3 +31,24 @@ export async function fetchBoardAds(): Promise<BoardAd[]> {
   const data = (await response.json()) as { ads?: BoardAd[] }
   return Array.isArray(data.ads) ? data.ads : []
 }
+
+export async function publishBoardAd(input: {
+  password: string
+  href: string
+  text: string
+}): Promise<BoardAd> {
+  const data = new FormData()
+  data.set('password', input.password)
+  data.set('href', input.href)
+  data.set('text', input.text)
+
+  const response = await fetch(ADS_API_URL, { method: 'POST', body: data })
+  const payload = (await response.json().catch(() => ({}))) as {
+    ad?: BoardAd
+    error?: string
+  }
+  if (!response.ok || !payload.ad) {
+    throw new Error(payload.error || 'Could not post that link')
+  }
+  return payload.ad
+}
