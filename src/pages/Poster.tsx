@@ -36,8 +36,8 @@ export function Poster() {
     })
   }, [])
 
-  async function handlePublish(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  async function handlePublish(event?: FormEvent<HTMLFormElement>) {
+    event?.preventDefault()
     const nextPassword = password.trim()
     const nextHref = href.trim()
     if (!nextPassword) {
@@ -60,14 +60,9 @@ export function Poster() {
       })
       setPosterPassword(nextPassword)
       setAds((current) => [ad, ...current.filter((item) => item.id !== ad.id)])
-      setHref('')
-      setText('')
-      setStatus('Posted to the homepage.')
+      setStatus('Posted to the homepage. It is listed below.')
       await loadAds().catch(() => {})
     } catch (err) {
-      if (err instanceof Error && /wrong poster password/i.test(err.message)) {
-        clearPosterPassword()
-      }
       setError(err instanceof Error ? err.message : 'Could not post that link')
     } finally {
       setBusy(false)
@@ -110,7 +105,7 @@ export function Poster() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="section-inner poster-layout">
-          <form className="contact-form" onSubmit={handlePublish}>
+          <form className="contact-form" onSubmit={handlePublish} noValidate>
             <div className="field">
               <label htmlFor="poster-href">Post or ad URL</label>
               <input
@@ -122,7 +117,6 @@ export function Poster() {
                 placeholder="https://www.instagram.com/p/…"
                 value={href}
                 onChange={(event) => setHref(event.target.value)}
-                required
               />
             </div>
             <div className="field">
@@ -145,7 +139,6 @@ export function Poster() {
                 autoComplete="current-password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                required
               />
             </div>
             {status ? <p className="form-success">{status}</p> : null}
@@ -154,7 +147,7 @@ export function Poster() {
                 {error}
               </p>
             ) : null}
-            <button type="submit" className="poster-submit" disabled={busy}>
+            <button type="button" className="poster-submit" disabled={busy} onClick={() => void handlePublish()}>
               {busy ? 'Posting…' : 'Post this URL'}
             </button>
           </form>
