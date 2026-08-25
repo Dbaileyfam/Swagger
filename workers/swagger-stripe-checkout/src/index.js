@@ -411,7 +411,7 @@ function normalizeHref(value) {
 
 function instagramShortcode(url) {
   const match = String(url).match(
-    /instagram\.com\/(?:reel|reels|p|tv)\/([A-Za-z0-9_-]+)/i,
+    /instagram\.com\/(?:[A-Za-z0-9._]+\/)?(?:reel|reels|p|tv)\/([A-Za-z0-9_-]+)/i,
   )
   return match ? match[1] : null
 }
@@ -440,7 +440,9 @@ function publicAdPayload(ad, origin) {
     text: ad.text,
     href: ad.href,
     createdAt: ad.createdAt,
-    imageUrl: `${origin}/ad-image?id=${encodeURIComponent(ad.id)}`,
+    imageUrl: ad.imageKey
+      ? `${origin}/ad-image?id=${encodeURIComponent(ad.id)}`
+      : '',
   }
 }
 
@@ -562,29 +564,24 @@ async function createPublicAd(request, env) {
     return json({ error: 'Paste the Instagram or ad URL' }, 400)
   }
 
-  const pulled = await fetchLinkedImage(href)
-  if (!pulled) {
-    return json(
-      {
-        error:
-          'Could not pull a photo from that link. Use an Instagram post/reel URL, or a page that has a photo.',
-      },
-      400,
-    )
-  }
-  const imageBody = pulled.body
-  const contentType = pulled.contentType
-
   const ads = await readAdsIndex(env)
   if (ads.length >= MAX_ADS) {
     return json({ error: `The board is full (max ${MAX_ADS}). Remove one first.` }, 400)
   }
 
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
-  const imageKey = `${ADS_OBJECT_PREFIX}${id}`
-  await env.DOWNLOADS_BUCKET.put(imageKey, imageBody, {
-    httpMetadata: { contentType },
-  })
+  let imageKey = ''
+  try {
+    const pulled = await fetchLinkedImage(href)
+    if (pulled) {
+      imageKey = `${ADS_OBJECT_PREFIX}${id}`
+      await env.DOWNLOADS_BUCKET.put(imageKey, pulled.body, {
+        httpMetadata: { contentType: pulled.contentType },
+      })
+    }
+  } catch {
+    imageKey = ''
+  }
 
   const ad = {
     id,

@@ -7,36 +7,71 @@ import {
   SpotifyIcon,
   YoutubeIcon,
 } from '../components/SocialIcons'
-import { fetchBoardAds, type BoardAd } from '../data/ads'
+import { fetchBoardAds, facebookEmbedSrc, instagramPermalink, youtubeEmbedSrc, type BoardAd } from '../data/ads'
 import { band } from '../data/band'
+import { InstagramEmbed } from '../components/InstagramEmbed'
 
 function featuredInstagramReel(
   url: string,
   text: string,
   image: string,
 ) {
-  const trimmed = url.trim()
-  if (!trimmed) return null
-
-  const href = trimmed.includes('instagram.com')
-    ? trimmed
-    : `https://www.instagram.com/reel/${trimmed}/`
-
-  try {
-    const parsed = new URL(href)
-    if (!/(^|\.)instagram\.com$/i.test(parsed.hostname)) return null
-    const match = parsed.pathname.match(/\/(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/)
-    if (!match) return null
-    const kind = match[1] === 'reels' ? 'reel' : match[1]
-    const id = match[2]
-    return {
-      permalink: `https://www.instagram.com/${kind}/${id}/`,
-      text: text.trim(),
-      image: image.trim(),
-    }
-  } catch {
-    return null
+  const permalink = instagramPermalink(url)
+  if (!permalink) return null
+  return {
+    permalink,
+    text: text.trim(),
+    image: image.trim(),
   }
+}
+
+function BoardEmbed({ ad }: { ad: BoardAd }) {
+  const instagram = ad.href ? instagramPermalink(ad.href) : null
+  const youtube = ad.href ? youtubeEmbedSrc(ad.href) : null
+  const facebook = ad.href ? facebookEmbedSrc(ad.href) : null
+
+  if (instagram) {
+    return <InstagramEmbed permalink={instagram} caption={ad.text} />
+  }
+
+  if (youtube) {
+    return (
+      <iframe
+        className="home-reel__video"
+        title={ad.text || 'Swagger video'}
+        src={youtube}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    )
+  }
+
+  if (facebook) {
+    return (
+      <iframe
+        className="home-reel__page"
+        title={ad.text || 'Swagger post'}
+        src={facebook}
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      />
+    )
+  }
+
+  if (ad.href) {
+    return (
+      <iframe
+        className="home-reel__page"
+        title={ad.text || 'Swagger post'}
+        src={ad.href}
+      />
+    )
+  }
+
+  if (ad.imageUrl) {
+    return <img src={ad.imageUrl} alt={ad.text || 'Swagger poster'} />
+  }
+
+  return null
 }
 
 export function Home() {
@@ -218,20 +253,7 @@ export function Home() {
                 <article className="home-reel__item" key={ad.id}>
                   {ad.text ? <p className="home-reel__text">{ad.text}</p> : null}
                   <div className="home-reel__frame">
-                    {ad.href ? (
-                      <a
-                        className="home-reel__card"
-                        href={ad.href}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <img src={ad.imageUrl} alt={ad.text || 'Swagger poster'} />
-                      </a>
-                    ) : (
-                      <div className="home-reel__card">
-                        <img src={ad.imageUrl} alt={ad.text || 'Swagger poster'} />
-                      </div>
-                    )}
+                    <BoardEmbed ad={ad} />
                   </div>
                   {ad.href ? (
                     <a
@@ -240,9 +262,7 @@ export function Home() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {ad.href.includes('instagram.com')
-                        ? 'View on Instagram'
-                        : 'See the ad'}
+                      Open original post
                     </a>
                   ) : null}
                 </article>

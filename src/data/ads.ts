@@ -7,8 +7,57 @@ export type BoardAd = {
   id: string
   text: string
   href: string
-  imageUrl: string
+  imageUrl?: string
   createdAt?: string
+}
+
+export function youtubeEmbedSrc(url: string): string | null {
+  const href = url.includes('://') ? url : `https://${url}`
+  try {
+    const parsed = new URL(href)
+    if (!/(^|\.)youtube\.com$|(^|\.)youtu\.be$/i.test(parsed.hostname)) return null
+    if (parsed.hostname.replace(/^www\./, '') === 'youtu.be') {
+      const id = parsed.pathname.replace(/^\//, '').split('/')[0]
+      return id ? `https://www.youtube-nocookie.com/embed/${id}` : null
+    }
+    const fromQuery = parsed.searchParams.get('v')
+    const fromPath = parsed.pathname.match(/\/(?:embed|shorts)\/([^/]+)/)?.[1]
+    const id = fromQuery || fromPath
+    return id ? `https://www.youtube-nocookie.com/embed/${id}` : null
+  } catch {
+    return null
+  }
+}
+
+export function facebookEmbedSrc(url: string): string | null {
+  const href = url.includes('://') ? url : `https://${url}`
+  try {
+    const parsed = new URL(href)
+    if (!/(^|\.)facebook\.com$|(^|\.)fb\.com$/i.test(parsed.hostname)) return null
+    return `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(parsed.toString())}&show_text=true&width=500`
+  } catch {
+    return null
+  }
+}
+
+export function instagramPermalink(url: string): string | null {
+  const trimmed = url.trim()
+  if (!trimmed) return null
+  const href = trimmed.includes('://') ? trimmed : `https://${trimmed}`
+  try {
+    const parsed = new URL(href)
+    if (!/(^|\.)instagram\.com$/i.test(parsed.hostname)) return null
+    const match = parsed.pathname.match(/\/(?:reel|reels|p|tv)\/([A-Za-z0-9_-]+)/i)
+    if (!match) return null
+    const kind = /\/p\//i.test(parsed.pathname)
+      ? 'p'
+      : /\/tv\//i.test(parsed.pathname)
+        ? 'tv'
+        : 'reel'
+    return `https://www.instagram.com/${kind}/${match[1]}/`
+  } catch {
+    return null
+  }
 }
 
 const POSTER_PASSWORD_KEY = 'swagger-poster-password'

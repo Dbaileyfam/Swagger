@@ -99,7 +99,8 @@ export function Poster() {
         <h1 className="section-title">Band poster</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Paste an Instagram or ad URL, then press Post this URL.
+          Paste an Instagram or ad URL, then press Post this URL. The full post
+          shows on the homepage under the buttons.
         </p>
       </header>
 
