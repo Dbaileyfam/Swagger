@@ -63,7 +63,7 @@ const DEFAULT_CANCEL =
   'https://dbaileyfam.github.io/Swagger/store?checkout=cancel'
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': 'https://dbaileyfam.github.io',
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 }

@@ -229,7 +229,10 @@ export function Store() {
     } catch (error) {
       const message =
         error instanceof Error
-          ? error.message
+          ? error.message === 'Failed to fetch' ||
+            error.message.includes('NetworkError')
+            ? 'Could not reach Stripe checkout. Try the live store page, or turn off content blockers and retry.'
+            : error.message
           : 'Could not open Stripe checkout. Please try again.'
       setStripeError(message)
       setStripeLoading(false)
