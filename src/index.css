@@ -268,6 +268,19 @@ select {
   color: var(--cream-faint);
 }
 
+.footer-poster {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  text-decoration: none;
+}
+
+.footer-poster:hover,
+.footer-poster:focus-visible {
+  color: var(--gold-bright);
+}
+
 /* ——— Shared ——— */
 .gold-rule {
   width: 4.5rem;
@@ -693,8 +706,21 @@ select {
 .home-reel {
   display: grid;
   justify-items: center;
-  gap: 0.9rem;
+  gap: 1.5rem;
   margin-top: 2rem;
+  width: min(100%, 48rem);
+}
+
+.home-reel--many {
+  width: min(100%, 52rem);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  align-items: start;
+}
+
+.home-reel__item {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
 }
 
 .home-reel__text {
@@ -2378,6 +2404,71 @@ select {
   font-size: 1.2rem;
   color: var(--gold-bright);
   padding: 1rem 0;
+}
+
+.poster-layout textarea {
+  min-height: 4.5rem;
+}
+
+.poster-current {
+  display: grid;
+  gap: 1rem;
+}
+
+.poster-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.poster-list__item {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid var(--gold-line);
+  padding: 0.75rem;
+  background: rgba(4, 12, 8, 0.4);
+}
+
+.poster-list__item img {
+  width: 5.5rem;
+  height: 5.5rem;
+  object-fit: cover;
+}
+
+.poster-list__item p {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  color: var(--cream);
+}
+
+.poster-list__item a {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--gold);
+  word-break: break-all;
+  margin-bottom: 0.55rem;
+}
+
+.poster-list__remove {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--gold-line);
+  color: var(--cream-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.poster-list__remove:hover,
+.poster-list__remove:focus-visible {
+  color: var(--gold-bright);
+  border-color: var(--gold);
 }
 
 @media (max-width: 760px) {

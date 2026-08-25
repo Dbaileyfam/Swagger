@@ -4,6 +4,7 @@ import { Contact } from './pages/Contact'
 import { Epk } from './pages/Epk'
 import { Home } from './pages/Home'
 import { Media } from './pages/Media'
+import { Poster } from './pages/Poster'
 import { Shows } from './pages/Shows'
 import { Store } from './pages/Store'
 
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="store" element={<Store />} />
           <Route path="epk" element={<Epk />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="poster" element={<Poster />} />
         </Route>
       </Routes>
     </BrowserRouter>

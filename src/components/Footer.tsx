@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { band } from '../data/band'
 
 export function Footer() {
@@ -13,6 +14,9 @@ export function Footer() {
             © {new Date().getFullYear()} Swagger the Band. All rights reserved.
           </p>
         </div>
+        <Link className="footer-poster" to="/poster">
+          Band poster
+        </Link>
       </div>
     </footer>
   )

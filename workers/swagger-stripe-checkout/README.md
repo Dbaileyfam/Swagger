@@ -19,6 +19,21 @@ Cloudflare Worker used by the store:
 | `gypsy-road-cd` | Gypsy Road CD | $18.00 | `Gypsy_Road_CD_Price_ID` | — |
 | `gypsy-road-album` | Gypsy Road digital | $12.99 | `Gypsy_Road_Album_Price_ID` | `Albums/Gypsy Road.zip` |
 
+## Poster board
+
+Band members can post Instagram links or photo ads from `/poster` (also linked as **Band poster** in the footer).
+
+- List: `GET /ads`
+- Publish: `POST /ads` multipart `password`, `text`, `href`, `image`
+- Remove: `DELETE /ads` `{ "password", "id" }`
+- Image: `GET /ad-image?id=...`
+
+Set the shared password with:
+
+```bash
+npx wrangler secret put ADS_PASSWORD
+```
+
 ## Deploy
 
 ```bash

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
 import {
@@ -6,6 +7,7 @@ import {
   SpotifyIcon,
   YoutubeIcon,
 } from '../components/SocialIcons'
+import { fetchBoardAds, type BoardAd } from '../data/ads'
 import { band } from '../data/band'
 
 function featuredInstagramReel(
@@ -43,10 +45,35 @@ export function Home() {
     band.homeFeaturedReel.text,
     band.homeFeaturedReel.image,
   )
+  const [liveAds, setLiveAds] = useState<BoardAd[]>([])
+
+  useEffect(() => {
+    fetchBoardAds()
+      .then(setLiveAds)
+      .catch(() => setLiveAds([]))
+  }, [])
+
+  const fallbackAd: BoardAd | null = featuredReel
+    ? {
+        id: 'featured',
+        text: featuredReel.text,
+        href: featuredReel.permalink,
+        imageUrl: featuredReel.image
+          ? `${import.meta.env.BASE_URL}${featuredReel.image}`
+          : `${featuredReel.permalink}media/?size=l`,
+      }
+    : null
+
+  const boardAds =
+    liveAds.length > 0
+      ? liveAds
+      : fallbackAd
+        ? [fallbackAd]
+        : []
 
   return (
     <>
-      <section className={featuredReel ? 'home-hero home-hero--with-reel' : 'home-hero'}>
+      <section className={boardAds.length ? 'home-hero home-hero--with-reel' : 'home-hero'}>
         <div className="home-hero__glow" aria-hidden="true" />
         <div className="home-hero__sparkles" aria-hidden="true">
           <span className="spark spark--a" />
@@ -181,40 +208,49 @@ export function Home() {
               <SpotifyIcon className="celtic-link__icon" />
             </a>
           </div>
-          {featuredReel ? (
-            <div className="home-reel">
-              {featuredReel.text ? (
-                <p className="home-reel__text">{featuredReel.text}</p>
-              ) : null}
-              <div className="home-reel__frame">
-                <a
-                  className="home-reel__card"
-                  href={featuredReel.permalink}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img
-                    src={
-                      featuredReel.image
-                        ? `${import.meta.env.BASE_URL}${featuredReel.image}`
-                        : `${featuredReel.permalink}media/?size=l`
-                    }
-                    alt={featuredReel.text || 'Swagger on Instagram'}
-                  />
-                </a>
-              </div>
-              <a
-                className="home-reel__watch"
-                href={featuredReel.permalink}
-                target="_blank"
-                rel="noreferrer"
-              >
-                View on Instagram
-              </a>
+          {boardAds.length ? (
+            <div
+              className={
+                boardAds.length > 1 ? 'home-reel home-reel--many' : 'home-reel'
+              }
+            >
+              {boardAds.map((ad) => (
+                <article className="home-reel__item" key={ad.id}>
+                  {ad.text ? <p className="home-reel__text">{ad.text}</p> : null}
+                  <div className="home-reel__frame">
+                    {ad.href ? (
+                      <a
+                        className="home-reel__card"
+                        href={ad.href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <img src={ad.imageUrl} alt={ad.text || 'Swagger poster'} />
+                      </a>
+                    ) : (
+                      <div className="home-reel__card">
+                        <img src={ad.imageUrl} alt={ad.text || 'Swagger poster'} />
+                      </div>
+                    )}
+                  </div>
+                  {ad.href ? (
+                    <a
+                      className="home-reel__watch"
+                      href={ad.href}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {ad.href.includes('instagram.com')
+                        ? 'View on Instagram'
+                        : 'See the ad'}
+                    </a>
+                  ) : null}
+                </article>
+              ))}
             </div>
           ) : null}
         </div>
-        {featuredReel ? null : <div className="home-hero__scroll">Scroll</div>}
+        {boardAds.length ? null : <div className="home-hero__scroll">Scroll</div>}
       </section>
 
       <section className="home-listen" aria-label="Featured song">

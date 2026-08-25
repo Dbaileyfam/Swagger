@@ -65,7 +65,7 @@ const DEFAULT_CANCEL =
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
 }
 
 function json(data, status = 200) {
@@ -120,6 +120,22 @@ export default {
 
     if (request.method === 'GET' && url.pathname === '/session-downloads') {
       return listSessionDownloads(url, env)
+    }
+
+    if (request.method === 'GET' && url.pathname === '/ads') {
+      return listPublicAds(request, env)
+    }
+
+    if (request.method === 'POST' && url.pathname === '/ads') {
+      return createPublicAd(request, env)
+    }
+
+    if (request.method === 'DELETE' && url.pathname === '/ads') {
+      return deletePublicAd(request, env)
+    }
+
+    if (request.method === 'GET' && url.pathname === '/ad-image') {
+      return servePublicAdImage(url, env)
     }
 
     return json({ error: 'Not found' }, 404)
@@ -360,5 +376,255 @@ async function downloadPaidFile(url, env) {
     CORS_HEADERS['Access-Control-Allow-Origin'],
   )
 
+  return new Response(object.body, { headers })
+}
+
+const ADS_INDEX_KEY = 'public-ads/index.json'
+const ADS_OBJECT_PREFIX = 'public-ads/'
+const MAX_ADS = 12
+const MAX_AD_IMAGE_BYTES = 4.5 * 1024 * 1024
+const AD_IMAGE_TYPES = {
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+}
+
+function isAdId(id) {
+  return typeof id === 'string' && /^[a-z0-9]{10,32}$/.test(id)
+}
+
+function normalizeHref(value) {
+  const trimmed = String(value || '').trim()
+  if (!trimmed) return ''
+  try {
+    const parsed = new URL(trimmed)
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null
+    return parsed.toString()
+  } catch {
+    return null
+  }
+}
+
+function instagramShortcode(url) {
+  const match = String(url).match(
+    /instagram\.com\/(?:reel|reels|p|tv)\/([A-Za-z0-9_-]+)/i,
+  )
+  return match ? match[1] : null
+}
+
+async function readAdsIndex(env) {
+  if (!env.DOWNLOADS_BUCKET) return []
+  const object = await env.DOWNLOADS_BUCKET.get(ADS_INDEX_KEY)
+  if (!object) return []
+  try {
+    const data = await object.json()
+    return Array.isArray(data) ? data : []
+  } catch {
+    return []
+  }
+}
+
+async function writeAdsIndex(env, ads) {
+  await env.DOWNLOADS_BUCKET.put(ADS_INDEX_KEY, JSON.stringify(ads), {
+    httpMetadata: { contentType: 'application/json' },
+  })
+}
+
+function publicAdPayload(ad, origin) {
+  return {
+    id: ad.id,
+    text: ad.text,
+    href: ad.href,
+    createdAt: ad.createdAt,
+    imageUrl: `${origin}/ad-image?id=${encodeURIComponent(ad.id)}`,
+  }
+}
+
+function adsUnauthorized(env) {
+  if (!env.ADS_PASSWORD) {
+    return json({ error: 'Poster password is not configured' }, 503)
+  }
+  return null
+}
+
+function passwordMatches(provided, expected) {
+  return typeof provided === 'string' && provided.length > 0 && provided === expected
+}
+
+async function fetchInstagramStill(href) {
+  const id = instagramShortcode(href)
+  if (!id) return null
+  const response = await fetch(
+    `https://www.instagram.com/p/${id}/media/?size=l`,
+    {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15',
+      },
+      redirect: 'follow',
+    },
+  )
+  if (!response.ok) return null
+  const contentType = (response.headers.get('content-type') || '').split(';')[0]
+  if (!AD_IMAGE_TYPES[contentType]) return null
+  const body = await response.arrayBuffer()
+  if (body.byteLength < 32 || body.byteLength > MAX_AD_IMAGE_BYTES) return null
+  return { body, contentType }
+}
+
+async function listPublicAds(request, env) {
+  const origin = new URL(request.url).origin
+  const ads = await readAdsIndex(env)
+  return json({ ads: ads.map((ad) => publicAdPayload(ad, origin)) })
+}
+
+async function createPublicAd(request, env) {
+  const missing = adsUnauthorized(env)
+  if (missing) return missing
+  if (!env.DOWNLOADS_BUCKET) {
+    return json({ error: 'DOWNLOADS_BUCKET is not configured' }, 500)
+  }
+
+  let form
+  try {
+    form = await request.formData()
+  } catch {
+    return json({ error: 'Send the poster as a form upload' }, 400)
+  }
+
+  if (!passwordMatches(form.get('password'), env.ADS_PASSWORD)) {
+    return json({ error: 'Wrong poster password' }, 401)
+  }
+
+  const text = String(form.get('text') || '').trim().slice(0, 280)
+  const href = normalizeHref(form.get('href'))
+  if (href === null) {
+    return json({ error: 'Link must be a full http(s) URL' }, 400)
+  }
+
+  const file = form.get('image')
+  let imageBody = null
+  let contentType = ''
+
+  if (file && typeof file === 'object' && typeof file.arrayBuffer === 'function' && file.size > 0) {
+    contentType = (file.type || '').split(';')[0]
+    if (!AD_IMAGE_TYPES[contentType]) {
+      return json({ error: 'Photo must be a JPG, PNG, WEBP, or GIF' }, 400)
+    }
+    if (file.size > MAX_AD_IMAGE_BYTES) {
+      return json({ error: 'Photo must be under 4.5 MB' }, 400)
+    }
+    imageBody = await file.arrayBuffer()
+  } else if (href && instagramShortcode(href)) {
+    const pulled = await fetchInstagramStill(href)
+    if (!pulled) {
+      return json(
+        {
+          error:
+            'Could not pull the Instagram photo. Download it and upload the image instead.',
+        },
+        400,
+      )
+    }
+    imageBody = pulled.body
+    contentType = pulled.contentType
+  } else {
+    return json(
+      { error: 'Add a photo, or paste an Instagram post/reel link' },
+      400,
+    )
+  }
+
+  const ads = await readAdsIndex(env)
+  if (ads.length >= MAX_ADS) {
+    return json({ error: `The board is full (max ${MAX_ADS}). Remove one first.` }, 400)
+  }
+
+  const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
+  const imageKey = `${ADS_OBJECT_PREFIX}${id}`
+  await env.DOWNLOADS_BUCKET.put(imageKey, imageBody, {
+    httpMetadata: { contentType },
+  })
+
+  const ad = {
+    id,
+    text,
+    href,
+    imageKey,
+    createdAt: new Date().toISOString(),
+  }
+  ads.unshift(ad)
+  await writeAdsIndex(env, ads)
+
+  return json({ ad: publicAdPayload(ad, new URL(request.url).origin) }, 201)
+}
+
+async function deletePublicAd(request, env) {
+  const missing = adsUnauthorized(env)
+  if (missing) return missing
+  if (!env.DOWNLOADS_BUCKET) {
+    return json({ error: 'DOWNLOADS_BUCKET is not configured' }, 500)
+  }
+
+  let body
+  try {
+    body = await request.json()
+  } catch {
+    return json({ error: 'Invalid JSON body' }, 400)
+  }
+
+  if (!passwordMatches(body.password, env.ADS_PASSWORD)) {
+    return json({ error: 'Wrong poster password' }, 401)
+  }
+  if (!isAdId(body.id)) {
+    return json({ error: 'Missing ad id' }, 400)
+  }
+
+  const ads = await readAdsIndex(env)
+  const ad = ads.find((item) => item.id === body.id)
+  if (!ad) return json({ error: 'That poster was already removed' }, 404)
+
+  const next = ads.filter((item) => item.id !== body.id)
+  await writeAdsIndex(env, next)
+  if (
+    typeof ad.imageKey === 'string' &&
+    ad.imageKey.startsWith(ADS_OBJECT_PREFIX)
+  ) {
+    await env.DOWNLOADS_BUCKET.delete(ad.imageKey)
+  }
+
+  return json({ ok: true })
+}
+
+async function servePublicAdImage(url, env) {
+  const id = url.searchParams.get('id')
+  if (!isAdId(id) || !env.DOWNLOADS_BUCKET) {
+    return new Response('Not found', { status: 404, headers: CORS_HEADERS })
+  }
+
+  const ads = await readAdsIndex(env)
+  const ad = ads.find((item) => item.id === id)
+  if (!ad || typeof ad.imageKey !== 'string' || !ad.imageKey.startsWith(ADS_OBJECT_PREFIX)) {
+    return new Response('Not found', { status: 404, headers: CORS_HEADERS })
+  }
+
+  const object = await env.DOWNLOADS_BUCKET.get(ad.imageKey)
+  if (!object) {
+    return new Response('Not found', { status: 404, headers: CORS_HEADERS })
+  }
+
+  const headers = new Headers()
+  object.writeHttpMetadata(headers)
+  headers.set(
+    'Content-Type',
+    object.httpMetadata?.contentType || 'image/jpeg',
+  )
+  headers.set('Cache-Control', 'public, max-age=3600')
+  headers.set(
+    'Access-Control-Allow-Origin',
+    CORS_HEADERS['Access-Control-Allow-Origin'],
+  )
   return new Response(object.body, { headers })
 }
