@@ -81,7 +81,7 @@ export function Home() {
     band.homeFeaturedReel.image,
   )
   const [liveAds, setLiveAds] = useState<BoardAd[]>([])
-  const [showEmbed, setShowEmbed] = useState(false)
+  const [showEmbed, setShowEmbed] = useState(true)
 
   useEffect(() => {
     fetchBoardAds()
@@ -103,8 +103,8 @@ export function Home() {
   const boardAd = liveAds[0] ?? fallbackAd
 
   useEffect(() => {
-    setShowEmbed(false)
-  }, [boardAd?.id])
+    if (boardAd?.href) setShowEmbed(true)
+  }, [boardAd?.id, boardAd?.href])
 
   return (
     <>
