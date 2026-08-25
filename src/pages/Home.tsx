@@ -80,6 +80,16 @@ function BoardEmbed({ ad }: { ad: BoardAd }) {
   return null
 }
 
+type LineupLightbox = {
+  name: string
+  photos: string[]
+  index: number
+}
+
+function memberPhotos(member: (typeof band.members)[number]) {
+  return [member.photo, ...member.gallery.filter((src) => src !== member.photo)]
+}
+
 export function Home() {
   const featuredReel = featuredInstagramReel(
     band.homeFeaturedReel.url,
@@ -88,6 +98,7 @@ export function Home() {
   )
   const [liveAds, setLiveAds] = useState<BoardAd[]>([])
   const [showEmbed, setShowEmbed] = useState(true)
+  const [lightbox, setLightbox] = useState<LineupLightbox | null>(null)
 
   useEffect(() => {
     fetchBoardAds()
@@ -111,6 +122,47 @@ export function Home() {
   useEffect(() => {
     if (boardAd?.href) setShowEmbed(true)
   }, [boardAd?.id, boardAd?.href])
+
+  useEffect(() => {
+    if (!lightbox) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setLightbox(null)
+        return
+      }
+      if (event.key === 'ArrowRight') {
+        setLightbox((current) =>
+          current
+            ? { ...current, index: (current.index + 1) % current.photos.length }
+            : current,
+        )
+        return
+      }
+      if (event.key === 'ArrowLeft') {
+        setLightbox((current) =>
+          current
+            ? {
+                ...current,
+                index:
+                  (current.index - 1 + current.photos.length) % current.photos.length,
+              }
+            : current,
+        )
+      }
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [lightbox])
+
+  const lightboxPhoto = lightbox ? lightbox.photos[lightbox.index] : null
 
   return (
     <>
@@ -366,14 +418,23 @@ export function Home() {
             The faces behind Swagger — click through for more photos of each member.
           </p>
           <div className="lineup-grid">
-            {band.members.map((member) => (
+            {band.members.map((member) => {
+              const photos = memberPhotos(member)
+              return (
               <article className="lineup-card" key={member.slug}>
                 <div className="lineup-card__photo">
-                  <img
-                    src={`${import.meta.env.BASE_URL}${member.photo}`}
-                    alt={member.name}
-                    loading="lazy"
-                  />
+                  <button
+                    type="button"
+                    className="lineup-card__open"
+                    onClick={() => setLightbox({ name: member.name, photos, index: 0 })}
+                    aria-label={`View larger photo of ${member.name}`}
+                  >
+                    <img
+                      src={`${import.meta.env.BASE_URL}${member.photo}`}
+                      alt={member.name}
+                      loading="lazy"
+                    />
+                  </button>
                 </div>
                 <div className="lineup-card__body">
                   <h3 className="lineup-card__name">{member.name}</h3>
@@ -382,23 +443,103 @@ export function Home() {
                     <details className="lineup-card__more">
                       <summary>See more pictures of {member.name.split(' ')[0]}</summary>
                       <div className="lineup-card__gallery">
-                        {member.gallery.map((src) => (
-                          <img
+                        {member.gallery.map((src) => {
+                          const index = photos.indexOf(src)
+                          return (
+                          <button
+                            type="button"
                             key={src}
-                            src={`${import.meta.env.BASE_URL}${src}`}
-                            alt={`${member.name} additional photo`}
-                            loading="lazy"
-                          />
-                        ))}
+                            className="lineup-card__open"
+                            onClick={() =>
+                              setLightbox({
+                                name: member.name,
+                                photos,
+                                index: index < 0 ? 0 : index,
+                              })
+                            }
+                            aria-label={`View larger photo of ${member.name}`}
+                          >
+                            <img
+                              src={`${import.meta.env.BASE_URL}${src}`}
+                              alt={`${member.name} additional photo`}
+                              loading="lazy"
+                            />
+                          </button>
+                          )
+                        })}
                       </div>
                     </details>
                   ) : null}
                 </div>
               </article>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
+
+      {lightbox && lightboxPhoto ? (
+        <div
+          className="photo-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${lightbox.name} photo`}
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            type="button"
+            className="photo-lightbox__close"
+            aria-label="Close enlarged photo"
+            onClick={() => setLightbox(null)}
+          >
+            ×
+          </button>
+          {lightbox.photos.length > 1 ? (
+            <>
+              <button
+                type="button"
+                className="photo-lightbox__nav photo-lightbox__nav--prev"
+                aria-label="Previous photo"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setLightbox({
+                    ...lightbox,
+                    index:
+                      (lightbox.index - 1 + lightbox.photos.length) %
+                      lightbox.photos.length,
+                  })
+                }}
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="photo-lightbox__nav photo-lightbox__nav--next"
+                aria-label="Next photo"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setLightbox({
+                    ...lightbox,
+                    index: (lightbox.index + 1) % lightbox.photos.length,
+                  })
+                }}
+              >
+                ›
+              </button>
+            </>
+          ) : null}
+          <figure
+            className="photo-lightbox__figure"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}${lightboxPhoto}`}
+              alt={lightbox.name}
+            />
+            <figcaption>{lightbox.name}</figcaption>
+          </figure>
+        </div>
+      ) : null}
     </>
   )
 }
