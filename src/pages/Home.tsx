@@ -8,10 +8,40 @@ import {
 } from '../components/SocialIcons'
 import { band } from '../data/band'
 
+function featuredInstagramReel(url: string, text: string) {
+  const trimmed = url.trim()
+  if (!trimmed) return null
+
+  const href = trimmed.includes('instagram.com')
+    ? trimmed
+    : `https://www.instagram.com/reel/${trimmed}/`
+
+  try {
+    const parsed = new URL(href)
+    if (!/(^|\.)instagram\.com$/i.test(parsed.hostname)) return null
+    const match = parsed.pathname.match(/\/(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/)
+    if (!match) return null
+    const kind = match[1] === 'reels' ? 'reel' : match[1]
+    const id = match[2]
+    return {
+      permalink: `https://www.instagram.com/${kind}/${id}/`,
+      embedSrc: `https://www.instagram.com/${kind}/${id}/embed/`,
+      text: text.trim(),
+    }
+  } catch {
+    return null
+  }
+}
+
 export function Home() {
+  const featuredReel = featuredInstagramReel(
+    band.homeFeaturedReel.url,
+    band.homeFeaturedReel.text,
+  )
+
   return (
     <>
-      <section className="home-hero">
+      <section className={featuredReel ? 'home-hero home-hero--with-reel' : 'home-hero'}>
         <div className="home-hero__glow" aria-hidden="true" />
         <div className="home-hero__sparkles" aria-hidden="true">
           <span className="spark spark--a" />
@@ -146,8 +176,32 @@ export function Home() {
               <SpotifyIcon className="celtic-link__icon" />
             </a>
           </div>
+          {featuredReel ? (
+            <div className="home-reel">
+              {featuredReel.text ? (
+                <p className="home-reel__text">{featuredReel.text}</p>
+              ) : null}
+              <div className="home-reel__frame">
+                <iframe
+                  title={featuredReel.text || 'Swagger Instagram reel'}
+                  src={featuredReel.embedSrc}
+                  loading="lazy"
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+              <a
+                className="home-reel__watch"
+                href={featuredReel.permalink}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on Instagram
+              </a>
+            </div>
+          ) : null}
         </div>
-        <div className="home-hero__scroll">Scroll</div>
+        {featuredReel ? null : <div className="home-hero__scroll">Scroll</div>}
       </section>
 
       <section className="home-listen" aria-label="Featured song">
