@@ -17,10 +17,11 @@ export const band = {
     'https://open.spotify.com/embed/artist/7tPoZvl7OYT2rQDdzCQpfR?utm_source=generator&theme=0&si=2bdf0432fd974ba9',
   spotifyFeaturedTrack:
     'https://open.spotify.com/embed/track/3QCwKFVW9IetwlR4z5nZ2P?utm_source=generator&theme=0&si=824fb1a97bde42e2',
-  /** Paste a reel URL (or shortcode) and caption. Leave `url` empty to hide the homepage reel. */
+  /** Paste a post/reel URL, caption, and optional photo. Leave `url` empty to hide. */
   homeFeaturedReel: {
     url: 'https://www.instagram.com/p/DcXf_9EsiZd/',
     text: 'Heber City: One More Time!',
+    image: 'instagram/heber-city-one-more-time.jpg',
   },
   albums: [
     { title: 'Trouble on the Green', year: 2008 },

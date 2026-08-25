@@ -8,7 +8,11 @@ import {
 } from '../components/SocialIcons'
 import { band } from '../data/band'
 
-function featuredInstagramReel(url: string, text: string) {
+function featuredInstagramReel(
+  url: string,
+  text: string,
+  image: string,
+) {
   const trimmed = url.trim()
   if (!trimmed) return null
 
@@ -25,8 +29,8 @@ function featuredInstagramReel(url: string, text: string) {
     const id = match[2]
     return {
       permalink: `https://www.instagram.com/${kind}/${id}/`,
-      embedSrc: `https://www.instagram.com/${kind}/${id}/embed/`,
       text: text.trim(),
+      image: image.trim(),
     }
   } catch {
     return null
@@ -37,6 +41,7 @@ export function Home() {
   const featuredReel = featuredInstagramReel(
     band.homeFeaturedReel.url,
     band.homeFeaturedReel.text,
+    band.homeFeaturedReel.image,
   )
 
   return (
@@ -182,13 +187,21 @@ export function Home() {
                 <p className="home-reel__text">{featuredReel.text}</p>
               ) : null}
               <div className="home-reel__frame">
-                <iframe
-                  title={featuredReel.text || 'Swagger Instagram reel'}
-                  src={featuredReel.embedSrc}
-                  loading="lazy"
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+                <a
+                  className="home-reel__card"
+                  href={featuredReel.permalink}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src={
+                      featuredReel.image
+                        ? `${import.meta.env.BASE_URL}${featuredReel.image}`
+                        : `${featuredReel.permalink}media/?size=l`
+                    }
+                    alt={featuredReel.text || 'Swagger on Instagram'}
+                  />
+                </a>
               </div>
               <a
                 className="home-reel__watch"
