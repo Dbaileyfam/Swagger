@@ -350,6 +350,48 @@ export const epkPhotos: MediaItem[] = [
     description: 'Official press photo',
     image: 'epk/epk-3.jpg',
   },
+  {
+    id: 'epk-rick',
+    type: 'photo',
+    title: 'Rick Butler',
+    description: 'Manager, Lead Vocals, Guitar, Mandolin & Banjo',
+    image: 'epk/rick-butler.jpg',
+  },
+  {
+    id: 'epk-dennis',
+    type: 'photo',
+    title: 'Dennis Harrington',
+    description: 'Fiddle & Vocals',
+    image: 'epk/dennis-harrington.jpg',
+  },
+  {
+    id: 'epk-trip',
+    type: 'photo',
+    title: 'Trip Marshall',
+    description: 'Lead Guitar & Mandolin',
+    image: 'epk/trip-marshall.jpg',
+  },
+  {
+    id: 'epk-manny',
+    type: 'photo',
+    title: 'Manny Slack',
+    description: 'Bass & Vocals',
+    image: 'epk/manny-slack.jpg',
+  },
+  {
+    id: 'epk-mike',
+    type: 'photo',
+    title: 'Mike Bailey',
+    description: 'Drums',
+    image: 'epk/mike-bailey.jpg',
+  },
+  {
+    id: 'epk-eric',
+    type: 'photo',
+    title: 'Eric Slaymaker',
+    description: 'Vocals, Tin Whistle & Mandolin',
+    image: 'epk/eric-slaymaker.jpg',
+  },
 ]
 
 /** Brand / logo assets that say Swagger — for EPK downloads & press use */
