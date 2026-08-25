@@ -52,7 +52,7 @@ const EPK_VIDEO_IDS = [
   '4Wi3yPjNMbc', // Morrison's Jig — Live
   '5dynW18TBDM', // Galway Girl
   'KiTtR-ytr04', // Bodie McGee
-  'o2Ss1P0o71U', // Mrs Myrtle's Daughter
+  'Q3KP2z3uTd8', // Myrtle's Daughter — Live
 ]
 
 export function Epk() {
