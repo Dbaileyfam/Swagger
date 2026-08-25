@@ -31,7 +31,13 @@ function BoardEmbed({ ad }: { ad: BoardAd }) {
   const facebook = ad.href ? facebookEmbedSrc(ad.href) : null
 
   if (instagram) {
-    return <InstagramEmbed permalink={instagram} caption={ad.text} />
+    return (
+      <InstagramEmbed
+        permalink={instagram}
+        caption={ad.text}
+        imageUrl={ad.imageUrl}
+      />
+    )
   }
 
   if (youtube) {

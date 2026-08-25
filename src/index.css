@@ -742,10 +742,9 @@ select {
 .home-reel__frame {
   width: min(100%, 540px);
   min-width: min(100%, 326px);
-  max-height: 46rem;
   border-radius: 12px;
   overflow: hidden;
-  background: transparent;
+  background: #fff;
 }
 
 .home-reel__card {
