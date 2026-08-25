@@ -134,6 +134,9 @@ export type Show = {
   date: string
   time: string
   upcoming: boolean
+  href?: string
+  tickets?: string
+  address?: string
 }
 
 export const shows: Show[] = [
@@ -180,32 +183,44 @@ export const shows: Show[] = [
   {
     id: 'longs-peak-11-2026',
     event: 'Longs Peak Scottish Irish Highland Festival',
-    venue: 'Estes Park',
-    city: 'Estes',
+    venue: 'Estes Park Event Complex',
+    city: 'Estes Park',
     state: 'Colorado',
     date: '2026-09-11',
-    time: 'TBD',
+    time: '9:00am – 5:00pm',
     upcoming: true,
+    href: 'https://scotfest.com/',
+    tickets:
+      'https://longspeakscottishirishhighland.ticketspice.com/longs-peak-scottish-irish-highland-festival-2026',
+    address: '1209 Manford Avenue, Estes Park, CO 80517',
   },
   {
     id: 'longs-peak-12-2026',
     event: 'Longs Peak Scottish Irish Highland Festival',
-    venue: 'Estes Park',
-    city: 'Estes',
+    venue: 'Estes Park Event Complex',
+    city: 'Estes Park',
     state: 'Colorado',
     date: '2026-09-12',
-    time: 'TBD',
+    time: '9:00am – 5:00pm',
     upcoming: true,
+    href: 'https://scotfest.com/',
+    tickets:
+      'https://longspeakscottishirishhighland.ticketspice.com/longs-peak-scottish-irish-highland-festival-2026',
+    address: '1209 Manford Avenue, Estes Park, CO 80517',
   },
   {
     id: 'longs-peak-13-2026',
     event: 'Longs Peak Scottish Irish Highland Festival',
-    venue: 'Estes Park',
-    city: 'Estes',
+    venue: 'Estes Park Event Complex',
+    city: 'Estes Park',
     state: 'Colorado',
     date: '2026-09-13',
-    time: 'TBD',
+    time: '9:00am – 5:00pm',
     upcoming: true,
+    href: 'https://scotfest.com/',
+    tickets:
+      'https://longspeakscottishirishhighland.ticketspice.com/longs-peak-scottish-irish-highland-festival-2026',
+    address: '1209 Manford Avenue, Estes Park, CO 80517',
   },
   {
     id: 'vegas-09-2026',
@@ -216,6 +231,10 @@ export const shows: Show[] = [
     date: '2026-10-09',
     time: '6:00pm',
     upcoming: true,
+    href: 'https://lvrenfair.com/',
+    tickets:
+      'https://wl.eventim.us/event/Age-of-Chivalry-Ren-Fair-2026/696836',
+    address: '2601 E Sunset Road, Las Vegas, NV 89120',
   },
   {
     id: 'vegas-10-2026',
@@ -226,6 +245,10 @@ export const shows: Show[] = [
     date: '2026-10-10',
     time: 'TBD',
     upcoming: true,
+    href: 'https://lvrenfair.com/',
+    tickets:
+      'https://wl.eventim.us/event/Age-of-Chivalry-Ren-Fair-2026/696836',
+    address: '2601 E Sunset Road, Las Vegas, NV 89120',
   },
   {
     id: 'vegas-11-2026',
@@ -236,6 +259,10 @@ export const shows: Show[] = [
     date: '2026-10-11',
     time: '1:00pm',
     upcoming: true,
+    href: 'https://lvrenfair.com/',
+    tickets:
+      'https://wl.eventim.us/event/Age-of-Chivalry-Ren-Fair-2026/696836',
+    address: '2601 E Sunset Road, Las Vegas, NV 89120',
   },
   {
     id: 'tucson-23-2026',
@@ -246,6 +273,10 @@ export const shows: Show[] = [
     date: '2026-10-23',
     time: '5:00pm – 10:00pm',
     upcoming: true,
+    href: 'https://tucsoncelticfestival.org/',
+    tickets:
+      'https://www.stridevents.com/events/40th-annual-tucson-celtic-festival-and-scottish-highland-games/2026/tickets',
+    address: '4502 N 1st Avenue, Tucson, AZ 85718',
   },
   {
     id: 'tucson-24-2026',
@@ -256,6 +287,10 @@ export const shows: Show[] = [
     date: '2026-10-24',
     time: '8:00am – 10:00pm',
     upcoming: true,
+    href: 'https://tucsoncelticfestival.org/',
+    tickets:
+      'https://www.stridevents.com/events/40th-annual-tucson-celtic-festival-and-scottish-highland-games/2026/tickets',
+    address: '4502 N 1st Avenue, Tucson, AZ 85718',
   },
   {
     id: 'tucson-25-2026',
@@ -266,6 +301,10 @@ export const shows: Show[] = [
     date: '2026-10-25',
     time: '8:00am – 5:00pm',
     upcoming: true,
+    href: 'https://tucsoncelticfestival.org/',
+    tickets:
+      'https://www.stridevents.com/events/40th-annual-tucson-celtic-festival-and-scottish-highland-games/2026/tickets',
+    address: '4502 N 1st Avenue, Tucson, AZ 85718',
   },
   {
     id: 'wasatch-2026',
@@ -318,6 +357,7 @@ export type MediaItem = {
   youtubeId?: string
   image?: string
   year?: string
+  face?: boolean
 }
 
 /** Press photos from https://swaggertheband.com/epk-files/ */
@@ -356,6 +396,7 @@ export const epkPhotos: MediaItem[] = [
     title: 'Rick Butler',
     description: 'Manager, Lead Vocals, Guitar, Mandolin & Banjo',
     image: 'epk/rick-butler.jpg',
+    face: true,
   },
   {
     id: 'epk-dennis',
@@ -363,6 +404,7 @@ export const epkPhotos: MediaItem[] = [
     title: 'Dennis Harrington',
     description: 'Fiddle & Vocals',
     image: 'epk/dennis-harrington.jpg',
+    face: true,
   },
   {
     id: 'epk-trip',
@@ -370,6 +412,7 @@ export const epkPhotos: MediaItem[] = [
     title: 'Trip Marshall',
     description: 'Lead Guitar & Mandolin',
     image: 'epk/trip-marshall.jpg',
+    face: true,
   },
   {
     id: 'epk-manny',
@@ -377,6 +420,7 @@ export const epkPhotos: MediaItem[] = [
     title: 'Manny Slack',
     description: 'Bass & Vocals',
     image: 'epk/manny-slack.jpg',
+    face: true,
   },
   {
     id: 'epk-mike',
@@ -384,6 +428,7 @@ export const epkPhotos: MediaItem[] = [
     title: 'Mike Bailey',
     description: 'Drums',
     image: 'epk/mike-bailey.jpg',
+    face: true,
   },
   {
     id: 'epk-eric',
@@ -391,6 +436,7 @@ export const epkPhotos: MediaItem[] = [
     title: 'Eric Slaymaker',
     description: 'Vocals, Tin Whistle & Mandolin',
     image: 'epk/eric-slaymaker.jpg',
+    face: true,
   },
 ]
 
@@ -825,6 +871,20 @@ export function upcomingShows() {
   return [...shows]
     .filter((s) => s.upcoming)
     .sort((a, b) => a.date.localeCompare(b.date))
+}
+
+export function showMapQuery(show: Show) {
+  return encodeURIComponent(
+    show.address || `${show.venue}, ${show.city}, ${show.state}`,
+  )
+}
+
+export function showMapEmbedSrc(show: Show) {
+  return `https://maps.google.com/maps?hl=en&q=${showMapQuery(show)}&z=15&output=embed`
+}
+
+export function showDirectionsHref(show: Show) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${showMapQuery(show)}`
 }
 
 export function pastShows() {

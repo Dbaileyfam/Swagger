@@ -51,9 +51,9 @@ function VideoTile({ item }: { item: MediaItem }) {
 
 function PhotoTile({ item }: { item: MediaItem }) {
   return (
-    <article className="media-tile media-tile--photo">
+    <article className={`media-tile media-tile--photo${item.face ? ' media-tile--member' : ''}`}>
       <div className="photo-tile__image">
-        <img src={assetUrl(item.image!)} alt="Swagger press photo" loading="lazy" />
+        <img src={assetUrl(item.image!)} alt={item.title || 'Swagger press photo'} loading="lazy" />
       </div>
     </article>
   )

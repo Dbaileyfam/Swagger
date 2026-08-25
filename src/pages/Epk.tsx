@@ -144,7 +144,10 @@ export function Epk() {
             </p>
             <div className="photo-grid">
               {epkPhotos.map((photo, index) => (
-                <figure className="photo-tile photo-tile--zoom" key={photo.id}>
+                <figure
+                  className={`photo-tile photo-tile--zoom${photo.face ? ' photo-tile--member' : ''}`}
+                  key={photo.id}
+                >
                   <button
                     type="button"
                     className="photo-tile__open"

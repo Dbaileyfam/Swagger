@@ -1913,6 +1913,20 @@ select {
   filter: brightness(1.06);
 }
 
+.photo-tile--member {
+  background: var(--ink);
+}
+
+.photo-tile--member img {
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  object-position: center top;
+}
+
+.photo-tile--member.photo-tile--zoom .photo-tile__open img {
+  transform-origin: center top;
+}
+
 .photo-lightbox {
   position: fixed;
   inset: 0;
@@ -2095,6 +2109,16 @@ select {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.media-tile--member .photo-tile__image {
+  aspect-ratio: 3 / 4;
+  background: var(--ink);
+}
+
+.media-tile--member .photo-tile__image img {
+  object-fit: contain;
+  object-position: center top;
 }
 
 .chip {
