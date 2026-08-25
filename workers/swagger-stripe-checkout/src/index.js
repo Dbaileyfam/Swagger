@@ -396,8 +396,9 @@ function isAdId(id) {
 }
 
 function normalizeHref(value) {
-  const trimmed = String(value || '').trim()
+  let trimmed = String(value || '').trim()
   if (!trimmed) return ''
+  if (!/^https?:\/\//i.test(trimmed)) trimmed = `https://${trimmed}`
   try {
     const parsed = new URL(trimmed)
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null
@@ -453,25 +454,68 @@ function passwordMatches(provided, expected) {
   return typeof provided === 'string' && provided.length > 0 && provided === expected
 }
 
-async function fetchInstagramStill(href) {
-  const id = instagramShortcode(href)
-  if (!id) return null
-  const response = await fetch(
-    `https://www.instagram.com/p/${id}/media/?size=l`,
-    {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15',
-      },
-      redirect: 'follow',
-    },
-  )
+const FETCH_HEADERS = {
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15',
+}
+
+async function bufferFromImageResponse(response) {
   if (!response.ok) return null
   const contentType = (response.headers.get('content-type') || '').split(';')[0]
   if (!AD_IMAGE_TYPES[contentType]) return null
   const body = await response.arrayBuffer()
   if (body.byteLength < 32 || body.byteLength > MAX_AD_IMAGE_BYTES) return null
   return { body, contentType }
+}
+
+async function fetchInstagramStill(href) {
+  const id = instagramShortcode(href)
+  if (!id) return null
+  const response = await fetch(`https://www.instagram.com/p/${id}/media/?size=l`, {
+    headers: FETCH_HEADERS,
+    redirect: 'follow',
+  })
+  return bufferFromImageResponse(response)
+}
+
+function firstMetaImage(html) {
+  const patterns = [
+    /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
+    /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
+    /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
+    /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i,
+  ]
+  for (const pattern of patterns) {
+    const match = html.match(pattern)
+    if (match?.[1]) return match[1].replace(/&amp;/g, '&')
+  }
+  return null
+}
+
+async function fetchLinkedImage(href) {
+  const fromInstagram = await fetchInstagramStill(href)
+  if (fromInstagram) return fromInstagram
+
+  const response = await fetch(href, {
+    headers: FETCH_HEADERS,
+    redirect: 'follow',
+  })
+  const asImage = await bufferFromImageResponse(response.clone())
+  if (asImage) return asImage
+
+  const html = (await response.text()).slice(0, 250000)
+  const imageHref = firstMetaImage(html)
+  if (!imageHref) return null
+  try {
+    const absolute = new URL(imageHref, href).toString()
+    const imageResponse = await fetch(absolute, {
+      headers: FETCH_HEADERS,
+      redirect: 'follow',
+    })
+    return bufferFromImageResponse(imageResponse)
+  } catch {
+    return null
+  }
 }
 
 async function listPublicAds(request, env) {
@@ -487,55 +531,48 @@ async function createPublicAd(request, env) {
     return json({ error: 'DOWNLOADS_BUCKET is not configured' }, 500)
   }
 
-  let form
+  let password = ''
+  let text = ''
+  let rawHref = ''
+
+  const contentTypeHeader = request.headers.get('content-type') || ''
   try {
-    form = await request.formData()
+    if (contentTypeHeader.includes('application/json')) {
+      const body = await request.json()
+      password = body.password
+      text = String(body.text || '').trim().slice(0, 280)
+      rawHref = body.href
+    } else {
+      const form = await request.formData()
+      password = form.get('password')
+      text = String(form.get('text') || '').trim().slice(0, 280)
+      rawHref = form.get('href')
+    }
   } catch {
-    return json({ error: 'Send the poster as a form upload' }, 400)
+    return json({ error: 'Could not read that poster' }, 400)
   }
 
-  if (!passwordMatches(form.get('password'), env.ADS_PASSWORD)) {
+  if (!passwordMatches(password, env.ADS_PASSWORD)) {
     return json({ error: 'Wrong poster password' }, 401)
   }
 
-  const text = String(form.get('text') || '').trim().slice(0, 280)
-  const href = normalizeHref(form.get('href'))
-  if (href === null) {
-    return json({ error: 'Link must be a full http(s) URL' }, 400)
+  const href = normalizeHref(rawHref)
+  if (!href) {
+    return json({ error: 'Paste the Instagram or ad URL' }, 400)
   }
 
-  const file = form.get('image')
-  let imageBody = null
-  let contentType = ''
-
-  if (file && typeof file === 'object' && typeof file.arrayBuffer === 'function' && file.size > 0) {
-    contentType = (file.type || '').split(';')[0]
-    if (!AD_IMAGE_TYPES[contentType]) {
-      return json({ error: 'Photo must be a JPG, PNG, WEBP, or GIF' }, 400)
-    }
-    if (file.size > MAX_AD_IMAGE_BYTES) {
-      return json({ error: 'Photo must be under 4.5 MB' }, 400)
-    }
-    imageBody = await file.arrayBuffer()
-  } else if (href && instagramShortcode(href)) {
-    const pulled = await fetchInstagramStill(href)
-    if (!pulled) {
-      return json(
-        {
-          error:
-            'Could not pull the Instagram photo. Download it and upload the image instead.',
-        },
-        400,
-      )
-    }
-    imageBody = pulled.body
-    contentType = pulled.contentType
-  } else {
+  const pulled = await fetchLinkedImage(href)
+  if (!pulled) {
     return json(
-      { error: 'Add a photo, or paste an Instagram post/reel link' },
+      {
+        error:
+          'Could not pull a photo from that link. Use an Instagram post/reel URL, or a page that has a photo.',
+      },
       400,
     )
   }
+  const imageBody = pulled.body
+  const contentType = pulled.contentType
 
   const ads = await readAdsIndex(env)
   if (ads.length >= MAX_ADS) {
