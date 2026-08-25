@@ -24,7 +24,7 @@ Cloudflare Worker used by the store:
 Band members can post Instagram links or photo ads from `/poster` (also linked as **Band poster** in the footer).
 
 - List: `GET /ads`
-- Publish: `POST /ads` JSON `{ "password", "href", "text?" }` — pulls the photo from an Instagram post/reel or the page’s preview image
+- Publish: `POST /ads` JSON or form `{ "password", "href", "text?" }` — stores the URL so the homepage can embed the full post
 - Remove: `DELETE /ads` `{ "password", "id" }`
 - Image: `GET /ad-image?id=...`
 

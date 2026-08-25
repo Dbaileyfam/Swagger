@@ -81,6 +81,7 @@ export function Home() {
     band.homeFeaturedReel.image,
   )
   const [liveAds, setLiveAds] = useState<BoardAd[]>([])
+  const [showEmbed, setShowEmbed] = useState(false)
 
   useEffect(() => {
     fetchBoardAds()
@@ -99,16 +100,15 @@ export function Home() {
       }
     : null
 
-  const boardAds =
-    liveAds.length > 0
-      ? liveAds
-      : fallbackAd
-        ? [fallbackAd]
-        : []
+  const boardAd = liveAds[0] ?? fallbackAd
+
+  useEffect(() => {
+    setShowEmbed(false)
+  }, [boardAd?.id])
 
   return (
     <>
-      <section className={boardAds.length ? 'home-hero home-hero--with-reel' : 'home-hero'}>
+      <section className={showEmbed ? 'home-hero home-hero--with-reel' : 'home-hero'}>
         <div className="home-hero__glow" aria-hidden="true" />
         <div className="home-hero__sparkles" aria-hidden="true">
           <span className="spark spark--a" />
@@ -178,6 +178,20 @@ export function Home() {
                 Kit
               </span>
             </Link>
+            {boardAd?.href ? (
+              <CelticButton
+                type="button"
+                className={showEmbed ? 'celtic-link--active' : undefined}
+                onClick={() => setShowEmbed((open) => !open)}
+                aria-expanded={showEmbed}
+                aria-controls="home-full-post"
+                aria-label="Full post embed"
+              >
+                Full
+                <br />
+                Post
+              </CelticButton>
+            ) : null}
             <a
               href={band.social.facebook}
               className="celtic-link"
@@ -243,34 +257,28 @@ export function Home() {
               <SpotifyIcon className="celtic-link__icon" />
             </a>
           </div>
-          {boardAds.length ? (
-            <div
-              className={
-                boardAds.length > 1 ? 'home-reel home-reel--many' : 'home-reel'
-              }
-            >
-              {boardAds.map((ad) => (
-                <article className="home-reel__item" key={ad.id}>
-                  {ad.text ? <p className="home-reel__text">{ad.text}</p> : null}
-                  <div className="home-reel__frame">
-                    <BoardEmbed ad={ad} />
-                  </div>
-                  {ad.href ? (
-                    <a
-                      className="home-reel__watch"
-                      href={ad.href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Open original post
-                    </a>
-                  ) : null}
-                </article>
-              ))}
+          {showEmbed && boardAd ? (
+            <div className="home-reel" id="home-full-post">
+              <article className="home-reel__item">
+                {boardAd.text ? <p className="home-reel__text">{boardAd.text}</p> : null}
+                <div className="home-reel__frame">
+                  <BoardEmbed ad={boardAd} />
+                </div>
+                {boardAd.href ? (
+                  <a
+                    className="home-reel__watch"
+                    href={boardAd.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open original post
+                  </a>
+                ) : null}
+              </article>
             </div>
           ) : null}
         </div>
-        {boardAds.length ? null : <div className="home-hero__scroll">Scroll</div>}
+        {showEmbed ? null : <div className="home-hero__scroll">Scroll</div>}
       </section>
 
       <section className="home-listen" aria-label="Featured song">

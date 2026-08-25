@@ -777,7 +777,9 @@ select {
 }
 
 .home-reel__instagram {
-  margin: 0 auto !important;
+  min-height: 680px;
+  max-width: 540px;
+  margin: 0 auto;
 }
 
 .home-reel__watch {

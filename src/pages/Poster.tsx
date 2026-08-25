@@ -59,8 +59,8 @@ export function Poster() {
         text: text.trim(),
       })
       setPosterPassword(nextPassword)
-      setAds((current) => [ad, ...current.filter((item) => item.id !== ad.id)])
-      setStatus('Posted to the homepage. It is listed below.')
+      setAds([ad])
+      setStatus('Posted. On the homepage, tap Full Post to open it.')
       await loadAds().catch(() => {})
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not post that link')
@@ -99,8 +99,8 @@ export function Poster() {
         <h1 className="section-title">Band poster</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Paste an Instagram or ad URL, then press Post this URL. The full post
-          shows on the homepage under the buttons.
+          Paste an Instagram or ad URL, then press Post this URL. Only one post
+          is live at a time; a new URL replaces the previous one.
         </p>
       </header>
 

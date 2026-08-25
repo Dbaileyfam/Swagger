@@ -382,7 +382,6 @@ async function downloadPaidFile(url, env) {
 
 const ADS_INDEX_KEY = 'public-ads/index.json'
 const ADS_OBJECT_PREFIX = 'public-ads/'
-const MAX_ADS = 12
 const MAX_AD_IMAGE_BYTES = 4.5 * 1024 * 1024
 const AD_IMAGE_TYPES = {
   'image/jpeg': 'jpg',
@@ -524,7 +523,8 @@ async function fetchLinkedImage(href) {
 async function listPublicAds(request, env) {
   const origin = new URL(request.url).origin
   const ads = await readAdsIndex(env)
-  return json({ ads: ads.map((ad) => publicAdPayload(ad, origin)) })
+  const latest = ads.slice(0, 1)
+  return json({ ads: latest.map((ad) => publicAdPayload(ad, origin)) })
 }
 
 async function createPublicAd(request, env) {
@@ -564,9 +564,14 @@ async function createPublicAd(request, env) {
     return json({ error: 'Paste the Instagram or ad URL' }, 400)
   }
 
-  const ads = await readAdsIndex(env)
-  if (ads.length >= MAX_ADS) {
-    return json({ error: `The board is full (max ${MAX_ADS}). Remove one first.` }, 400)
+  const previous = await readAdsIndex(env)
+  for (const old of previous) {
+    if (
+      typeof old.imageKey === 'string' &&
+      old.imageKey.startsWith(ADS_OBJECT_PREFIX)
+    ) {
+      await env.DOWNLOADS_BUCKET.delete(old.imageKey)
+    }
   }
 
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
@@ -590,8 +595,7 @@ async function createPublicAd(request, env) {
     imageKey,
     createdAt: new Date().toISOString(),
   }
-  ads.unshift(ad)
-  await writeAdsIndex(env, ads)
+  await writeAdsIndex(env, [ad])
 
   return json({ ad: publicAdPayload(ad, new URL(request.url).origin) }, 201)
 }
