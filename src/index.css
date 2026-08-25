@@ -1962,18 +1962,24 @@ select {
   filter: brightness(1.06);
 }
 
+.photo-grid--members {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
 .photo-tile--member {
   background: var(--ink);
 }
 
 .photo-tile--member img {
+  width: 100%;
+  height: 100%;
   aspect-ratio: 3 / 4;
-  object-fit: contain;
-  object-position: center top;
+  object-fit: cover;
+  object-position: center 12%;
 }
 
-.photo-tile--member.photo-tile--zoom .photo-tile__open img {
-  transform-origin: center top;
+.photo-tile--member .photo-tile__open {
+  height: 100%;
 }
 
 .photo-lightbox {
@@ -2166,8 +2172,8 @@ select {
 }
 
 .media-tile--member .photo-tile__image img {
-  object-fit: contain;
-  object-position: center top;
+  object-fit: cover;
+  object-position: center 12%;
 }
 
 .chip {

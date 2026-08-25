@@ -143,25 +143,50 @@ export function Epk() {
               Press Photos
             </p>
             <div className="photo-grid">
-              {epkPhotos.map((photo, index) => (
-                <figure
-                  className={`photo-tile photo-tile--zoom${photo.face ? ' photo-tile--member' : ''}`}
-                  key={photo.id}
-                >
-                  <button
-                    type="button"
-                    className="photo-tile__open"
-                    onClick={() => setLightboxIndex(index)}
-                    aria-label={`Enlarge ${photo.title}`}
-                  >
-                    <img
-                      src={assetUrl(photo.image!)}
-                      alt={photo.title}
-                      loading="lazy"
-                    />
-                  </button>
-                </figure>
-              ))}
+              {epkPhotos
+                .map((photo, index) => ({ photo, index }))
+                .filter(({ photo }) => !photo.face)
+                .map(({ photo, index }) => (
+                  <figure className="photo-tile photo-tile--zoom" key={photo.id}>
+                    <button
+                      type="button"
+                      className="photo-tile__open"
+                      onClick={() => setLightboxIndex(index)}
+                      aria-label={`Enlarge ${photo.title}`}
+                    >
+                      <img
+                        src={assetUrl(photo.image!)}
+                        alt={photo.title}
+                        loading="lazy"
+                      />
+                    </button>
+                  </figure>
+                ))}
+            </div>
+
+            <p className="section-label" style={{ marginTop: '2rem' }}>
+              Lineup
+            </p>
+            <div className="photo-grid photo-grid--members">
+              {epkPhotos
+                .map((photo, index) => ({ photo, index }))
+                .filter(({ photo }) => photo.face)
+                .map(({ photo, index }) => (
+                  <figure className="photo-tile photo-tile--member" key={photo.id}>
+                    <button
+                      type="button"
+                      className="photo-tile__open"
+                      onClick={() => setLightboxIndex(index)}
+                      aria-label={`Enlarge ${photo.title}`}
+                    >
+                      <img
+                        src={assetUrl(photo.image!)}
+                        alt={photo.title}
+                        loading="lazy"
+                      />
+                    </button>
+                  </figure>
+                ))}
             </div>
 
             <p className="section-label" style={{ marginTop: '2rem' }}>
