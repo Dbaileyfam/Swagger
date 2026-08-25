@@ -181,6 +181,18 @@ export const shows: Show[] = [
     upcoming: false,
   },
   {
+    id: 'heber-09-2026',
+    event: 'Heber Concert Series',
+    venue: 'Heber Valley Park',
+    city: 'Heber',
+    state: 'Utah',
+    date: '2026-09-05',
+    time: '6:00pm',
+    upcoming: true,
+    href: 'https://hebermarket.com/saturday-sunset-music-series/',
+    address: 'Heber Valley Park, Heber, Utah',
+  },
+  {
     id: 'longs-peak-11-2026',
     event: 'Longs Peak Scottish Irish Highland Festival',
     venue: 'Estes Park Event Complex',
