@@ -1762,6 +1762,131 @@ select {
   display: block;
 }
 
+.photo-tile__open {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  color: inherit;
+}
+
+.photo-tile--zoom .photo-tile__open img {
+  transition: transform 0.35s var(--ease), filter 0.35s var(--ease);
+}
+
+.photo-tile--zoom:hover .photo-tile__open img,
+.photo-tile--zoom:focus-within .photo-tile__open img {
+  transform: scale(1.03);
+  filter: brightness(1.06);
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(1, 4, 3, 0.88);
+  backdrop-filter: blur(6px);
+}
+
+.photo-lightbox__figure {
+  margin: 0;
+  max-width: min(96vw, 1100px);
+  max-height: calc(100vh - 2.5rem);
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+}
+
+.photo-lightbox__figure img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 5.5rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid var(--gold-line);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
+  background: rgba(4, 12, 8, 0.6);
+}
+
+.photo-lightbox__figure figcaption {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--cream-muted);
+  text-align: center;
+}
+
+.photo-lightbox__close,
+.photo-lightbox__nav {
+  position: absolute;
+  z-index: 1;
+  border: 1px solid var(--gold-line);
+  background: rgba(4, 12, 8, 0.72);
+  color: var(--cream);
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.photo-lightbox__close:hover,
+.photo-lightbox__nav:hover,
+.photo-lightbox__close:focus-visible,
+.photo-lightbox__nav:focus-visible {
+  background: rgba(12, 34, 22, 0.95);
+  color: var(--gold-bright);
+  outline: none;
+}
+
+.photo-lightbox__close {
+  top: 1rem;
+  right: 1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.photo-lightbox__nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.85rem;
+  line-height: 1;
+}
+
+.photo-lightbox__nav--prev {
+  left: 0.75rem;
+}
+
+.photo-lightbox__nav--next {
+  right: 0.75rem;
+}
+
+@media (max-width: 700px) {
+  .photo-lightbox {
+    padding: 3.5rem 0.75rem 1rem;
+  }
+
+  .photo-lightbox__nav {
+    top: auto;
+    bottom: 1rem;
+    transform: none;
+  }
+
+  .photo-lightbox__nav--prev {
+    left: 1rem;
+  }
+
+  .photo-lightbox__nav--next {
+    right: 1rem;
+  }
+}
+
 .photo-tile figcaption {
   padding: 0.75rem 1rem;
   font-family: var(--font-serif);

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band, epkLogos, epkPhotos, mediaItems, stagePlots } from '../data/band'
@@ -61,6 +61,42 @@ export function Epk() {
   ).filter((item): item is MediaItem => item != null)
   const [activePlotId, setActivePlotId] = useState(stagePlots[0]?.id ?? 'plot-5')
   const activePlot = stagePlots.find((plot) => plot.id === activePlotId) ?? stagePlots[0]
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const lightboxPhoto =
+    lightboxIndex != null ? epkPhotos[lightboxIndex] ?? null : null
+
+  useEffect(() => {
+    if (lightboxIndex == null) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setLightboxIndex(null)
+        return
+      }
+      if (event.key === 'ArrowRight') {
+        setLightboxIndex((current) =>
+          current == null ? current : (current + 1) % epkPhotos.length,
+        )
+        return
+      }
+      if (event.key === 'ArrowLeft') {
+        setLightboxIndex((current) =>
+          current == null
+            ? current
+            : (current - 1 + epkPhotos.length) % epkPhotos.length,
+        )
+      }
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [lightboxIndex])
 
   return (
     <>
@@ -107,13 +143,20 @@ export function Epk() {
               Press Photos
             </p>
             <div className="photo-grid">
-              {epkPhotos.map((photo) => (
-                <figure className="photo-tile" key={photo.id}>
-                  <img
-                    src={assetUrl(photo.image!)}
-                    alt="Swagger press photo"
-                    loading="lazy"
-                  />
+              {epkPhotos.map((photo, index) => (
+                <figure className="photo-tile photo-tile--zoom" key={photo.id}>
+                  <button
+                    type="button"
+                    className="photo-tile__open"
+                    onClick={() => setLightboxIndex(index)}
+                    aria-label={`Enlarge ${photo.title}`}
+                  >
+                    <img
+                      src={assetUrl(photo.image!)}
+                      alt={photo.title}
+                      loading="lazy"
+                    />
+                  </button>
                 </figure>
               ))}
             </div>
@@ -311,6 +354,66 @@ export function Epk() {
           </div>
         </div>
       </section>
+
+      {lightboxPhoto ? (
+        <div
+          className="photo-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightboxPhoto.title}
+          onClick={() => setLightboxIndex(null)}
+        >
+          <button
+            type="button"
+            className="photo-lightbox__close"
+            aria-label="Close enlarged photo"
+            onClick={() => setLightboxIndex(null)}
+          >
+            ×
+          </button>
+          {epkPhotos.length > 1 ? (
+            <>
+              <button
+                type="button"
+                className="photo-lightbox__nav photo-lightbox__nav--prev"
+                aria-label="Previous photo"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setLightboxIndex(
+                    (lightboxIndex! - 1 + epkPhotos.length) % epkPhotos.length,
+                  )
+                }}
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="photo-lightbox__nav photo-lightbox__nav--next"
+                aria-label="Next photo"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setLightboxIndex((lightboxIndex! + 1) % epkPhotos.length)
+                }}
+              >
+                ›
+              </button>
+            </>
+          ) : null}
+          <figure
+            className="photo-lightbox__figure"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={assetUrl(lightboxPhoto.image!)}
+              alt={lightboxPhoto.title}
+            />
+            <figcaption>
+              {lightboxPhoto.title}
+              {lightboxPhoto.description ? ` — ${lightboxPhoto.description}` : ''}
+            </figcaption>
+          </figure>
+        </div>
+      ) : null}
     </>
   )
 }
