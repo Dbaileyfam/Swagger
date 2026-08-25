@@ -185,6 +185,9 @@ async function createCheckoutSession(request, env) {
   params.set('mode', 'payment')
   params.set('success_url', successUrl)
   params.set('cancel_url', cancelUrl)
+  params.set('automatic_tax[enabled]', 'true')
+  params.set('billing_address_collection', 'auto')
+  params.set('customer_creation', 'always')
   params.set('client_reference_id', items.map((item) => item.sku).join(','))
   params.set('metadata[skus]', items.map((item) => item.sku).join(','))
   params.set('metadata[digital_skus]', digitalSkus.join(','))
@@ -208,6 +211,7 @@ async function createCheckoutSession(request, env) {
         `line_items[${index}][price_data][product_data][name]`,
         product.name,
       )
+      params.set(`line_items[${index}][price_data][tax_behavior]`, 'exclusive')
     }
   })
 
