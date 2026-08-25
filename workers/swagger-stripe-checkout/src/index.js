@@ -186,7 +186,7 @@ async function createCheckoutSession(request, env) {
   params.set('success_url', successUrl)
   params.set('cancel_url', cancelUrl)
   params.set('automatic_tax[enabled]', 'true')
-  params.set('billing_address_collection', 'auto')
+  params.set('billing_address_collection', 'required')
   params.set('customer_creation', 'always')
   params.set('client_reference_id', items.map((item) => item.sku).join(','))
   params.set('metadata[skus]', items.map((item) => item.sku).join(','))
