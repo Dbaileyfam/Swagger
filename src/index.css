@@ -1501,6 +1501,30 @@ select {
   color: var(--gold-bright);
 }
 
+.show-card__poster {
+  position: relative;
+  z-index: 4;
+  display: block;
+  margin-top: 0.9rem;
+  width: min(100%, 36rem);
+  border: 1px solid var(--gold-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.show-card__poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.show-card__poster:hover,
+.show-card__poster:focus-visible {
+  border-color: var(--gold);
+  outline: none;
+}
+
 .show-card__map {
   position: relative;
   z-index: 4;

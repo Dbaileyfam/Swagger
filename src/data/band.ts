@@ -137,6 +137,7 @@ export type Show = {
   href?: string
   tickets?: string
   address?: string
+  poster?: string
 }
 
 export const shows: Show[] = [
@@ -183,14 +184,15 @@ export const shows: Show[] = [
   {
     id: 'heber-09-2026',
     event: 'Heber Concert Series',
-    venue: 'Heber Valley Park',
+    venue: 'Heber City Main Street Park',
     city: 'Heber',
     state: 'Utah',
     date: '2026-09-05',
     time: '6:00pm',
     upcoming: true,
     href: 'https://hebermarket.com/saturday-sunset-music-series/',
-    address: 'Heber Valley Park, Heber, Utah',
+    address: '250 S Main St, Heber City, UT 84032',
+    poster: 'shows/heber-concert-series-2026-09-05.png',
   },
   {
     id: 'longs-peak-11-2026',

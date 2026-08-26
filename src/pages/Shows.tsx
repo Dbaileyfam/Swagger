@@ -121,6 +121,19 @@ export function Shows() {
                     {formatShowDate(show.date)}
                   </p>
                   <ShowLinks show={show} />
+                  {show.poster ? (
+                    <a
+                      className="show-card__poster"
+                      href={`${import.meta.env.BASE_URL}${show.poster}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <img
+                        src={`${import.meta.env.BASE_URL}${show.poster}`}
+                        alt={`${show.event} poster`}
+                      />
+                    </a>
+                  ) : null}
                   {showMap ? (
                     <div className="show-card__map">
                       <iframe
