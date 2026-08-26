@@ -470,6 +470,56 @@ async function bufferFromImageResponse(response) {
   return { body, contentType }
 }
 
+function sniffImageType(body, fallbackType, fileName) {
+  const bytes = new Uint8Array(body)
+  if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return 'image/jpeg'
+  if (
+    bytes[0] === 0x89 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x4e &&
+    bytes[3] === 0x47
+  ) {
+    return 'image/png'
+  }
+  if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46) return 'image/gif'
+  if (
+    bytes[0] === 0x52 &&
+    bytes[1] === 0x49 &&
+    bytes[2] === 0x46 &&
+    bytes[3] === 0x46 &&
+    bytes[8] === 0x57 &&
+    bytes[9] === 0x45 &&
+    bytes[10] === 0x42 &&
+    bytes[11] === 0x50
+  ) {
+    return 'image/webp'
+  }
+  const named = String(fileName || '').toLowerCase()
+  if (named.endsWith('.jpg') || named.endsWith('.jpeg')) return 'image/jpeg'
+  if (named.endsWith('.png')) return 'image/png'
+  if (named.endsWith('.webp')) return 'image/webp'
+  if (named.endsWith('.gif')) return 'image/gif'
+  const type = String(fallbackType || '').split(';')[0].toLowerCase()
+  return AD_IMAGE_TYPES[type] ? type : ''
+}
+
+async function imageFromUpload(file) {
+  if (!file || typeof file === 'string' || typeof file.arrayBuffer !== 'function') {
+    return null
+  }
+  if (typeof file.size === 'number' && file.size > MAX_AD_IMAGE_BYTES) {
+    return { error: 'Poster images must be 4.5 MB or smaller.' }
+  }
+  const body = await file.arrayBuffer()
+  if (body.byteLength < 32) return { error: 'Use a JPG, PNG, WebP, or GIF.' }
+  if (body.byteLength > MAX_AD_IMAGE_BYTES) {
+    return { error: 'Poster images must be 4.5 MB or smaller.' }
+  }
+  const contentType = sniffImageType(body, file.type, file.name)
+  if (!contentType) return { error: 'Use a JPG, PNG, WebP, or GIF.' }
+  return { body, contentType }
+}
+
 async function fetchInstagramStill(href) {
   const id = instagramShortcode(href)
   if (!id) return null
@@ -537,6 +587,7 @@ async function createPublicAd(request, env) {
   let password = ''
   let text = ''
   let rawHref = ''
+  let uploadedFile = null
 
   const contentTypeHeader = request.headers.get('content-type') || ''
   try {
@@ -550,6 +601,7 @@ async function createPublicAd(request, env) {
       password = String(form.get('password') || '')
       text = String(form.get('text') || '').trim().slice(0, 280)
       rawHref = String(form.get('href') || '')
+      uploadedFile = form.get('image') || form.get('poster')
     }
   } catch {
     return json({ error: 'Could not read that poster' }, 400)
@@ -559,9 +611,39 @@ async function createPublicAd(request, env) {
     return json({ error: 'Wrong poster password' }, 401)
   }
 
-  const href = normalizeHref(rawHref)
-  if (!href) {
-    return json({ error: 'Paste the Instagram or ad URL' }, 400)
+  const href = rawHref.trim() ? normalizeHref(rawHref) : ''
+  if (rawHref.trim() && !href) {
+    return json({ error: 'Paste a valid Instagram or ad URL' }, 400)
+  }
+
+  const uploaded = await imageFromUpload(uploadedFile)
+  if (uploaded?.error) {
+    return json({ error: uploaded.error }, 400)
+  }
+  if (!href && !uploaded) {
+    return json({ error: 'Paste a URL or choose a poster image' }, 400)
+  }
+
+  const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
+  let imageKey = ''
+  try {
+    const pulled = uploaded?.body
+      ? uploaded
+      : href
+        ? await fetchLinkedImage(href)
+        : null
+    if (pulled) {
+      imageKey = `${ADS_OBJECT_PREFIX}${id}`
+      await env.DOWNLOADS_BUCKET.put(imageKey, pulled.body, {
+        httpMetadata: { contentType: pulled.contentType },
+      })
+    }
+  } catch {
+    imageKey = ''
+  }
+
+  if (!href && !imageKey) {
+    return json({ error: 'Could not use that poster image. Try a JPG or PNG.' }, 400)
   }
 
   const previous = await readAdsIndex(env)
@@ -572,20 +654,6 @@ async function createPublicAd(request, env) {
     ) {
       await env.DOWNLOADS_BUCKET.delete(old.imageKey)
     }
-  }
-
-  const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
-  let imageKey = ''
-  try {
-    const pulled = await fetchLinkedImage(href)
-    if (pulled) {
-      imageKey = `${ADS_OBJECT_PREFIX}${id}`
-      await env.DOWNLOADS_BUCKET.put(imageKey, pulled.body, {
-        httpMetadata: { contentType: pulled.contentType },
-      })
-    }
-  } catch {
-    imageKey = ''
   }
 
   const ad = {

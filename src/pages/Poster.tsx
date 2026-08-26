@@ -14,6 +14,8 @@ export function Poster() {
   const [password, setPassword] = useState('')
   const [href, setHref] = useState('')
   const [text, setText] = useState('')
+  const [image, setImage] = useState<File | null>(null)
+  const [imageKey, setImageKey] = useState(0)
   const [ads, setAds] = useState<BoardAd[]>([])
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
@@ -44,8 +46,12 @@ export function Poster() {
       setError('Enter the poster password.')
       return
     }
-    if (!nextHref) {
-      setError('Paste the Instagram or ad URL.')
+    if (!nextHref && !image) {
+      setError('Paste a URL or choose a poster image.')
+      return
+    }
+    if (image && image.size > 4.5 * 1024 * 1024) {
+      setError('Poster images must be 4.5 MB or smaller.')
       return
     }
 
@@ -57,13 +63,17 @@ export function Poster() {
         password: nextPassword,
         href: nextHref,
         text: text.trim(),
+        image,
       })
       setPosterPassword(nextPassword)
       setAds([ad])
+      setHref('')
+      setImage(null)
+      setImageKey((key) => key + 1)
       setStatus('Posted. On the homepage, tap Full Post to open it.')
       await loadAds().catch(() => {})
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not post that link')
+      setError(err instanceof Error ? err.message : 'Could not post that poster')
     } finally {
       setBusy(false)
     }
@@ -99,8 +109,9 @@ export function Poster() {
         <h1 className="section-title">Band poster</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Paste an Instagram or ad URL, then press Post this URL. Only one post
-          is live at a time; a new URL replaces the previous one.
+          Paste an Instagram or ad URL, or choose a poster image, then press
+          Post. Only one is live at a time; a new post replaces the previous
+          one.
         </p>
       </header>
 
@@ -108,7 +119,7 @@ export function Poster() {
         <div className="section-inner poster-layout">
           <form className="contact-form" onSubmit={handlePublish} noValidate>
             <div className="field">
-              <label htmlFor="poster-href">Post or ad URL</label>
+              <label htmlFor="poster-href">Post or ad URL (optional)</label>
               <input
                 id="poster-href"
                 name="href"
@@ -119,6 +130,21 @@ export function Poster() {
                 value={href}
                 onChange={(event) => setHref(event.target.value)}
               />
+            </div>
+            <div className="field">
+              <label htmlFor="poster-image">Or upload a poster image</label>
+              <input
+                id="poster-image"
+                key={imageKey}
+                name="image"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={(event) => setImage(event.target.files?.[0] ?? null)}
+              />
+              <p className="form-note">
+                JPG, PNG, WebP, or GIF, up to 4.5 MB.
+                {image ? ` Selected: ${image.name}` : ''}
+              </p>
             </div>
             <div className="field">
               <label htmlFor="poster-text">Caption (optional)</label>
@@ -149,7 +175,7 @@ export function Poster() {
               </p>
             ) : null}
             <button type="button" className="poster-submit" disabled={busy} onClick={() => void handlePublish()}>
-              {busy ? 'Posting…' : 'Post this URL'}
+              {busy ? 'Posting…' : 'Post'}
             </button>
           </form>
 
@@ -158,14 +184,16 @@ export function Poster() {
             {ads.length === 0 ? (
               <p className="form-note">
                 {boardReady
-                  ? 'No posters yet. Paste a URL above and press Post this URL.'
+                  ? 'Nothing live yet. Paste a URL or choose a poster image.'
                   : 'Loading posters…'}
               </p>
             ) : (
               <ul className="poster-list">
                 {ads.map((ad) => (
                   <li className="poster-list__item" key={ad.id}>
-                    <img src={ad.imageUrl} alt={ad.text || 'Homepage poster'} />
+                    {ad.imageUrl ? (
+                      <img src={ad.imageUrl} alt={ad.text || 'Homepage poster'} />
+                    ) : null}
                     <div>
                       <p>{ad.text || 'Untitled poster'}</p>
                       {ad.href ? (

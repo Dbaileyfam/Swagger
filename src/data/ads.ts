@@ -85,11 +85,13 @@ export async function publishBoardAd(input: {
   password: string
   href: string
   text: string
+  image?: File | null
 }): Promise<BoardAd> {
   const data = new FormData()
   data.set('password', input.password)
   data.set('href', input.href)
   data.set('text', input.text)
+  if (input.image) data.set('image', input.image)
 
   const response = await fetch(ADS_API_URL, { method: 'POST', body: data })
   const payload = (await response.json().catch(() => ({}))) as {
@@ -97,7 +99,7 @@ export async function publishBoardAd(input: {
     error?: string
   }
   if (!response.ok || !payload.ad) {
-    throw new Error(payload.error || 'Could not post that link')
+    throw new Error(payload.error || 'Could not post that poster')
   }
   return payload.ad
 }

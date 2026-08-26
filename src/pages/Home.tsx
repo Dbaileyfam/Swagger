@@ -120,8 +120,8 @@ export function Home() {
   const boardAd = liveAds[0] ?? fallbackAd
 
   useEffect(() => {
-    if (boardAd?.href) setShowEmbed(true)
-  }, [boardAd?.id, boardAd?.href])
+    if (boardAd?.href || boardAd?.imageUrl) setShowEmbed(true)
+  }, [boardAd?.id, boardAd?.href, boardAd?.imageUrl])
 
   useEffect(() => {
     if (!lightbox) return
@@ -236,7 +236,7 @@ export function Home() {
                 Kit
               </span>
             </Link>
-            {boardAd?.href ? (
+            {boardAd?.href || boardAd?.imageUrl ? (
               <CelticButton
                 type="button"
                 className={showEmbed ? 'celtic-link--active' : undefined}

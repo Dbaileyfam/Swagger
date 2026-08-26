@@ -2548,6 +2548,11 @@ select {
   border-color: var(--gold-bright);
 }
 
+.field input[type='file'] {
+  padding: 0.55rem 0.6rem;
+  color: var(--cream-muted);
+}
+
 .field textarea {
   min-height: 8rem;
   resize: vertical;
