@@ -58,9 +58,9 @@ const PRODUCTS = {
 }
 
 const DEFAULT_SUCCESS =
-  'https://dbaileyfam.github.io/Swagger/store?checkout=success&session_id={CHECKOUT_SESSION_ID}'
+  'https://swaggertheband.com/store?checkout=success&session_id={CHECKOUT_SESSION_ID}'
 const DEFAULT_CANCEL =
-  'https://dbaileyfam.github.io/Swagger/store?checkout=cancel'
+  'https://swaggertheband.com/store?checkout=cancel'
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
