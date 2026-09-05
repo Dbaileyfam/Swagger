@@ -2215,6 +2215,12 @@ select {
 .epk-layout {
   display: grid;
   gap: 3rem;
+  min-width: 0;
+}
+
+.epk-layout > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .epk-bio {
@@ -2450,6 +2456,125 @@ select {
   height: 0.35rem;
   background: var(--gold-bright);
   border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+  .epk-hero {
+    padding: 2rem 1.15rem 1.5rem;
+  }
+
+  .epk-hero .section-title {
+    font-size: clamp(1.7rem, 9vw, 2.35rem);
+    overflow-wrap: anywhere;
+  }
+
+  .epk-hero__logo {
+    width: min(32vw, 7.25rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .epk-layout {
+    gap: 2.15rem;
+  }
+
+  .epk-bio {
+    font-size: 1.08rem;
+  }
+
+  .epk-layout .photo-grid,
+  .epk-layout .media-grid,
+  .epk-grid,
+  .stage-plot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .epk-layout .photo-grid--members,
+  .epk-layout .epk-logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stage-plot-card {
+    padding: 1rem 1.05rem;
+  }
+
+  .input-list {
+    padding: 0.9rem 0.85rem 1.1rem;
+  }
+
+  .input-list__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .input-list__tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .input-list__tab {
+    text-align: center;
+    padding: 0.55rem 0.35rem;
+  }
+
+  .input-list__table-wrap {
+    overflow: visible;
+    margin: 0 -0.15rem 1rem;
+  }
+
+  .input-list__table {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .input-list__table thead {
+    display: none;
+  }
+
+  .input-list__table tbody,
+  .input-list__table tr,
+  .input-list__table td {
+    display: block;
+    width: 100%;
+  }
+
+  .input-list__table tr {
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--gold-line);
+  }
+
+  .input-list__table tr:first-child {
+    padding-top: 0.15rem;
+  }
+
+  .input-list__table td {
+    display: grid;
+    grid-template-columns: 6.25rem 1fr;
+    gap: 0.65rem;
+    padding: 0.18rem 0;
+    border: 0;
+    font-size: 0.92rem;
+  }
+
+  .input-list__table td::before {
+    content: attr(data-label);
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    padding-top: 0.2rem;
+  }
+
+  .celtic-links--epk {
+    justify-content: center;
+    gap: 0.55rem 0.7rem;
+  }
+
+  .celtic-links--epk .celtic-link {
+    --ring-size: clamp(3.9rem, 20vw, 4.6rem);
+  }
 }
 
 /* ——— Contact ——— */

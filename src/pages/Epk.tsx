@@ -291,11 +291,11 @@ export function Epk() {
                     <tbody>
                       {activePlot.inputs.map((row) => (
                         <tr key={`${activePlot.id}-${row.ch}`}>
-                          <td>{row.ch}</td>
-                          <td>{row.source}</td>
-                          <td>{row.micDi}</td>
-                          <td>{row.stand}</td>
-                          <td>{row.notes}</td>
+                          <td data-label="Ch">{row.ch}</td>
+                          <td data-label="Source">{row.source}</td>
+                          <td data-label="Mic / DI">{row.micDi}</td>
+                          <td data-label="Stand">{row.stand}</td>
+                          <td data-label="Notes">{row.notes || '—'}</td>
                         </tr>
                       ))}
                     </tbody>
