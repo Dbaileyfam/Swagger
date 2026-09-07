@@ -52,6 +52,7 @@ const EPK_VIDEO_IDS = [
   '4Wi3yPjNMbc', // Morrison's Jig — Live
   '5dynW18TBDM', // Galway Girl
   'KiTtR-ytr04', // Bodie McGee
+  'CuLVKqk1xWQ', // Piper Down
   'Q3KP2z3uTd8', // Myrtle's Daughter — Live
 ]
 
@@ -140,6 +141,31 @@ export function Epk() {
             </div>
 
             <p className="section-label" style={{ marginTop: '2rem' }}>
+              Lineup
+            </p>
+            <div className="photo-grid photo-grid--members">
+              {epkPhotos
+                .map((photo, index) => ({ photo, index }))
+                .filter(({ photo }) => photo.face)
+                .map(({ photo, index }) => (
+                  <figure className="photo-tile photo-tile--member" key={photo.id}>
+                    <button
+                      type="button"
+                      className="photo-tile__open"
+                      onClick={() => setLightboxIndex(index)}
+                      aria-label={`Enlarge ${photo.title}`}
+                    >
+                      <img
+                        src={assetUrl(photo.image!)}
+                        alt={photo.title}
+                        loading="lazy"
+                      />
+                    </button>
+                  </figure>
+                ))}
+            </div>
+
+            <p className="section-label" style={{ marginTop: '2rem' }}>
               Press Photos
             </p>
             <div className="photo-grid">
@@ -189,28 +215,12 @@ export function Epk() {
             </details>
 
             <p className="section-label" style={{ marginTop: '2rem' }}>
-              Lineup
+              Featured Video
             </p>
-            <div className="photo-grid photo-grid--members">
-              {epkPhotos
-                .map((photo, index) => ({ photo, index }))
-                .filter(({ photo }) => photo.face)
-                .map(({ photo, index }) => (
-                  <figure className="photo-tile photo-tile--member" key={photo.id}>
-                    <button
-                      type="button"
-                      className="photo-tile__open"
-                      onClick={() => setLightboxIndex(index)}
-                      aria-label={`Enlarge ${photo.title}`}
-                    >
-                      <img
-                        src={assetUrl(photo.image!)}
-                        alt={photo.title}
-                        loading="lazy"
-                      />
-                    </button>
-                  </figure>
-                ))}
+            <div className="media-grid">
+              {topVideos.map((item) => (
+                <EpkVideo key={item.id} item={item} />
+              ))}
             </div>
 
             <p className="section-label" style={{ marginTop: '2rem' }}>
@@ -239,15 +249,6 @@ export function Epk() {
                     </figcaption>
                   </a>
                 </figure>
-              ))}
-            </div>
-
-            <p className="section-label" style={{ marginTop: '2rem' }}>
-              Featured Video
-            </p>
-            <div className="media-grid">
-              {topVideos.map((item) => (
-                <EpkVideo key={item.id} item={item} />
               ))}
             </div>
           </div>
