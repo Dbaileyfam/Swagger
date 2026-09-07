@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band, mediaItems } from '../data/band'
@@ -49,11 +49,20 @@ function VideoTile({ item }: { item: MediaItem }) {
   )
 }
 
-function PhotoTile({ item }: { item: MediaItem }) {
+function PhotoTile({ item, onOpen }: { item: MediaItem; onOpen: () => void }) {
+  const label = item.title || 'Swagger press photo'
+
   return (
     <article className={`media-tile media-tile--photo${item.face ? ' media-tile--member' : ''}`}>
       <div className="photo-tile__image">
-        <img src={assetUrl(item.image!)} alt={item.title || 'Swagger press photo'} loading="lazy" />
+        <button
+          type="button"
+          className="photo-tile__open"
+          onClick={onOpen}
+          aria-label={`Enlarge ${label}`}
+        >
+          <img src={assetUrl(item.image!)} alt={label} loading="lazy" />
+        </button>
       </div>
     </article>
   )
@@ -136,8 +145,42 @@ function MediaGallery({
 export function Media() {
   const [photosExpanded, setPhotosExpanded] = useState(false)
   const [videosExpanded, setVideosExpanded] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const photos = mediaItems.filter((item) => item.type === 'photo')
   const videos = mediaItems.filter((item) => item.type === 'video')
+  const lightboxPhoto =
+    lightboxIndex != null ? photos[lightboxIndex] ?? null : null
+
+  useEffect(() => {
+    if (lightboxIndex == null) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setLightboxIndex(null)
+        return
+      }
+      if (event.key === 'ArrowRight') {
+        setLightboxIndex((current) =>
+          current == null ? current : (current + 1) % photos.length,
+        )
+        return
+      }
+      if (event.key === 'ArrowLeft') {
+        setLightboxIndex((current) =>
+          current == null ? current : (current - 1 + photos.length) % photos.length,
+        )
+      }
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [lightboxIndex, photos.length])
 
   function togglePhotos() {
     setPhotosExpanded((open) => {
@@ -164,7 +207,8 @@ export function Media() {
   }
 
   return (
-    <div className="media-page">
+    <>
+      <div className="media-page">
       <div className="media-ship" aria-hidden="true">
         <img
           src={`${import.meta.env.BASE_URL}tall-ship-fwd.png`}
@@ -194,7 +238,15 @@ export function Media() {
             onToggle={togglePhotos}
             moreLabel="More photos"
             lessLabel="Fewer photos"
-            renderItem={(item) => <PhotoTile key={item.id} item={item} />}
+            renderItem={(item) => (
+              <PhotoTile
+                key={item.id}
+                item={item}
+                onOpen={() =>
+                  setLightboxIndex(photos.findIndex((photo) => photo.id === item.id))
+                }
+              />
+            )}
           />
 
           <MediaGallery
@@ -215,5 +267,66 @@ export function Media() {
         </div>
       </section>
     </div>
+
+      {lightboxPhoto ? (
+        <div
+          className="photo-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightboxPhoto.title}
+          onClick={() => setLightboxIndex(null)}
+        >
+          <button
+            type="button"
+            className="photo-lightbox__close"
+            aria-label="Close enlarged photo"
+            onClick={() => setLightboxIndex(null)}
+          >
+            ×
+          </button>
+          {photos.length > 1 ? (
+            <>
+              <button
+                type="button"
+                className="photo-lightbox__nav photo-lightbox__nav--prev"
+                aria-label="Previous photo"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setLightboxIndex(
+                    (lightboxIndex! - 1 + photos.length) % photos.length,
+                  )
+                }}
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="photo-lightbox__nav photo-lightbox__nav--next"
+                aria-label="Next photo"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setLightboxIndex((lightboxIndex! + 1) % photos.length)
+                }}
+              >
+                ›
+              </button>
+            </>
+          ) : null}
+          <figure
+            className="photo-lightbox__figure"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={assetUrl(lightboxPhoto.image!)}
+              alt={lightboxPhoto.title}
+            />
+            <figcaption>
+              {lightboxPhoto.title}
+              {lightboxPhoto.description ? ` — ${lightboxPhoto.description}` : ''}
+            </figcaption>
+          </figure>
+        </div>
+      ) : null}
+    </>
   )
 }
