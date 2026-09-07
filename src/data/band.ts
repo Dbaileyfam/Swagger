@@ -59,6 +59,8 @@ export const band = {
         'members/dennis/05.jpg',
         'members/dennis/06.jpg',
         'members/dennis/07.jpg',
+        'members/dennis/08.jpg',
+        'members/dennis/09.jpg',
       ],
     },
     {
@@ -66,7 +68,7 @@ export const band = {
       role: 'Lead Guitar & Mandolin',
       slug: 'trip',
       photo: 'members/trip/01.jpg',
-      gallery: ['members/trip/02.jpg'],
+      gallery: ['members/trip/02.jpg', 'members/trip/03.jpg'],
     },
     {
       name: 'Manny Slack',
