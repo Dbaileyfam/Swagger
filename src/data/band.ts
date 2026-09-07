@@ -434,10 +434,35 @@ export type MediaItem = {
   image?: string
   year?: string
   face?: boolean
+  featured?: boolean
 }
 
 /** Press photos from https://swaggertheband.com/epk-files/ */
 export const epkPhotos: MediaItem[] = [
+  {
+    id: 'epk-casual',
+    type: 'photo',
+    title: 'Band Portrait — Casual',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-casual.jpg',
+    featured: true,
+  },
+  {
+    id: 'epk-barn',
+    type: 'photo',
+    title: 'Band Portrait — Barn',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-barn.jpg',
+    featured: true,
+  },
+  {
+    id: 'epk-heber',
+    type: 'photo',
+    title: 'Band Portrait — Heber City',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-heber.jpg',
+    featured: true,
+  },
   {
     id: 'epk-fireplace',
     type: 'photo',

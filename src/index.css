@@ -1961,6 +1961,52 @@ select {
   gap: 1.25rem;
 }
 
+.epk-photo-folder {
+  margin-top: 1.15rem;
+}
+
+.epk-photo-folder summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold-line);
+  background: rgba(6, 20, 14, 0.45);
+  padding: 0.7rem 1.05rem;
+  user-select: none;
+}
+
+.epk-photo-folder summary::-webkit-details-marker {
+  display: none;
+}
+
+.epk-photo-folder summary::after {
+  content: '+';
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.epk-photo-folder[open] summary::after {
+  content: '−';
+}
+
+.epk-photo-folder summary:hover,
+.epk-photo-folder summary:focus-visible {
+  color: var(--gold-bright);
+  border-color: var(--gold);
+  outline: none;
+}
+
+.epk-photo-folder .photo-grid {
+  margin-top: 1.15rem;
+}
+
 .photo-tile {
   margin: 0;
   border: 1px solid var(--gold-line);
