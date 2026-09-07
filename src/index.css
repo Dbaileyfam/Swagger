@@ -1454,6 +1454,11 @@ select {
   margin: 0.2rem 0;
 }
 
+.show-card__day--range {
+  font-size: 1.55rem;
+  letter-spacing: 0.02em;
+}
+
 .show-card__year {
   font-size: 0.8rem;
   color: var(--cream-faint);
@@ -1551,6 +1556,10 @@ select {
   text-transform: uppercase;
   color: var(--gold);
   margin: 2.5rem 0 0.35rem;
+}
+
+.shows-year-block:first-of-type .show-year {
+  margin-top: 0.35rem;
 }
 
 .show-card--past {

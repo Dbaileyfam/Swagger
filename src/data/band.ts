@@ -189,7 +189,7 @@ export const shows: Show[] = [
     state: 'Utah',
     date: '2026-09-05',
     time: '6:00pm',
-    upcoming: true,
+    upcoming: false,
     href: 'https://hebermarket.com/saturday-sunset-music-series/',
     address: '250 S Main St, Heber City, UT 84032',
     poster: 'shows/heber-concert-series-2026-09-05.png',
@@ -948,9 +948,17 @@ export function formatShowDate(iso: string) {
   })
 }
 
+function localTodayIso() {
+  const now = new Date()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  return `${now.getFullYear()}-${month}-${day}`
+}
+
 export function upcomingShows() {
+  const today = localTodayIso()
   return [...shows]
-    .filter((s) => s.upcoming)
+    .filter((s) => s.upcoming && s.date >= today)
     .sort((a, b) => a.date.localeCompare(b.date))
 }
 
@@ -969,7 +977,8 @@ export function showDirectionsHref(show: Show) {
 }
 
 export function pastShows() {
+  const today = localTodayIso()
   return [...shows]
-    .filter((s) => !s.upcoming)
+    .filter((s) => !s.upcoming || s.date < today)
     .sort((a, b) => b.date.localeCompare(a.date))
 }
