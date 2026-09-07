@@ -726,6 +726,11 @@ select {
   align-items: start;
 }
 
+.home-reel--embed,
+.home-reel--embed .home-reel__frame {
+  width: min(100%, 326px);
+}
+
 .home-reel__item {
   display: grid;
   justify-items: center;
@@ -820,6 +825,9 @@ select {
 
 .home-reel__instagram {
   margin: 0 auto !important;
+  min-height: 680px;
+  height: 680px;
+  background: #fff;
 }
 
 .home-reel__watch {

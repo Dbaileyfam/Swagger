@@ -43,11 +43,7 @@ function BoardEmbed({ ad }: { ad: BoardAd }) {
 
   if (instagram) {
     return (
-      <InstagramEmbed
-        permalink={instagram}
-        caption={ad.text}
-        imageUrl={ad.imageUrl}
-      />
+      <InstagramEmbed permalink={instagram} caption={ad.text} />
     )
   }
 
@@ -327,7 +323,14 @@ export function Home() {
             </a>
           </div>
           {showEmbed && boardAd ? (
-            <div className="home-reel" id="home-full-post">
+            <div
+              className={
+                instagramPermalink(boardAd.href || '') && !boardAd.videoUrl
+                  ? 'home-reel home-reel--embed'
+                  : 'home-reel'
+              }
+              id="home-full-post"
+            >
               <article className="home-reel__item">
                 {boardAd.text ? <p className="home-reel__text">{boardAd.text}</p> : null}
                 <div className="home-reel__frame">
