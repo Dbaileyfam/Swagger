@@ -8,6 +8,7 @@ export type BoardAd = {
   text: string
   href: string
   imageUrl?: string
+  videoUrl?: string
   createdAt?: string
 }
 

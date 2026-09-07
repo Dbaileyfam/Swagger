@@ -762,12 +762,42 @@ select {
 }
 
 .home-reel__card img,
-.home-reel__frame > img {
+.home-reel__frame > img,
+.home-reel__playback-video {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 12px;
   border: 1px solid var(--gold-line);
+}
+
+.home-reel__playback {
+  position: relative;
+  width: 100%;
+}
+
+.home-reel__playback-video {
+  background: #111;
+}
+
+.home-reel__sound {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  background: rgba(10, 16, 12, 0.72);
+  color: var(--gold);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.home-reel__sound:hover,
+.home-reel__sound:focus-visible {
+  color: var(--gold-bright);
 }
 
 .home-reel__video,

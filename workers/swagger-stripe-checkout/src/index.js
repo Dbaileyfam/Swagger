@@ -139,6 +139,10 @@ export default {
       return servePublicAdImage(url, env)
     }
 
+    if (request.method === 'GET' && url.pathname === '/ad-video') {
+      return servePublicAdVideo(request, env)
+    }
+
     return json({ error: 'Not found' }, 404)
   },
 }
@@ -383,12 +387,18 @@ async function downloadPaidFile(url, env) {
 const ADS_INDEX_KEY = 'public-ads/index.json'
 const ADS_OBJECT_PREFIX = 'public-ads/'
 const MAX_AD_IMAGE_BYTES = 4.5 * 1024 * 1024
+const MAX_AD_VIDEO_BYTES = 25 * 1024 * 1024
 const AD_IMAGE_TYPES = {
   'image/jpeg': 'jpg',
   'image/jpg': 'jpg',
   'image/png': 'png',
   'image/webp': 'webp',
   'image/gif': 'gif',
+}
+const AD_VIDEO_TYPES = {
+  'video/mp4': 'mp4',
+  'video/webm': 'webm',
+  'video/quicktime': 'mov',
 }
 
 function isAdId(id) {
@@ -441,6 +451,9 @@ function publicAdPayload(ad, origin) {
     createdAt: ad.createdAt,
     imageUrl: ad.imageKey
       ? `${origin}/ad-image?id=${encodeURIComponent(ad.id)}`
+      : '',
+    videoUrl: ad.videoKey
+      ? `${origin}/ad-video?id=${encodeURIComponent(ad.id)}`
       : '',
   }
 }
@@ -503,21 +516,67 @@ function sniffImageType(body, fallbackType, fileName) {
   return AD_IMAGE_TYPES[type] ? type : ''
 }
 
-async function imageFromUpload(file) {
+function sniffVideoType(body, fallbackType, fileName) {
+  const bytes = new Uint8Array(body)
+  if (
+    bytes.length > 12 &&
+    bytes[4] === 0x66 &&
+    bytes[5] === 0x74 &&
+    bytes[6] === 0x79 &&
+    bytes[7] === 0x70
+  ) {
+    return 'video/mp4'
+  }
+  if (
+    bytes[0] === 0x1a &&
+    bytes[1] === 0x45 &&
+    bytes[2] === 0xdf &&
+    bytes[3] === 0xa3
+  ) {
+    return 'video/webm'
+  }
+  const named = String(fileName || '').toLowerCase()
+  if (named.endsWith('.mp4') || named.endsWith('.m4v')) return 'video/mp4'
+  if (named.endsWith('.webm')) return 'video/webm'
+  if (named.endsWith('.mov')) return 'video/quicktime'
+  const type = String(fallbackType || '').split(';')[0].toLowerCase()
+  return AD_VIDEO_TYPES[type] ? type : ''
+}
+
+async function mediaFromUpload(file) {
   if (!file || typeof file === 'string' || typeof file.arrayBuffer !== 'function') {
     return null
   }
-  if (typeof file.size === 'number' && file.size > MAX_AD_IMAGE_BYTES) {
-    return { error: 'Poster images must be 4.5 MB or smaller.' }
+  if (typeof file.size === 'number' && file.size > MAX_AD_VIDEO_BYTES) {
+    return { error: 'Reel videos must be 25 MB or smaller.' }
   }
   const body = await file.arrayBuffer()
-  if (body.byteLength < 32) return { error: 'Use a JPG, PNG, WebP, or GIF.' }
-  if (body.byteLength > MAX_AD_IMAGE_BYTES) {
-    return { error: 'Poster images must be 4.5 MB or smaller.' }
+  if (body.byteLength < 32) {
+    return { error: 'Use a JPG, PNG, WebP, GIF, MP4, or WebM.' }
   }
-  const contentType = sniffImageType(body, file.type, file.name)
-  if (!contentType) return { error: 'Use a JPG, PNG, WebP, or GIF.' }
-  return { body, contentType }
+  const imageType = sniffImageType(body, file.type, file.name)
+  if (imageType) {
+    if (body.byteLength > MAX_AD_IMAGE_BYTES) {
+      return { error: 'Poster images must be 4.5 MB or smaller.' }
+    }
+    return { kind: 'image', body, contentType: imageType }
+  }
+  const videoType = sniffVideoType(body, file.type, file.name)
+  if (videoType) {
+    if (body.byteLength > MAX_AD_VIDEO_BYTES) {
+      return { error: 'Reel videos must be 25 MB or smaller.' }
+    }
+    return { kind: 'video', body, contentType: videoType }
+  }
+  return { error: 'Use a JPG, PNG, WebP, GIF, MP4, or WebM.' }
+}
+
+async function deleteAdMedia(env, ad) {
+  for (const key of [ad?.imageKey, ad?.videoKey]) {
+    if (typeof key === 'string' && key.startsWith(ADS_OBJECT_PREFIX)) {
+      await env.DOWNLOADS_BUCKET.delete(key)
+    }
+  }
 }
 
 async function fetchInstagramStill(href) {
@@ -616,44 +675,49 @@ async function createPublicAd(request, env) {
     return json({ error: 'Paste a valid Instagram or ad URL' }, 400)
   }
 
-  const uploaded = await imageFromUpload(uploadedFile)
+  const uploaded = await mediaFromUpload(uploadedFile)
   if (uploaded?.error) {
     return json({ error: uploaded.error }, 400)
   }
   if (!href && !uploaded) {
-    return json({ error: 'Paste a URL or choose a poster image' }, 400)
+    return json({ error: 'Paste a URL or choose a poster image or reel video' }, 400)
   }
 
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
   let imageKey = ''
+  let videoKey = ''
   try {
-    const pulled = uploaded?.body
-      ? uploaded
-      : href
-        ? await fetchLinkedImage(href)
-        : null
-    if (pulled) {
+    if (uploaded?.kind === 'video') {
+      videoKey = `${ADS_OBJECT_PREFIX}${id}-video`
+      await env.DOWNLOADS_BUCKET.put(videoKey, uploaded.body, {
+        httpMetadata: { contentType: uploaded.contentType },
+      })
+    }
+
+    const still =
+      uploaded?.kind === 'image'
+        ? uploaded
+        : href
+          ? await fetchLinkedImage(href)
+          : null
+    if (still?.body) {
       imageKey = `${ADS_OBJECT_PREFIX}${id}`
-      await env.DOWNLOADS_BUCKET.put(imageKey, pulled.body, {
-        httpMetadata: { contentType: pulled.contentType },
+      await env.DOWNLOADS_BUCKET.put(imageKey, still.body, {
+        httpMetadata: { contentType: still.contentType },
       })
     }
   } catch {
-    imageKey = ''
+    imageKey = imageKey || ''
+    videoKey = videoKey || ''
   }
 
-  if (!href && !imageKey) {
-    return json({ error: 'Could not use that poster image. Try a JPG or PNG.' }, 400)
+  if (!href && !imageKey && !videoKey) {
+    return json({ error: 'Could not use that poster. Try a JPG, PNG, or MP4.' }, 400)
   }
 
   const previous = await readAdsIndex(env)
   for (const old of previous) {
-    if (
-      typeof old.imageKey === 'string' &&
-      old.imageKey.startsWith(ADS_OBJECT_PREFIX)
-    ) {
-      await env.DOWNLOADS_BUCKET.delete(old.imageKey)
-    }
+    await deleteAdMedia(env, old)
   }
 
   const ad = {
@@ -661,6 +725,7 @@ async function createPublicAd(request, env) {
     text,
     href,
     imageKey,
+    videoKey,
     createdAt: new Date().toISOString(),
   }
   await writeAdsIndex(env, [ad])
@@ -695,12 +760,7 @@ async function deletePublicAd(request, env) {
 
   const next = ads.filter((item) => item.id !== body.id)
   await writeAdsIndex(env, next)
-  if (
-    typeof ad.imageKey === 'string' &&
-    ad.imageKey.startsWith(ADS_OBJECT_PREFIX)
-  ) {
-    await env.DOWNLOADS_BUCKET.delete(ad.imageKey)
-  }
+  await deleteAdMedia(env, ad)
 
   return json({ ok: true })
 }
@@ -734,4 +794,51 @@ async function servePublicAdImage(url, env) {
     CORS_HEADERS['Access-Control-Allow-Origin'],
   )
   return new Response(object.body, { headers })
+}
+
+async function servePublicAdVideo(request, env) {
+  const id = new URL(request.url).searchParams.get('id')
+  if (!isAdId(id) || !env.DOWNLOADS_BUCKET) {
+    return new Response('Not found', { status: 404, headers: CORS_HEADERS })
+  }
+
+  const ads = await readAdsIndex(env)
+  const ad = ads.find((item) => item.id === id)
+  if (!ad || typeof ad.videoKey !== 'string' || !ad.videoKey.startsWith(ADS_OBJECT_PREFIX)) {
+    return new Response('Not found', { status: 404, headers: CORS_HEADERS })
+  }
+
+  const object = await env.DOWNLOADS_BUCKET.get(ad.videoKey, {
+    range: request.headers,
+  })
+  if (!object) {
+    return new Response('Not found', { status: 404, headers: CORS_HEADERS })
+  }
+
+  const headers = new Headers()
+  object.writeHttpMetadata(headers)
+  headers.set(
+    'Content-Type',
+    object.httpMetadata?.contentType || 'video/mp4',
+  )
+  headers.set('Cache-Control', 'public, max-age=3600')
+  headers.set('Accept-Ranges', 'bytes')
+  headers.set('etag', object.httpEtag)
+  headers.set(
+    'Access-Control-Allow-Origin',
+    CORS_HEADERS['Access-Control-Allow-Origin'],
+  )
+  if (object.range) {
+    const offset = object.range.offset || 0
+    const end =
+      object.range.length != null
+        ? offset + object.range.length - 1
+        : object.size - 1
+    headers.set('Content-Range', `bytes ${offset}-${end}/${object.size}`)
+  }
+
+  return new Response('body' in object ? object.body : undefined, {
+    status: object.range ? 206 : 'body' in object ? 200 : 412,
+    headers,
+  })
 }

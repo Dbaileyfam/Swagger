@@ -9,6 +9,7 @@ import {
 } from '../components/SocialIcons'
 import { fetchBoardAds, facebookEmbedSrc, instagramPermalink, youtubeEmbedSrc, type BoardAd } from '../data/ads'
 import { band } from '../data/band'
+import { HomeReelVideo } from '../components/HomeReelVideo'
 import { InstagramEmbed } from '../components/InstagramEmbed'
 
 function featuredInstagramReel(
@@ -29,6 +30,16 @@ function BoardEmbed({ ad }: { ad: BoardAd }) {
   const instagram = ad.href ? instagramPermalink(ad.href) : null
   const youtube = ad.href ? youtubeEmbedSrc(ad.href) : null
   const facebook = ad.href ? facebookEmbedSrc(ad.href) : null
+
+  if (ad.videoUrl) {
+    return (
+      <HomeReelVideo
+        src={ad.videoUrl}
+        poster={ad.imageUrl}
+        caption={ad.text}
+      />
+    )
+  }
 
   if (instagram) {
     return (
@@ -120,8 +131,8 @@ export function Home() {
   const boardAd = liveAds[0] ?? fallbackAd
 
   useEffect(() => {
-    if (boardAd?.href || boardAd?.imageUrl) setShowEmbed(true)
-  }, [boardAd?.id, boardAd?.href, boardAd?.imageUrl])
+    if (boardAd?.href || boardAd?.imageUrl || boardAd?.videoUrl) setShowEmbed(true)
+  }, [boardAd?.id, boardAd?.href, boardAd?.imageUrl, boardAd?.videoUrl])
 
   useEffect(() => {
     if (!lightbox) return
@@ -236,7 +247,7 @@ export function Home() {
                 Kit
               </span>
             </Link>
-            {boardAd?.href || boardAd?.imageUrl ? (
+            {boardAd?.href || boardAd?.imageUrl || boardAd?.videoUrl ? (
               <CelticButton
                 type="button"
                 className={showEmbed ? 'celtic-link--active' : undefined}

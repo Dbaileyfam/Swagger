@@ -24,9 +24,10 @@ Cloudflare Worker used by the store:
 Band members can post Instagram links or photo ads from `/poster` (also linked as **Band poster** in the footer).
 
 - List: `GET /ads`
-- Publish: `POST /ads` form `{ "password", "href?", "text?", "image?" }` — paste a URL and/or upload a poster image. Only one is live at a time.
+- Publish: `POST /ads` form `{ "password", "href?", "text?", "image?" }` — paste a URL and/or upload a poster image or reel video. Only one is live at a time.
 - Remove: `DELETE /ads` `{ "password", "id" }`
 - Image: `GET /ad-image?id=...`
+- Video: `GET /ad-video?id=...`
 
 Set the shared password with:
 

@@ -47,10 +47,15 @@ export function Poster() {
       return
     }
     if (!nextHref && !image) {
-      setError('Paste a URL or choose a poster image.')
+      setError('Paste a URL or choose a poster image or reel video.')
       return
     }
-    if (image && image.size > 4.5 * 1024 * 1024) {
+    const isVideo = Boolean(image?.type.startsWith('video/'))
+    if (image && isVideo && image.size > 25 * 1024 * 1024) {
+      setError('Reel videos must be 25 MB or smaller.')
+      return
+    }
+    if (image && !isVideo && image.size > 4.5 * 1024 * 1024) {
       setError('Poster images must be 4.5 MB or smaller.')
       return
     }
@@ -109,9 +114,9 @@ export function Poster() {
         <h1 className="section-title">Band poster</h1>
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
-          Paste an Instagram or ad URL, or choose a poster image, then press
-          Post. Only one is live at a time; a new post replaces the previous
-          one.
+          Paste an Instagram or ad URL, or choose a poster image or reel
+          video, then press Post. Videos autoplay muted on the homepage.
+          Only one is live at a time; a new post replaces the previous one.
         </p>
       </header>
 
@@ -132,17 +137,17 @@ export function Poster() {
               />
             </div>
             <div className="field">
-              <label htmlFor="poster-image">Or upload a poster image</label>
+              <label htmlFor="poster-image">Or upload a poster image or reel video</label>
               <input
                 id="poster-image"
                 key={imageKey}
                 name="image"
                 type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
+                accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
                 onChange={(event) => setImage(event.target.files?.[0] ?? null)}
               />
               <p className="form-note">
-                JPG, PNG, WebP, or GIF, up to 4.5 MB.
+                JPG, PNG, WebP, or GIF up to 4.5 MB, or MP4/WebM up to 25 MB.
                 {image ? ` Selected: ${image.name}` : ''}
               </p>
             </div>
@@ -191,7 +196,15 @@ export function Poster() {
               <ul className="poster-list">
                 {ads.map((ad) => (
                   <li className="poster-list__item" key={ad.id}>
-                    {ad.imageUrl ? (
+                    {ad.videoUrl ? (
+                      <video
+                        src={ad.videoUrl}
+                        poster={ad.imageUrl}
+                        muted
+                        playsInline
+                        preload="metadata"
+                      />
+                    ) : ad.imageUrl ? (
                       <img src={ad.imageUrl} alt={ad.text || 'Homepage poster'} />
                     ) : null}
                     <div>
