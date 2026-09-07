@@ -1,15 +1,23 @@
 type InstagramEmbedProps = {
   permalink: string
   caption?: string
+  imageUrl?: string
 }
 
-export function InstagramEmbed({ permalink, caption }: InstagramEmbedProps) {
+export function InstagramEmbed({ permalink, caption, imageUrl }: InstagramEmbedProps) {
   return (
-    <iframe
-      className="home-reel__page home-reel__instagram"
-      title={caption || 'Swagger Instagram post'}
-      src={`${permalink}embed/`}
-      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-    />
+    <a
+      className="home-reel__card home-reel__card--play"
+      href={permalink}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {imageUrl ? (
+        <img src={imageUrl} alt={caption || 'Swagger Instagram post'} />
+      ) : (
+        <span className="home-reel__watch-label">Watch on Instagram</span>
+      )}
+      <span className="home-reel__play" aria-hidden="true" />
+    </a>
   )
 }
