@@ -326,6 +326,20 @@ export function Home() {
               <SpotifyIcon className="celtic-link__icon" />
             </a>
           </div>
+          {band.homePromoVideo.src ? (
+            <figure className="home-promo">
+              <figcaption className="home-promo__label">{band.homePromoVideo.title}</figcaption>
+              <video
+                className="home-promo__video"
+                src={`${import.meta.env.BASE_URL}${band.homePromoVideo.src}`}
+                poster={`${import.meta.env.BASE_URL}${band.homePromoVideo.poster}`}
+                controls
+                playsInline
+                preload="metadata"
+                title={band.homePromoVideo.title}
+              />
+            </figure>
+          ) : null}
           {showEmbed && boardAd ? (
             <div className="home-reel" id="home-full-post">
               <article className="home-reel__item">

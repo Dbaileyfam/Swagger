@@ -711,6 +711,29 @@ select {
   padding-bottom: 2.25rem;
 }
 
+.home-promo {
+  width: min(100%, 40rem);
+  margin: 2rem auto 0;
+}
+
+.home-promo__label {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+}
+
+.home-promo__video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  border: 1px solid var(--gold-line);
+  background: #111;
+}
+
 .home-reel {
   display: grid;
   justify-items: center;
