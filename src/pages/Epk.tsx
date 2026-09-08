@@ -119,7 +119,9 @@ export function Epk() {
           <div>
             <p className="section-label">Biography</p>
             <div className="epk-bio">
-              <p>{band.epkBio}</p>
+              {band.bio.split('\n\n').map((para) => (
+                <p key={para.slice(0, 40)}>{para}</p>
+              ))}
             </div>
           </div>
 
