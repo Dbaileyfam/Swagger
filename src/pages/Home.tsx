@@ -377,7 +377,7 @@ export function Home() {
           <div className="home-about__visual">
             <div className="home-about__photo-frame">
               <img
-                src={`${import.meta.env.BASE_URL}band-photo.png`}
+                src={`${import.meta.env.BASE_URL}band-photo.jpg`}
                 alt="Swagger the Band"
                 className="home-about__photo"
               />

@@ -435,10 +435,39 @@ export type MediaItem = {
   year?: string
   face?: boolean
   featured?: boolean
+  /** Logo overlays of existing shots — EPK featured only, not Media. */
+  epkOnly?: boolean
 }
 
 /** Press photos from https://swaggertheband.com/epk-files/ */
 export const epkPhotos: MediaItem[] = [
+  {
+    id: 'epk-folk-jam-logo',
+    type: 'photo',
+    title: 'Band Portrait — Folk Jam Logo',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-folk-jam-logo.jpg',
+    featured: true,
+    epkOnly: true,
+  },
+  {
+    id: 'epk-walking-logo',
+    type: 'photo',
+    title: 'Band Portrait — Celtic Rock',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-walking-logo.jpg',
+    featured: true,
+    epkOnly: true,
+  },
+  {
+    id: 'epk-casual-six-logo',
+    type: 'photo',
+    title: 'Band Portrait — Six Piece Logo',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-casual-six-logo.jpg',
+    featured: true,
+    epkOnly: true,
+  },
   {
     id: 'epk-casual',
     type: 'photo',
@@ -932,7 +961,7 @@ export const livePhotos: MediaItem[] = [
 
 /** Videos from https://www.youtube.com/@SwaggerTheBand */
 export const mediaItems: MediaItem[] = [
-  ...epkPhotos,
+  ...epkPhotos.filter((photo) => !photo.epkOnly),
   ...livePhotos,
   {
     id: '4Wi3yPjNMbc',
