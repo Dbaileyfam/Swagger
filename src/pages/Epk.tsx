@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
-import { band, epkLogos, epkPhotos, mediaItems, stagePlots } from '../data/band'
+import { band, drumSetup, epkLogos, epkPhotos, mediaItems, stagePlots } from '../data/band'
 import type { MediaItem } from '../data/band'
 
 function assetUrl(path: string) {
@@ -259,7 +259,7 @@ export function Epk() {
             <p className="section-label">Stage Plots &amp; Input Lists</p>
             <p className="epk-tech__lede">
               Download the PDF stage plot that matches the booked lineup, then use the matching
-              input list below for FOH.
+              input list below for FOH. Mike’s drum plot and input list is a separate PDF.
             </p>
 
             <div className="stage-plot-grid">
@@ -279,6 +279,18 @@ export function Epk() {
                   <span className="stage-plot-card__action">Download PDF</span>
                 </a>
               ))}
+              <a
+                className="stage-plot-card"
+                href={assetUrl(drumSetup.file)}
+                target="_blank"
+                rel="noreferrer"
+                download
+              >
+                <span className="stage-plot-card__pieces">{drumSetup.pieces}</span>
+                <strong className="stage-plot-card__title">{drumSetup.title}</strong>
+                <span className="stage-plot-card__desc">{drumSetup.description}</span>
+                <span className="stage-plot-card__action">Download PDF</span>
+              </a>
             </div>
 
             {activePlot && (
@@ -336,6 +348,47 @@ export function Epk() {
                 </ul>
               </div>
             )}
+
+            <div className="input-list input-list--drums">
+              <div className="input-list__header">
+                <h3>
+                  Input List — {drumSetup.title}
+                  <span>{drumSetup.pieces}</span>
+                </h3>
+                <a className="input-list__pdf" href={assetUrl(drumSetup.file)} download>
+                  Download drum PDF
+                </a>
+              </div>
+              <div className="input-list__table-wrap">
+                <table className="input-list__table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Ch</th>
+                      <th scope="col">Source</th>
+                      <th scope="col">Mic / DI</th>
+                      <th scope="col">Stand</th>
+                      <th scope="col">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {drumSetup.inputs.map((row) => (
+                      <tr key={`${drumSetup.id}-${row.ch}`}>
+                        <td data-label="Ch">{row.ch}</td>
+                        <td data-label="Source">{row.source}</td>
+                        <td data-label="Mic / DI">{row.micDi}</td>
+                        <td data-label="Stand">{row.stand}</td>
+                        <td data-label="Notes">{row.notes || '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <ul className="input-list__notes">
+                {drumSetup.notes.map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="epk-grid">

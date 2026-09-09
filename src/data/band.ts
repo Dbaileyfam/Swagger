@@ -818,6 +818,31 @@ export const stagePlots: StagePlot[] = [
   },
 ]
 
+/** Drum-only plot — same kit for every lineup. */
+export const drumSetup: StagePlot = {
+  id: 'drums',
+  title: 'Drum Setup',
+  pieces: 'Mike Bailey',
+  description: 'Traditional right-hand kit — stage plot & input list',
+  file: 'epk/swagger-drum-setup.pdf',
+  notes: [
+    'Traditional right-hand setup. Drummer’s left / right as shown on the PDF.',
+    'Cymbals: Crash 1 left of Tom 1 · Trash crash above Tom 2 / ride · Crash 2 right of floor tom.',
+    'IEMs — one male XLR into Mike’s Mackie Mix 5.',
+  ],
+  inputs: [
+    { ch: 1, source: 'Kick 22"', micDi: 'Mic', stand: 'Short', notes: 'Mike — drums' },
+    { ch: 2, source: 'Snare 14"', micDi: 'Mic', stand: 'Short', notes: '' },
+    { ch: 3, source: 'Rack Tom 1 — 10"', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+    { ch: 4, source: 'Rack Tom 2 — 12"', micDi: 'Mic', stand: 'Clip / short', notes: '' },
+    { ch: 5, source: 'Floor Tom 14"', micDi: 'Mic', stand: 'Short', notes: '' },
+    { ch: 6, source: 'Hi-Hat', micDi: 'Mic', stand: 'Short boom', notes: 'Left of snare' },
+    { ch: 7, source: 'Ride', micDi: 'Mic', stand: 'Boom', notes: 'Right of Tom 2' },
+    { ch: 8, source: 'Overheads', micDi: 'Mic', stand: 'Boom', notes: 'Crash 1, trash crash, Crash 2' },
+    { ch: 9, source: 'Drum IEM Return', micDi: 'Male XLR', stand: '—', notes: 'Into Mackie Mix 5' },
+  ],
+}
+
 /** Live performance photos for the Media gallery */
 export const livePhotos: MediaItem[] = [
   {

@@ -2506,6 +2506,24 @@ select {
   padding: clamp(1rem, 2.5vw, 1.5rem);
 }
 
+.input-list--drums {
+  margin-top: 1.25rem;
+}
+
+.input-list__pdf {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  text-decoration: none;
+}
+
+.input-list__pdf:hover,
+.input-list__pdf:focus-visible {
+  color: var(--gold);
+}
+
 .input-list__header {
   display: flex;
   flex-wrap: wrap;
