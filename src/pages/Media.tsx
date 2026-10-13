@@ -101,6 +101,7 @@ function MediaGallery({
   moreLabel,
   lessLabel,
   renderItem,
+  previewCount = PREVIEW_COUNT,
 }: {
   title: string
   headingId: string
@@ -111,10 +112,11 @@ function MediaGallery({
   moreLabel: string
   lessLabel: string
   renderItem: (item: MediaItem) => ReactNode
+  previewCount?: number
 }) {
-  const visible = expanded ? items : items.slice(0, PREVIEW_COUNT)
-  const canExpand = items.length > PREVIEW_COUNT
-  const remaining = items.length - PREVIEW_COUNT
+  const visible = expanded ? items : items.slice(0, previewCount)
+  const canExpand = items.length > previewCount
+  const remaining = items.length - previewCount
 
   return (
     <section className="media-section" aria-labelledby={headingId}>
@@ -238,6 +240,7 @@ export function Media() {
             onToggle={togglePhotos}
             moreLabel="More photos"
             lessLabel="Fewer photos"
+            previewCount={4}
             renderItem={(item) => (
               <PhotoTile
                 key={item.id}

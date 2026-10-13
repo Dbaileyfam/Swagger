@@ -447,6 +447,22 @@ export type MediaItem = {
 /** Press photos from https://swaggertheband.com/epk-files/ */
 export const epkPhotos: MediaItem[] = [
   {
+    id: 'epk-casual',
+    type: 'photo',
+    title: 'Band Portrait — Casual',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-casual.jpg',
+    featured: true,
+  },
+  {
+    id: 'epk-barn',
+    type: 'photo',
+    title: 'Band Portrait — Barn',
+    description: 'Official press photo',
+    image: 'epk/band-portrait-barn.jpg',
+    featured: true,
+  },
+  {
     id: 'epk-kilt-walk-logo',
     type: 'photo',
     title: 'Kilts — Swagger',
@@ -527,20 +543,6 @@ export const epkPhotos: MediaItem[] = [
     description: 'Official press photo',
     image: 'epk/band-portrait-casual-six-logo.jpg',
     epkOnly: true,
-  },
-  {
-    id: 'epk-casual',
-    type: 'photo',
-    title: 'Band Portrait — Casual',
-    description: 'Official press photo',
-    image: 'epk/band-portrait-casual.jpg',
-  },
-  {
-    id: 'epk-barn',
-    type: 'photo',
-    title: 'Band Portrait — Barn',
-    description: 'Official press photo',
-    image: 'epk/band-portrait-barn.jpg',
   },
   {
     id: 'epk-heber',
