@@ -108,7 +108,7 @@ export function Home() {
     band.homeFeaturedReel.image,
   )
   const [liveAds, setLiveAds] = useState<BoardAd[]>([])
-  const [showEmbed, setShowEmbed] = useState(true)
+  const [showEmbed, setShowEmbed] = useState(() => Boolean(featuredReel))
   const [lightbox, setLightbox] = useState<LineupLightbox | null>(null)
 
   useEffect(() => {

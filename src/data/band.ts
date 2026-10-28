@@ -24,9 +24,9 @@ export const band = {
   },
   /** Paste a post/reel URL, caption, and optional photo. Leave `url` empty to hide. */
   homeFeaturedReel: {
-    url: 'https://www.instagram.com/p/DcXf_9EsiZd/',
-    text: 'Heber City: One More Time!',
-    image: 'instagram/heber-city-one-more-time.jpg',
+    url: '',
+    text: '',
+    image: '',
   },
   albums: [
     { title: 'Trouble on the Green', year: 2008 },
