@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
 import {
@@ -11,6 +11,82 @@ import { fetchBoardAds, facebookEmbedSrc, instagramPermalink, youtubeEmbedSrc, t
 import { band } from '../data/band'
 import { HomeReelVideo } from '../components/HomeReelVideo'
 import { InstagramEmbed } from '../components/InstagramEmbed'
+
+function formatTrackTime(seconds: number) {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00'
+  const minutes = Math.floor(seconds / 60)
+  const remain = Math.floor(seconds % 60)
+  return `${minutes}:${remain.toString().padStart(2, '0')}`
+}
+
+function FeaturedTrack({ src, title }: { src: string; title: string }) {
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const [playing, setPlaying] = useState(false)
+  const [time, setTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+
+  function toggle() {
+    const audio = audioRef.current
+    if (!audio) return
+    if (audio.paused) {
+      void audio.play()
+    } else {
+      audio.pause()
+    }
+  }
+
+  function seek(value: number) {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.currentTime = value
+    setTime(value)
+  }
+
+  return (
+    <div className="home-player">
+      <audio
+        ref={audioRef}
+        src={src}
+        preload="metadata"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onEnded={() => {
+          setPlaying(false)
+          setTime(0)
+        }}
+        onTimeUpdate={() => setTime(audioRef.current?.currentTime ?? 0)}
+        onLoadedMetadata={() => setDuration(audioRef.current?.duration ?? 0)}
+      />
+      <button
+        type="button"
+        className={`home-player__play${playing ? ' is-playing' : ''}`}
+        onClick={toggle}
+        aria-label={playing ? `Pause ${title}` : `Play ${title}`}
+        aria-pressed={playing}
+      >
+        <span className="home-player__icon" aria-hidden="true" />
+      </button>
+      <div className="home-player__body">
+        <p className="home-player__title">{title}</p>
+        <label className="home-player__seek">
+          <span className="sr-only">Seek {title}</span>
+          <input
+            type="range"
+            min={0}
+            max={duration || 0}
+            step={0.1}
+            value={Math.min(time, duration || 0)}
+            onChange={(event) => seek(Number(event.target.value))}
+          />
+        </label>
+        <p className="home-player__time">
+          <span>{formatTrackTime(time)}</span>
+          <span>{formatTrackTime(duration)}</span>
+        </p>
+      </div>
+    </div>
+  )
+}
 
 function featuredInstagramReel(
   url: string,
@@ -372,15 +448,9 @@ export function Home() {
           </p>
           <p className="home-listen__hint">Hit play as you scroll — a taste of Swagger live on the road.</p>
           <div className="home-listen__player">
-            <iframe
-              data-testid="embed-iframe"
-              title="Swagger featured track on Spotify"
-              src={band.spotifyFeaturedTrack}
-              width="100%"
-              height="152"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              allowFullScreen
+            <FeaturedTrack
+              title={band.featuredTrack.title}
+              src={`${import.meta.env.BASE_URL}${band.featuredTrack.src}`}
             />
           </div>
         </div>
