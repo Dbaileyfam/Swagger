@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
@@ -44,14 +44,23 @@ function addOrBump(lines: CartLine[], next: CartLine): CartLine[] {
   )
 }
 
+function sampleSrc(albumId: string, index: number) {
+  const number = String(index + 1).padStart(2, '0')
+  return assetUrl(`store/samples/${albumId}/${number}.mp3`)
+}
+
 function AlbumCard({
   album,
   onAddCd,
   onAddAllTracks,
+  playingSrc,
+  onToggleSample,
 }: {
   album: StoreAlbum
   onAddCd: () => void
   onAddAllTracks: () => void
+  playingSrc: string | null
+  onToggleSample: (src: string) => void
 }) {
   const [open, setOpen] = useState(false)
   const digitalTotal = albumDigitalTotal(album)
@@ -90,17 +99,32 @@ function AlbumCard({
           aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
         >
-          {open ? 'Hide tracklist' : `Tracklist (${album.tracks.length})`}
+          {open ? 'Hide samples' : `Play samples (${album.tracks.length})`}
         </button>
         {open ? (
           <ol className="store-tracklist">
-            {album.tracks.map((track, index) => (
-              <li key={`${album.id}-${track}-${index}`}>
-                <span>
-                  <span className="store-tracklist__num">{index + 1}.</span> {track}
-                </span>
-              </li>
-            ))}
+            {album.tracks.map((track, index) => {
+              const src = sampleSrc(album.id, index)
+              const playing = playingSrc === src
+              return (
+                <li key={`${album.id}-${track}-${index}`}>
+                  <span>
+                    <span className="store-tracklist__num">{index + 1}.</span> {track}
+                  </span>
+                  <button
+                    type="button"
+                    className={`store-sample${playing ? ' is-playing' : ''}`}
+                    aria-label={
+                      playing ? `Pause 30-second sample of ${track}` : `Play 30-second sample of ${track}`
+                    }
+                    aria-pressed={playing}
+                    onClick={() => onToggleSample(src)}
+                  >
+                    <span className="store-sample__icon" aria-hidden="true" />
+                  </button>
+                </li>
+              )
+            })}
           </ol>
         ) : null}
       </div>
@@ -121,6 +145,40 @@ export function Store() {
   const checkoutState = searchParams.get('checkout')
   const checkoutSessionId = searchParams.get('session_id')
   const [sessionDownloads, setSessionDownloads] = useState<SessionDownload[]>([])
+  const sampleAudioRef = useRef<HTMLAudioElement | null>(null)
+  const [playingSrc, setPlayingSrc] = useState<string | null>(null)
+
+  useEffect(() => {
+    const audio = new Audio()
+    audio.preload = 'none'
+    sampleAudioRef.current = audio
+    const stop = () => setPlayingSrc(null)
+    audio.addEventListener('ended', stop)
+    return () => {
+      audio.pause()
+      audio.removeEventListener('ended', stop)
+      sampleAudioRef.current = null
+    }
+  }, [])
+
+  function toggleSample(src: string) {
+    const audio = sampleAudioRef.current
+    if (!audio) return
+    const current = audio.dataset.src
+    if (current === src && !audio.paused) {
+      audio.pause()
+      setPlayingSrc(null)
+      return
+    }
+    if (current !== src) {
+      audio.src = src
+      audio.dataset.src = src
+    }
+    void audio.play().then(
+      () => setPlayingSrc(src),
+      () => setPlayingSrc(null),
+    )
+  }
 
   useEffect(() => {
     if (checkoutState !== 'success' || !checkoutSessionId) {
@@ -279,6 +337,8 @@ export function Store() {
                   album={album}
                   onAddCd={() => addCd(album.id)}
                   onAddAllTracks={() => addAllTracks(album)}
+                  playingSrc={playingSrc}
+                  onToggleSample={toggleSample}
                 />
               ))}
             </div>

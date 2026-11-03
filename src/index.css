@@ -3509,6 +3509,43 @@ select {
   margin-right: 0.2rem;
 }
 
+.store-sample {
+  position: relative;
+  flex: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: rgba(6, 20, 14, 0.72);
+  cursor: pointer;
+  padding: 0;
+}
+
+.store-sample:hover,
+.store-sample.is-playing {
+  background: rgba(201, 168, 74, 0.25);
+}
+
+.store-sample__icon {
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 0.28rem 0 0.28rem 0.46rem;
+  border-color: transparent transparent transparent var(--gold-bright);
+}
+
+.store-sample.is-playing .store-sample__icon {
+  left: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 0;
+  background:
+    linear-gradient(var(--gold-bright), var(--gold-bright)) left center / 0.16rem 100% no-repeat,
+    linear-gradient(var(--gold-bright), var(--gold-bright)) right center / 0.16rem 100% no-repeat;
+}
+
 .store-cart {
   position: sticky;
   top: 5.5rem;
