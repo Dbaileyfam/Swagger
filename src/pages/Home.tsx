@@ -453,6 +453,9 @@ export function Home() {
               src={`${import.meta.env.BASE_URL}${band.featuredTrack.src}`}
             />
           </div>
+          <p className="sample-note">
+            Samples of every song are in the <Link to="/store">store</Link>.
+          </p>
         </div>
       </section>
 

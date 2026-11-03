@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band, drumSetup, epkLogos, epkPhotos, mediaItems, stagePlots } from '../data/band'
@@ -141,6 +142,9 @@ export function Epk() {
                 />
               </div>
             </div>
+            <p className="sample-note">
+              Samples of every song are in the <Link to="/store">store</Link>.
+            </p>
 
             <p className="section-label" style={{ marginTop: '2rem' }}>
               Lineup

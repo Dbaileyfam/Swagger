@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
 import { band, mediaItems } from '../data/band'
@@ -75,6 +76,9 @@ function SpotifyEmbed() {
         Music
       </h2>
       <p className="section-label">Listen on Spotify</p>
+      <p className="sample-note">
+        No Spotify account? Samples of every song are in the <Link to="/store">store</Link>.
+      </p>
       <div className="spotify-embed__frame">
         <iframe
           data-testid="embed-iframe"
@@ -226,6 +230,9 @@ export function Media() {
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
           Press photos, live videos, and streaming music from nearly two decades on the road.
+        </p>
+        <p className="sample-note">
+          Samples of every song are in the <Link to="/store">store</Link>.
         </p>
       </header>
 

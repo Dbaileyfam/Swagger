@@ -329,6 +329,27 @@ select {
   line-height: 1.5;
 }
 
+.sample-note {
+  margin: 0.85rem 0 1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: var(--cream-muted);
+}
+
+.sample-note a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.page-hero .sample-note,
+.home-listen .sample-note {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 36rem;
+}
+
 .btn-row,
 .epk-actions,
 .celtic-links,

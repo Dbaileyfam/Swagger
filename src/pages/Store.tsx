@@ -304,7 +304,7 @@ export function Store() {
         <hr className="gold-rule gold-rule--center" />
         <p className="section-lede" style={{ margin: '0 auto' }}>
           CDs ({formatMoney(CD_PRICE)}, free shipping) or full album Digital Download{' '}
-          {formatMoney(ALBUM_MP3_PRICE)}.
+          {formatMoney(ALBUM_MP3_PRICE)}. Open Play samples under each album to hear every song.
         </p>
         {checkoutState === 'success' ? (
           <div className="section-lede" style={{ margin: '1rem auto 0' }}>
