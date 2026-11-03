@@ -447,6 +447,30 @@ export type MediaItem = {
 /** Press photos from https://swaggertheband.com/epk-files/ */
 export const epkPhotos: MediaItem[] = [
   {
+    id: 'epk-kilt-brick-group',
+    type: 'photo',
+    title: 'Kilts — Brick Wall',
+    description: 'Official press photo',
+    image: 'epk/kilt-brick-group.jpg',
+    featured: true,
+  },
+  {
+    id: 'epk-kilt-brick-lineup',
+    type: 'photo',
+    title: 'Kilts — Brick Lineup',
+    description: 'Official press photo',
+    image: 'epk/kilt-brick-lineup.jpg',
+    featured: true,
+  },
+  {
+    id: 'epk-kilt-marquee',
+    type: 'photo',
+    title: 'Kilts — Marquee',
+    description: 'Official press photo',
+    image: 'epk/kilt-marquee.jpg',
+    featured: true,
+  },
+  {
     id: 'epk-casual',
     type: 'photo',
     title: 'Band Portrait — Casual',

@@ -240,7 +240,7 @@ export function Media() {
             onToggle={togglePhotos}
             moreLabel="More photos"
             lessLabel="Fewer photos"
-            previewCount={4}
+            previewCount={7}
             renderItem={(item) => (
               <PhotoTile
                 key={item.id}
