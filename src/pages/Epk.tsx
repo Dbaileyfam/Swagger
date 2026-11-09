@@ -189,7 +189,7 @@ export function Epk() {
             <div className="photo-grid">
               {visibleEpkPhotos
                 .map((photo, index) => ({ photo, index }))
-                .filter(({ photo }) => photo.featured)
+                .filter(({ photo }) => !photo.face)
                 .map(({ photo, index }) => (
                   <figure className="photo-tile photo-tile--zoom" key={photo.id}>
                     <button
@@ -207,30 +207,6 @@ export function Epk() {
                   </figure>
                 ))}
             </div>
-            <details className="epk-photo-folder">
-              <summary>More press photos</summary>
-              <div className="photo-grid">
-                {visibleEpkPhotos
-                  .map((photo, index) => ({ photo, index }))
-                  .filter(({ photo }) => !photo.face && !photo.featured)
-                  .map(({ photo, index }) => (
-                    <figure className="photo-tile photo-tile--zoom" key={photo.id}>
-                      <button
-                        type="button"
-                        className="photo-tile__open"
-                        onClick={() => setLightboxIndex(index)}
-                        aria-label={`Enlarge ${photo.title}`}
-                      >
-                        <img
-                          src={assetUrl(photo.image!)}
-                          alt={photo.title}
-                          loading="lazy"
-                        />
-                      </button>
-                    </figure>
-                  ))}
-              </div>
-            </details>
 
             <p className="section-label" style={{ marginTop: '2rem' }}>
               Featured Video
