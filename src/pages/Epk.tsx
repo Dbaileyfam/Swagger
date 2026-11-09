@@ -2,7 +2,15 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CelticButton } from '../components/CelticButton'
 import { SocialCelticLinks } from '../components/SocialCelticLinks'
-import { band, drumSetup, epkLogos, epkPhotos, mediaItems, stagePlots } from '../data/band'
+import {
+  band,
+  drumSetup,
+  epkKeptPressIds,
+  epkLogos,
+  epkPhotos,
+  mediaItems,
+  stagePlots,
+} from '../data/band'
 import type { MediaItem } from '../data/band'
 
 function assetUrl(path: string) {
@@ -49,6 +57,10 @@ function EpkVideo({ item }: { item: MediaItem }) {
   )
 }
 
+const visibleEpkPhotos = epkPhotos.filter(
+  (photo) => photo.face || epkKeptPressIds.has(photo.id),
+)
+
 const EPK_VIDEO_IDS = [
   '4Wi3yPjNMbc', // Morrison's Jig — Live
   '5dynW18TBDM', // Galway Girl
@@ -65,7 +77,7 @@ export function Epk() {
   const activePlot = stagePlots.find((plot) => plot.id === activePlotId) ?? stagePlots[0]
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const lightboxPhoto =
-    lightboxIndex != null ? epkPhotos[lightboxIndex] ?? null : null
+    lightboxIndex != null ? visibleEpkPhotos[lightboxIndex] ?? null : null
 
   useEffect(() => {
     if (lightboxIndex == null) return
@@ -77,7 +89,7 @@ export function Epk() {
       }
       if (event.key === 'ArrowRight') {
         setLightboxIndex((current) =>
-          current == null ? current : (current + 1) % epkPhotos.length,
+          current == null ? current : (current + 1) % visibleEpkPhotos.length,
         )
         return
       }
@@ -85,7 +97,7 @@ export function Epk() {
         setLightboxIndex((current) =>
           current == null
             ? current
-            : (current - 1 + epkPhotos.length) % epkPhotos.length,
+            : (current - 1 + visibleEpkPhotos.length) % visibleEpkPhotos.length,
         )
       }
     }
@@ -150,7 +162,7 @@ export function Epk() {
               Lineup
             </p>
             <div className="photo-grid photo-grid--members">
-              {epkPhotos
+              {visibleEpkPhotos
                 .map((photo, index) => ({ photo, index }))
                 .filter(({ photo }) => photo.face)
                 .map(({ photo, index }) => (
@@ -175,7 +187,7 @@ export function Epk() {
               Press Photos
             </p>
             <div className="photo-grid">
-              {epkPhotos
+              {visibleEpkPhotos
                 .map((photo, index) => ({ photo, index }))
                 .filter(({ photo }) => photo.featured)
                 .map(({ photo, index }) => (
@@ -198,7 +210,7 @@ export function Epk() {
             <details className="epk-photo-folder">
               <summary>More press photos</summary>
               <div className="photo-grid">
-                {epkPhotos
+                {visibleEpkPhotos
                   .map((photo, index) => ({ photo, index }))
                   .filter(({ photo }) => !photo.face && !photo.featured)
                   .map(({ photo, index }) => (
@@ -483,7 +495,7 @@ export function Epk() {
           >
             ×
           </button>
-          {epkPhotos.length > 1 ? (
+          {visibleEpkPhotos.length > 1 ? (
             <>
               <button
                 type="button"
@@ -492,7 +504,7 @@ export function Epk() {
                 onClick={(event) => {
                   event.stopPropagation()
                   setLightboxIndex(
-                    (lightboxIndex! - 1 + epkPhotos.length) % epkPhotos.length,
+                    (lightboxIndex! - 1 + visibleEpkPhotos.length) % visibleEpkPhotos.length,
                   )
                 }}
               >
@@ -504,7 +516,7 @@ export function Epk() {
                 aria-label="Next photo"
                 onClick={(event) => {
                   event.stopPropagation()
-                  setLightboxIndex((lightboxIndex! + 1) % epkPhotos.length)
+                  setLightboxIndex((lightboxIndex! + 1) % visibleEpkPhotos.length)
                 }}
               >
                 ›

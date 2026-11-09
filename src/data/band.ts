@@ -446,6 +446,20 @@ export type MediaItem = {
   epkOnly?: boolean
 }
 
+/**
+ * Press photos kept on the EPK. The rest of `epkPhotos` stay on Media.
+ * Lineup headshots are separate and are not in this list.
+ */
+export const epkKeptPressIds = new Set([
+  'epk-walking',
+  'epk-barn',
+  'epk-kilt-brick-group',
+  'epk-fireplace',
+  'epk-folk-jam-logo',
+  'epk-kilt-mountain',
+  'epk-walking-logo',
+])
+
 /** Press photos from https://swaggertheband.com/epk-files/ */
 export const epkPhotos: MediaItem[] = [
   {
