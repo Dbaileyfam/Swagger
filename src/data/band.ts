@@ -354,6 +354,18 @@ export const shows: Show[] = [
     address: '600 N Bluff St, St. George, UT 84770',
   },
   {
+    id: 'soldotna-2027',
+    event: 'Levitt AMP Soldotna Music Series',
+    venue: 'Soldotna Creek Park',
+    city: 'Soldotna',
+    state: 'Alaska',
+    date: '2027-06-23',
+    time: '6:00pm – 9:00pm',
+    upcoming: true,
+    href: 'https://visionsoldotna.com/',
+    address: '44790 Sterling Hwy, Soldotna, AK 99669',
+  },
+  {
     id: 'palmer-alehouse-2027',
     event: 'Palmer Alehouse',
     venue: 'Palmer Alehouse',
